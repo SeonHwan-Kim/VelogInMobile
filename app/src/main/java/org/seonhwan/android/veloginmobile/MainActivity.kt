@@ -4,10 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import org.seonhwan.android.veloginmobile.databinding.ActivityMainBinding
-import org.seonhwan.android.veloginmobile.presentation.Notification.NotificationFragment
-import org.seonhwan.android.veloginmobile.presentation.Subscribe.SubscribeFragment
-import org.seonhwan.android.veloginmobile.presentation.home.HomeFragment
-import org.seonhwan.android.veloginmobile.presentation.mypage.MypageFragment
+import org.seonhwan.android.veloginmobile.ui.Notification.NotificationFragment
+import org.seonhwan.android.veloginmobile.ui.Subscribe.SubscribeFragment
+import org.seonhwan.android.veloginmobile.ui.home.HomeFragment
+import org.seonhwan.android.veloginmobile.ui.mypage.MypageFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun changeFragment(fragment: Fragment){
         supportFragmentManager.beginTransaction()
-            .add(R.id.fcv_main, fragment)
+            .replace(R.id.fcv_main, fragment)
             .commit()
     }
 }

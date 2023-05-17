@@ -1,4 +1,4 @@
-package org.seonhwan.android.veloginmobile.presentation.login
+package org.seonhwan.android.veloginmobile.ui.login
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
