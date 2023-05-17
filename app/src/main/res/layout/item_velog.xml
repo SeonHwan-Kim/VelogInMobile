@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp">
+
+    <ImageView
+        android:id="@+id/iv_velog_img"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:maxHeight="147dp"
+        android:minHeight="26dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_home" />
+
+    <ImageView
+        android:id="@+id/iv_velog_profile"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="-26dp"
+        android:background="@drawable/shape_round"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="@id/iv_velog_img"
+        app:layout_constraintTop_toBottomOf="@id/iv_velog_img"
+        tools:src="@drawable/ic_mypage" />
+
+    <TextView
+        android:id="@+id/tv_velog_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@id/iv_velog_img"
+        app:layout_constraintTop_toBottomOf="@id/iv_velog_profile"
+        tools:text="by 메타몽" />
+
+    <View
+        android:id="@+id/view_velog_dividing_line"
+        android:layout_width="1dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="12dp"
+        android:background="@color/gray2"
+        app:layout_constraintBottom_toBottomOf="@id/tv_velog_name"
+        app:layout_constraintStart_toEndOf="@id/tv_velog_name"
+        app:layout_constraintTop_toTopOf="@id/tv_velog_name" />
+
+    <TextView
+        android:id="@+id/tv_velog_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/view_velog_dividing_line"
+        app:layout_constraintStart_toEndOf="@id/view_velog_dividing_line"
+        app:layout_constraintTop_toTopOf="@id/view_velog_dividing_line"
+        tools:text="2023.05.18" />
+
+    <TextView
+        android:id="@+id/tv_velog_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="13dp"
+        android:textColor="@color/black"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_velog_name"
+        tools:text="내 화면에 네이버가 켜질 때까지 - 브라우저 렌더링 과정" />
+
+    <TextView
+        android:id="@+id/tv_velog_detail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginHorizontal="12dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_velog_title"
+        tools:text="브라우저 렌더링 과정을 알아보자! 스터디에서 동료 특강으로 브라우저렌더링 과정에 대해 발표하게 되었다. 나도 공부를 하기 ㅇㅇㅇㅇ" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
