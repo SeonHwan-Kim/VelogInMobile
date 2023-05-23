@@ -1,18 +1,17 @@
 package org.seonhwan.android.veloginmobile.ui.login
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import org.seonhwan.android.veloginmobile.MainActivity
+import org.seonhwan.android.veloginmobile.R
 import org.seonhwan.android.veloginmobile.databinding.ActivityLoginBinding
+import org.seonhwan.android.veloginmobile.util.binding.BindingActivity
 
-class LoginActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLoginBinding
+class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_login) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         this.onClickLoginButton()
@@ -37,6 +36,7 @@ class LoginActivity : AppCompatActivity() {
                         etLoginPassword.transformationMethod =
                             PasswordTransformationMethod.getInstance()
                     }
+
                     else -> {
                         etLoginPassword.transformationMethod =
                             HideReturnsTransformationMethod.getInstance()

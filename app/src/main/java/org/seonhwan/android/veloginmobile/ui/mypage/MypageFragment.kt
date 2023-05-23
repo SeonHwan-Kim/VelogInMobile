@@ -1,31 +1,14 @@
 package org.seonhwan.android.veloginmobile.ui.mypage
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import org.seonhwan.android.veloginmobile.R
 import org.seonhwan.android.veloginmobile.databinding.FragmentMypageBinding
+import org.seonhwan.android.veloginmobile.util.binding.BindingFragment
 
-class MypageFragment : Fragment() {
-    private var _binding: FragmentMypageBinding? = null
-    private val binding: FragmentMypageBinding
-        get() = requireNotNull(_binding) { "_binding is not null" }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentMypageBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+class MypageFragment : BindingFragment<FragmentMypageBinding>(R.layout.fragment_mypage) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
