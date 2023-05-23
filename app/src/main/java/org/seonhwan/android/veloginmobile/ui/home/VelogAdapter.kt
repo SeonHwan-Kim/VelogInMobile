@@ -1,47 +1,53 @@
 package org.seonhwan.android.veloginmobile.presentation.home
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import org.seonhwan.android.veloginmobile.data.model.response.ResponsePostDto
-import org.seonhwan.android.veloginmobile.data.model.response.ResponseTagPostDto
 import org.seonhwan.android.veloginmobile.databinding.ItemVelogBinding
+import org.seonhwan.android.veloginmobile.ui.home.VelogTagAdapter
+import org.seonhwan.android.veloginmobile.util.DiffCallback
 
-class VelogAdapter(context: Context) :
-    ListAdapter<ResponseTagPostDto<ResponsePostDto>, VelogAdapter.VelogViewHolder>(VelogDiffCallBack()) {
-    private val inflater by lazy { LayoutInflater.from(context) }
-
+class VelogAdapter :
+    ListAdapter<ResponsePostDto, VelogAdapter.VelogViewHolder>(diffUtil) {
     class VelogViewHolder(private val binding: ItemVelogBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun onBind(post: ResponseTagPostDto<ResponsePostDto>) {
+        fun onBind(post: ResponsePostDto) {
+            binding.vm = post
+            Glide.with(binding.root)
+                .load(post.img)
+                .into(binding.ivVelogImg)
+            val tagList = post.tag
+            binding.rvVelogTag.adapter = VelogTagAdapter().apply {
+                if (post.tag.size > 3) {
+                    submitList(post.tag.slice(0..2))
+                } else {
+                    submitList(post.tag)
+                }
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VelogViewHolder {
-        val binding = ItemVelogBinding.inflate(inflater, parent, false)
-        return VelogViewHolder(binding)
+        return VelogViewHolder(
+            ItemVelogBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false,
+            ),
+        )
     }
 
     override fun onBindViewHolder(holder: VelogViewHolder, position: Int) {
         holder.onBind(getItem(position))
     }
-}
 
-class VelogDiffCallBack : DiffUtil.ItemCallback<ResponseTagPostDto<ResponsePostDto>>() {
-    override fun areItemsTheSame(
-        oldItem: ResponseTagPostDto<ResponsePostDto>,
-        newItem: ResponseTagPostDto<ResponsePostDto>,
-    ): Boolean {
-        return oldItem == newItem
-    }
-
-    override fun areContentsTheSame(
-        oldItem: ResponseTagPostDto<ResponsePostDto>,
-        newItem: ResponseTagPostDto<ResponsePostDto>,
-    ): Boolean {
-        return oldItem == newItem
+    companion object {
+        private val diffUtil = DiffCallback<ResponsePostDto>(
+            onItemsTheSame = { old, new -> old.summary == new.summary },
+            onContentsTheSame = { old, new -> old == new },
+        )
     }
 }
