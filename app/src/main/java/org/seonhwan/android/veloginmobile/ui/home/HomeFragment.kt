@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayout
 import org.seonhwan.android.veloginmobile.R
 import org.seonhwan.android.veloginmobile.databinding.FragmentHomeBinding
+import org.seonhwan.android.veloginmobile.presentation.home.VelogAdapter
 import org.seonhwan.android.veloginmobile.util.binding.BindingFragment
 
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
@@ -17,6 +18,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
         startSecondTabItem()
         onClickTabBar()
+        viewModel.getTag()
     }
 
     private fun onClickTabBar() {
@@ -25,12 +27,13 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 when (tab?.text) {
                     "" -> {
 //                        binding.tabHomeTabbar.setSelectedTabIndicatorColor(resources.getColor(R.color.transparent))
-                        val intent = Intent(activity, AddTagActivity::class.java)
-                        startActivity(intent)
-                        startSecondTabItem()
+//                        val intent = Intent(activity, AddTagActivity::class.java)
+//                        startActivity(intent)
+//                        startSecondTabItem()
+                        initPost()
                     }
-
                     else -> {
+                        initPost()
                     }
                 }
             }
@@ -47,6 +50,15 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun startSecondTabItem() {
         binding.tabHomeTabbar.getTabAt(1)?.select()
+    }
+
+    private fun initPost() {
+        viewModel.getTagPost()
+        viewModel.tagPostList.observe(this) {
+            binding.rvHomePost.adapter = VelogAdapter().apply {
+                submitList(it)
+            }
+        }
     }
 }
 
