@@ -2,11 +2,11 @@ package org.seonhwan.android.veloginmobile.ui.home
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayout
 import org.seonhwan.android.veloginmobile.R
@@ -19,8 +19,9 @@ class HomeFragment : Fragment() {
         get() = requireNotNull(_binding) { "_binding is not null" }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         binding.vm = viewModel
@@ -50,8 +51,8 @@ class HomeFragment : Fragment() {
                         startActivity(intent)
                         startSecondTabItem()
                     }
-                    else -> {
 
+                    else -> {
                     }
                 }
             }
@@ -63,10 +64,10 @@ class HomeFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {
 //                TODO("Not yet implemented")
             }
-
         })
     }
-    private fun startSecondTabItem(){
+
+    private fun startSecondTabItem() {
         binding.tabHomeTabbar.getTabAt(1)?.select()
     }
 }
