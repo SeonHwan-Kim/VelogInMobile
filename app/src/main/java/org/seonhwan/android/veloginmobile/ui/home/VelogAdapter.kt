@@ -7,15 +7,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.seonhwan.android.veloginmobile.data.model.response.ResponsePostDto
 import org.seonhwan.android.veloginmobile.databinding.ItemVelogBinding
+import org.seonhwan.android.veloginmobile.domain.entity.Post
 import org.seonhwan.android.veloginmobile.ui.home.VelogTagAdapter
 import org.seonhwan.android.veloginmobile.util.DiffCallback
 
 class VelogAdapter :
-    ListAdapter<ResponsePostDto, VelogAdapter.VelogViewHolder>(diffUtil) {
+    ListAdapter<Post, VelogAdapter.VelogViewHolder>(diffUtil) {
     class VelogViewHolder(private val binding: ItemVelogBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun onBind(post: ResponsePostDto) {
-            binding.vm = post
+        fun onBind(post: Post) {
+            binding.data = post
             Glide.with(binding.root)
                 .load(post.img)
                 .into(binding.ivVelogImg)
@@ -45,7 +46,7 @@ class VelogAdapter :
     }
 
     companion object {
-        private val diffUtil = DiffCallback<ResponsePostDto>(
+        private val diffUtil = DiffCallback<Post>(
             onItemsTheSame = { old, new -> old.summary == new.summary },
             onContentsTheSame = { old, new -> old == new },
         )
