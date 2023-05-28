@@ -4,8 +4,8 @@
     <data>
 
         <variable
-            name="vm"
-            type="org.seonhwan.android.veloginmobile.data.model.response.ResponsePostDto" />
+            name="data"
+            type="org.seonhwan.android.veloginmobile.domain.entity.Post" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="14dp"
-            android:text="@{vm.title}"
+            android:text="@{data.title}"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -78,7 +78,7 @@
             android:layout_marginTop="7dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="@{vm.summary}"
+            android:text="@{data.summary}"
             android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
-            android:text="@{vm.name}"
+            android:text="@{data.name}"
             android:textColor="#9A9A9A"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@id/tv_velog_detail"
@@ -113,7 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:text="@{vm.date}"
+            android:text="@{data.date}"
             android:textColor="#9A9A9A"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/view_velog_dividing_line"
