@@ -27,11 +27,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         onClickTabBar()
     }
 
-    private fun initAdapter() {
-        postAdapter = VelogAdapter()
-        binding.rvHomePost.adapter = postAdapter
-    }
-
     private fun initTabItem() {
         viewModel.tagListState.observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -55,6 +50,11 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 }
             }
         }
+    }
+
+    private fun initAdapter() {
+        postAdapter = VelogAdapter()
+        binding.rvHomePost.adapter = postAdapter
     }
 
     private fun onClickTabBar() {
@@ -112,5 +112,3 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         postAdapter = null
     }
 }
-
-// addtab 사용하자
