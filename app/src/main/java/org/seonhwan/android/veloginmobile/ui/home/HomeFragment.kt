@@ -1,5 +1,6 @@
 package org.seonhwan.android.veloginmobile.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -20,10 +21,10 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initTabItem()
         initAdapter()
         startSecondTabItem()
         onClickTabBar()
-        viewModel.getTag()
     }
 
     private fun initAdapter() {
@@ -31,16 +32,39 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         binding.rvHomePost.adapter = postAdapter
     }
 
+    private fun initTabItem() {
+        viewModel.tagListState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Success -> {
+                    viewModel.tagList.value?.map { tag ->
+                        with(binding) {
+                            val newTab = tabHomeTabbar.newTab()
+                            newTab.text = tag
+                            tabHomeTabbar.addTab(newTab)
+                            Timber.tag("tagListState").d(tag)
+                        }
+                    }
+                }
+
+                is UiState.Failure -> {
+                    Timber.tag("tagListState").e("Failure")
+                }
+
+                is UiState.Error -> {
+                    Timber.tag("tagListState").e("Error")
+                }
+            }
+        }
+    }
+
     private fun onClickTabBar() {
         binding.tabHomeTabbar.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.text) {
                     "" -> {
-//                        binding.tabHomeTabbar.setSelectedTabIndicatorColor(resources.getColor(R.color.transparent))
-//                        val intent = Intent(activity, AddTagActivity::class.java)
-//                        startActivity(intent)
-//                        startSecondTabItem()
-                        initPost()
+                        val intent = Intent(activity, AddTagActivity::class.java)
+                        startActivity(intent)
+                        startSecondTabItem()
                     }
 
                     else -> {
@@ -61,11 +85,12 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun startSecondTabItem() {
         binding.tabHomeTabbar.getTabAt(1)?.select()
+        initPost()
     }
 
     private fun initPost() {
         viewModel.getTagPost()
-        viewModel.tagPostListState.observe(this) { state ->
+        viewModel.tagPostListState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Success -> {
                     postAdapter?.submitList(viewModel.tagPostList.value)
@@ -80,11 +105,11 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 }
             }
         }
-        viewModel.tagPostList.observe(this) {
-            binding.rvHomePost.adapter = VelogAdapter().apply {
-                submitList(it)
-            }
-        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        postAdapter = null
     }
 }
 
