@@ -3,12 +3,14 @@ package org.seonhwan.android.veloginmobile
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import dagger.hilt.android.AndroidEntryPoint
 import org.seonhwan.android.veloginmobile.databinding.ActivityMainBinding
 import org.seonhwan.android.veloginmobile.ui.Notification.NotificationFragment
 import org.seonhwan.android.veloginmobile.ui.Subscribe.SubscribeFragment
 import org.seonhwan.android.veloginmobile.ui.home.HomeFragment
 import org.seonhwan.android.veloginmobile.ui.mypage.MypageFragment
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
