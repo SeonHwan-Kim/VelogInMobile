@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
-import org.seonhwan.android.veloginmobile.MainActivity
+import org.seonhwan.android.veloginmobile.ui.MainActivity
 import org.seonhwan.android.veloginmobile.R
 import org.seonhwan.android.veloginmobile.databinding.ActivityLoginBinding
 import org.seonhwan.android.veloginmobile.util.binding.BindingActivity
