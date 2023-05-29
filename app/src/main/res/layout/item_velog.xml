@@ -105,7 +105,7 @@
             android:layout_width="1dp"
             android:layout_height="17dp"
             android:layout_marginStart="12dp"
-            android:background="@color/gray2"
+            android:background="@color/gray_200"
             app:layout_constraintBottom_toBottomOf="@id/tv_velog_name"
             app:layout_constraintStart_toEndOf="@id/tv_velog_name"
             app:layout_constraintTop_toTopOf="@id/tv_velog_name" />
