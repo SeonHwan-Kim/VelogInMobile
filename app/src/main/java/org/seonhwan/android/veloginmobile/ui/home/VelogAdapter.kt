@@ -1,6 +1,6 @@
 package org.seonhwan.android.veloginmobile.presentation.home
 
-import android.util.SparseBooleanArray
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -10,15 +10,11 @@ import coil.transform.RoundedCornersTransformation
 import org.seonhwan.android.veloginmobile.databinding.ItemVelogBinding
 import org.seonhwan.android.veloginmobile.domain.entity.Post
 import org.seonhwan.android.veloginmobile.ui.home.VelogTagAdapter
+import org.seonhwan.android.veloginmobile.ui.webview.WebViewActivity
 import org.seonhwan.android.veloginmobile.util.DiffCallback
 import org.seonhwan.android.veloginmobile.util.extension.toPx
 
-class VelogAdapter :
-    ListAdapter<Post, VelogAdapter.VelogViewHolder>(diffUtil) {
-
-    interface OnItemClickListener {
-        fun onItemClick(pos: Int)
-    }
+class VelogAdapter : ListAdapter<Post, VelogAdapter.VelogViewHolder>(diffUtil) {
 
     class VelogViewHolder(private val binding: ItemVelogBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -36,6 +32,18 @@ class VelogAdapter :
                         submitList(post.tag)
                     }
                 }
+                root.setOnClickListener {
+                    intentToWebView(post)
+                }
+            }
+        }
+
+        private fun intentToWebView(post: Post) {
+            with(binding) {
+                val intent = Intent(root.context, WebViewActivity::class.java)
+//                intent.putExtra(VELOG_URL, url
+                intent.putExtra(VELOG, post)
+                root.context.startActivity(intent)
             }
         }
     }
@@ -59,5 +67,8 @@ class VelogAdapter :
             onItemsTheSame = { old, new -> old.summary == new.summary },
             onContentsTheSame = { old, new -> old == new },
         )
+
+        const val VELOG = "velog"
+        const val VELOG_URL = "url"
     }
 }
