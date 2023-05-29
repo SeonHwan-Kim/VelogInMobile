@@ -1,31 +1,40 @@
 package org.seonhwan.android.veloginmobile.presentation.home
 
+import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import org.seonhwan.android.veloginmobile.data.model.response.ResponsePostDto
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import org.seonhwan.android.veloginmobile.databinding.ItemVelogBinding
 import org.seonhwan.android.veloginmobile.domain.entity.Post
 import org.seonhwan.android.veloginmobile.ui.home.VelogTagAdapter
 import org.seonhwan.android.veloginmobile.util.DiffCallback
+import org.seonhwan.android.veloginmobile.util.extension.toPx
 
 class VelogAdapter :
     ListAdapter<Post, VelogAdapter.VelogViewHolder>(diffUtil) {
+
+    interface OnItemClickListener {
+        fun onItemClick(pos: Int)
+    }
+
     class VelogViewHolder(private val binding: ItemVelogBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBind(post: Post) {
-            binding.data = post
-            Glide.with(binding.root)
-                .load(post.img)
-                .into(binding.ivVelogImg)
-            val tagList = post.tag
-            binding.rvVelogTag.adapter = VelogTagAdapter().apply {
-                if (post.tag.size > 3) {
-                    submitList(post.tag.slice(0..2))
-                } else {
-                    submitList(post.tag)
+            with(binding) {
+                data = post
+                ivVelogImg.load(post.img) {
+                    transformations(RoundedCornersTransformation(8.toPx(), 8.toPx()))
+                }
+                val tagList = post.tag
+                rvVelogTag.adapter = VelogTagAdapter().apply {
+                    if (post.tag.size > 3) {
+                        submitList(post.tag.slice(0..2))
+                    } else {
+                        submitList(post.tag)
+                    }
                 }
             }
         }
