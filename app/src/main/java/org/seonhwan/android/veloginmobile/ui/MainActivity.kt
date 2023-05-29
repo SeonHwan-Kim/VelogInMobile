@@ -1,9 +1,10 @@
-package org.seonhwan.android.veloginmobile
+package org.seonhwan.android.veloginmobile.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
+import org.seonhwan.android.veloginmobile.R
 import org.seonhwan.android.veloginmobile.databinding.ActivityMainBinding
 import org.seonhwan.android.veloginmobile.ui.Notification.NotificationFragment
 import org.seonhwan.android.veloginmobile.ui.Subscribe.SubscribeFragment
@@ -21,14 +22,14 @@ class MainActivity : AppCompatActivity() {
         this.initLayout()
     }
 
-    private fun initLayout(){
+    private fun initLayout() {
         binding.bnvMain.itemIconTintList = null
 
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fcv_main)
-        if(currentFragment == null){
+        if (currentFragment == null) {
             supportFragmentManager.beginTransaction().add(R.id.fcv_main, HomeFragment()).commit()
         }
-        binding.bnvMain.setOnItemSelectedListener {item ->
+        binding.bnvMain.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu_home -> this.changeFragment(HomeFragment())
                 R.id.menu_subscribe -> this.changeFragment(SubscribeFragment())
@@ -39,9 +40,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun changeFragment(fragment: Fragment){
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fcv_main, fragment)
-            .commit()
+    private fun changeFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().replace(R.id.fcv_main, fragment).commit()
     }
 }

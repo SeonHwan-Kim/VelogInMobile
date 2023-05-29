@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context=".ui.MainActivity">
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fcv_main"
@@ -26,11 +26,11 @@
             android:layout_width="0dp"
             android:layout_height="56dp"
             app:backgroundTint="@color/white"
+            app:itemActiveIndicatorStyle="@style/Widget.VelogInMobile.BottomNavigationView.ActiveIndicator"
+            app:itemBackground="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:itemBackground="@android:color/transparent"
-            app:itemActiveIndicatorStyle="@style/Widget.VelogInMobile.BottomNavigationView.ActiveIndicator"
             app:menu="@menu/menu_main" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
