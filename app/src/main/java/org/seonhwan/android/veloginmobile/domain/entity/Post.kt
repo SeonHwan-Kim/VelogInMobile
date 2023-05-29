@@ -1,5 +1,9 @@
 package org.seonhwan.android.veloginmobile.domain.entity
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Post(
     val comment: Int,
     val date: String,
@@ -10,4 +14,4 @@ data class Post(
     val tag: List<String>,
     val title: String,
     val url: String,
-)
+) : Parcelable
