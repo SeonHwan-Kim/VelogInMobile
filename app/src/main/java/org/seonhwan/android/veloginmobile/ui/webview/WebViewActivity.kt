@@ -13,19 +13,45 @@ class WebViewActivity : BindingActivity<ActivityWebViewBinding>(R.layout.activit
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        onClickToolbarBackButton()
+        onClickToolbarSubscribeButton()
+        onClickToolbarBookmarkButton()
         webViewSetting()
         startWebView()
+    }
+
+    private fun onClickToolbarBackButton() {
+        binding.ibWebviewBackButton.setOnClickListener {
+            if (!isFinishing) finish()
+        }
+    }
+
+    private fun onClickToolbarSubscribeButton() {
+        with(binding.ibWebviewSubscribe) {
+            setOnClickListener {
+                isSelected = !isSelected
+            }
+        }
+    }
+
+    private fun onClickToolbarBookmarkButton() {
+        with(binding.ibWebviewBookmark) {
+            setOnClickListener {
+                isSelected = !isSelected
+            }
+        }
     }
 
     private fun webViewSetting() {
         binding.wvWebview.settings.apply {
             javaScriptEnabled = true
+            loadWithOverviewMode = true
+            useWideViewPort = true
         }
-        binding.wvWebview.isVerticalScrollBarEnabled = false
     }
 
     private fun startWebView() {
         val post = intent.getParcelable(VELOG, Post::class.java)
-        binding.wvWebview.loadUrl("https://velog.io$post.url")
+        binding.wvWebview.loadUrl("https://velog.io${post?.url}")
     }
 }
