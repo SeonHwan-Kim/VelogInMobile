@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.seonhwan.android.veloginmobile.domain.repository.TagRepository
 import org.seonhwan.android.veloginmobile.util.UiState
+import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -27,8 +28,8 @@ class AddTagViewModel @Inject constructor(
     private val tagName: String
         get() = _tagName.value?.trim() ?: ""
 
-    private val _addTagState = MutableLiveData<UiState>()
-    val addTagState: LiveData<UiState>
+    private val _addTagState = MutableLiveData<AddTagUiState>()
+    val addTagState: LiveData<AddTagUiState>
         get() = _addTagState
 
     init {
@@ -53,14 +54,29 @@ class AddTagViewModel @Inject constructor(
             if (tagName != "") {
                 tagRepository.PostAddTag(tag = tagName).onSuccess { response ->
                     Timber.tag("addTag Success").d(response.toString())
-                    _addTagState.value = UiState.Success
+                    _addTagState.value = AddTagUiState.Success
                 }.onFailure { throwable ->
-                    Timber.tag("addTag failure").e(throwable)
-                    _addTagState.value = UiState.Failure(null)
+                    if (throwable is HttpException) {
+                        when (throwable.code()) {
+                            CODE_ALREADY_ADD -> {
+                                Timber.tag("addTag failure").e(throwable)
+                                _addTagState.value = AddTagUiState.Failure(CODE_ALREADY_ADD)
+                            }
+
+                            else -> {
+                                Timber.tag("addTag failure").e(throwable)
+                                _addTagState.value = AddTagUiState.Error
+                            }
+                        }
+                    }
                 }
             } else {
-                _addTagState.value = UiState.Failure(null)
+                _addTagState.value = AddTagUiState.Empty
             }
         }
+    }
+
+    companion object {
+        const val CODE_ALREADY_ADD = 400
     }
 }
