@@ -71,7 +71,9 @@ class AddTagActivity : BindingActivity<ActivityAddTagBinding>(R.layout.activity_
         }
     }
 
-    private fun onClickBackButton(){
-        if(!isFinishing) finish()
+    private fun onClickBackButton() {
+        binding.ibAddtagBackButton.setOnClickListener {
+            if (!isFinishing) finish()
+        }
     }
 }
