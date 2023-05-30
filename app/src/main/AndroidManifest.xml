@@ -20,7 +20,7 @@
             android:name=".ui.webview.WebViewActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.home.AddTagActivity"
+            android:name=".ui.addtag.AddTagActivity"
             android:exported="false" />
         <activity
             android:name=".ui.login.LoginActivity"

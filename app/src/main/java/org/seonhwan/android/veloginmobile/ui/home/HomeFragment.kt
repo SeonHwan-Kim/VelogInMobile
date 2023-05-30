@@ -9,6 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.seonhwan.android.veloginmobile.R
 import org.seonhwan.android.veloginmobile.databinding.FragmentHomeBinding
 import org.seonhwan.android.veloginmobile.presentation.home.VelogAdapter
+import org.seonhwan.android.veloginmobile.ui.addtag.AddTagActivity
 import org.seonhwan.android.veloginmobile.util.UiState
 import org.seonhwan.android.veloginmobile.util.binding.BindingFragment
 import timber.log.Timber
