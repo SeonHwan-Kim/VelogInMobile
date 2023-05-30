@@ -19,4 +19,9 @@ class TagRepositoryImpl @Inject constructor(
                 data.toPostEntity()
             }
         }
+
+    override suspend fun PostAddTag(tag: String): Result<Unit> =
+        runCatching {
+            tagSource.postAddTag(tag)
+        }
 }
