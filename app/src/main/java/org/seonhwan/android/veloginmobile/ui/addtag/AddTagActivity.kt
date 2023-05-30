@@ -20,6 +20,7 @@ class AddTagActivity : BindingActivity<ActivityAddTagBinding>(R.layout.activity_
 
         getTagList()
         addTag()
+        onClickBackButton()
     }
 
     private fun getTagList() {
@@ -50,7 +51,7 @@ class AddTagActivity : BindingActivity<ActivityAddTagBinding>(R.layout.activity_
             viewModel.addTagState.observe(this) { state ->
                 when (state) {
                     is AddTagUiState.Success -> {
-                        getTagList()
+                        setResult(RESULT_OK)
                         showToast("태그를 추가하였습니다")
                     }
 
@@ -68,5 +69,9 @@ class AddTagActivity : BindingActivity<ActivityAddTagBinding>(R.layout.activity_
                 }
             }
         }
+    }
+
+    private fun onClickBackButton(){
+        if(!isFinishing) finish()
     }
 }

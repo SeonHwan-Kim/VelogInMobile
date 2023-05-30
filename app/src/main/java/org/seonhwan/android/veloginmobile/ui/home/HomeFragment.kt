@@ -1,8 +1,11 @@
 package org.seonhwan.android.veloginmobile.ui.home
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,12 +35,9 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         viewModel.tagListState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Success -> {
-                    viewModel.tagList.value?.map { tag ->
-                        with(binding) {
-                            val newTab = tabHomeTabbar.newTab()
-                            newTab.text = tag
-                            tabHomeTabbar.addTab(newTab)
-                            Timber.tag("tagListState").d(tag)
+                    with(binding) {
+                        for (i in tabHomeTabbar.tabCount - 2 until viewModel.tagList.value?.size!!) {
+                            addToolbarTag(viewModel.tagList.value!![i])
                         }
                     }
                 }
@@ -53,6 +53,14 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         }
     }
 
+    private fun addToolbarTag(tag: String) {
+        with(binding) {
+            val newTab = tabHomeTabbar.newTab()
+            newTab.text = tag
+            tabHomeTabbar.addTab(newTab)
+        }
+    }
+
     private fun initAdapter() {
         postAdapter = VelogAdapter()
         binding.rvHomePost.adapter = postAdapter
@@ -63,9 +71,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.text) {
                     "" -> {
-                        val intent = Intent(activity, AddTagActivity::class.java)
-                        startActivity(intent)
-                        startSecondTabItem()
+                        moveToAddTag()
                     }
 
                     else -> {
@@ -87,6 +93,20 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private fun startSecondTabItem() {
         binding.tabHomeTabbar.getTabAt(1)?.select()
         initPost()
+    }
+
+    private fun moveToAddTag() {
+        val intent = Intent(activity, AddTagActivity::class.java)
+        getResultSignUp.launch(intent)
+        startSecondTabItem()
+    }
+
+    private val getResultSignUp = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+    ) { result: ActivityResult ->
+        if (result.resultCode == RESULT_OK) {
+            viewModel.getTag()
+        }
     }
 
     private fun initPost() {
