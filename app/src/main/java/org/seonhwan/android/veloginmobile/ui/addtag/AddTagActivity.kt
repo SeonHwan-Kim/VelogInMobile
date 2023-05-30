@@ -49,18 +49,21 @@ class AddTagActivity : BindingActivity<ActivityAddTagBinding>(R.layout.activity_
             viewModel.addTag()
             viewModel.addTagState.observe(this) { state ->
                 when (state) {
-                    is UiState.Success -> {
+                    is AddTagUiState.Success -> {
                         getTagList()
-                        showToast("태그를 추가하였습니다.")
+                        showToast("태그를 추가하였습니다")
                     }
 
-                    is UiState.Failure -> {
-                        showToast("실패")
-                        Timber.tag("addTagState").e("Failure")
+                    is AddTagUiState.Empty -> {
+                        showToast("태그를 입력해주세요")
                     }
 
-                    is UiState.Error -> {
-                        Timber.tag("addTagState").e("Error")
+                    is AddTagUiState.Failure -> {
+                        showToast("이미 추가된 태그입니다")
+                    }
+
+                    is AddTagUiState.Error -> {
+                        showToast("문제가 발생하였습니다")
                     }
                 }
             }
