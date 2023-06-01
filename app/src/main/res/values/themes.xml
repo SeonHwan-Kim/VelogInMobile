@@ -5,5 +5,12 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.VelogInMobile" parent="Base.Theme.VelogInMobile" />
+    <style name="Theme.VelogInMobile" parent="Base.Theme.VelogInMobile">
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="Widget.VelogInMobile.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">?colorOnPrimary</item>
+    </style>
 </resources>
