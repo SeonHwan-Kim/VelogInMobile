@@ -4,7 +4,7 @@ import android.os.Bundle
 import org.seonhwan.android.veloginmobile.R
 import org.seonhwan.android.veloginmobile.databinding.ActivityWebViewBinding
 import org.seonhwan.android.veloginmobile.domain.entity.Post
-import org.seonhwan.android.veloginmobile.presentation.home.VelogAdapter.Companion.VELOG
+import org.seonhwan.android.veloginmobile.ui.home.VelogAdapter.Companion.VELOG
 import org.seonhwan.android.veloginmobile.util.binding.BindingActivity
 import org.seonhwan.android.veloginmobile.util.extension.getParcelable
 

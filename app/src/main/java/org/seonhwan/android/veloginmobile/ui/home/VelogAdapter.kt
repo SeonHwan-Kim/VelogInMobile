@@ -1,4 +1,4 @@
-package org.seonhwan.android.veloginmobile.presentation.home
+package org.seonhwan.android.veloginmobile.ui.home
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -6,13 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import coil.transform.RoundedCornersTransformation
 import org.seonhwan.android.veloginmobile.databinding.ItemVelogBinding
 import org.seonhwan.android.veloginmobile.domain.entity.Post
-import org.seonhwan.android.veloginmobile.ui.home.VelogTagAdapter
 import org.seonhwan.android.veloginmobile.ui.webview.WebViewActivity
 import org.seonhwan.android.veloginmobile.util.DiffCallback
-import org.seonhwan.android.veloginmobile.util.extension.toPx
 
 class VelogAdapter : ListAdapter<Post, VelogAdapter.VelogViewHolder>(diffUtil) {
 
@@ -21,9 +18,7 @@ class VelogAdapter : ListAdapter<Post, VelogAdapter.VelogViewHolder>(diffUtil) {
         fun onBind(post: Post) {
             with(binding) {
                 data = post
-                ivVelogImg.load(post.img) {
-                    transformations(RoundedCornersTransformation(8.toPx(), 8.toPx()))
-                }
+                ivVelogImg.load(post.img)
                 val tagList = post.tag
                 rvVelogTag.adapter = VelogTagAdapter().apply {
                     if (post.tag.size > 3) {
