@@ -31,7 +31,7 @@
                 android:adjustViewBounds="true"
                 android:maxHeight="125dp"
                 android:minHeight="42dp"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
