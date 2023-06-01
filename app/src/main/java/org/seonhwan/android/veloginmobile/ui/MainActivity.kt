@@ -1,7 +1,6 @@
 package org.seonhwan.android.veloginmobile.ui
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
 import org.seonhwan.android.veloginmobile.R
@@ -10,13 +9,12 @@ import org.seonhwan.android.veloginmobile.ui.Notification.NotificationFragment
 import org.seonhwan.android.veloginmobile.ui.Subscribe.SubscribeFragment
 import org.seonhwan.android.veloginmobile.ui.home.HomeFragment
 import org.seonhwan.android.veloginmobile.ui.mypage.MypageFragment
+import org.seonhwan.android.veloginmobile.util.binding.BindingActivity
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         this.initLayout()
@@ -32,8 +30,8 @@ class MainActivity : AppCompatActivity() {
         binding.bnvMain.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu_home -> this.changeFragment(HomeFragment())
-                R.id.menu_subscribe -> this.changeFragment(SubscribeFragment())
-                R.id.menu_notification -> this.changeFragment(NotificationFragment())
+                R.id.menu_list -> this.changeFragment(SubscribeFragment())
+                R.id.menu_bookmark -> this.changeFragment(NotificationFragment())
                 else -> this.changeFragment(MypageFragment())
             }
             return@setOnItemSelectedListener true
