@@ -18,7 +18,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_addtag_toolbar"
             android:layout_width="0dp"
-            android:layout_height="38dp"
+            android:layout_height="56dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -27,7 +27,7 @@
                 android:id="@+id/ib_addtag_back_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="13dp"
+                android:layout_marginStart="19dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_back_button"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -35,36 +35,43 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
+                android:id="@+id/et_addtag_search_tag"
                 style="@style/body_1_M"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/shape_gray_100_radius_8dp"
-                android:hint="태그 검색"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="4dp"
+                android:hint="태그를 추가해보세요."
+                android:imeOptions="actionDone"
+                android:maxLines="1"
+                android:paddingVertical="6dp"
+                android:paddingStart="44dp"
+                android:paddingEnd="6dp"
                 android:text="@={vm._tagName}"
                 android:textColor="@color/gray_500"
                 android:textColorHint="@color/gray_300"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/ib_addtag_search"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/ib_addtag_back_button"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/ib_addtag_search"
+                android:id="@+id/ib_addtag_plus_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
+                android:layout_marginStart="12dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_search"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:onClick="@{()->vm.addTag()}"
+                android:src="@drawable/ic_addtag_plus"
+                app:layout_constraintBottom_toBottomOf="@id/et_addtag_search_tag"
+                app:layout_constraintStart_toStartOf="@id/et_addtag_search_tag"
+                app:layout_constraintTop_toTopOf="@id/et_addtag_search_tag" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
-            android:id="@+id/view_deviding_line"
+            android:id="@+id/view_dividing_line"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:background="@color/gray_200"
@@ -72,40 +79,56 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_addtag_toolbar" />
 
-        <TextView
-            android:id="@+id/tv_addtag_my_tag"
-            style="@style/body_2_B"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:text="내 태그"
-            android:textColor="@color/gray_700"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_deviding_line" />
-
-        <TextView
-            style="@style/body_1_M"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:text="모두 지우기"
-            android:textColor="@color/gray_300"
-            app:layout_constraintBottom_toBottomOf="@id/tv_addtag_my_tag"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_addtag_my_tag" />
-
-        <androidx.recyclerview.widget.RecyclerView
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_addtag_my_tag"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:clipToPadding="false"
-            android:orientation="horizontal"
-            android:paddingHorizontal="24dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:background="@color/gray_100"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_addtag_my_tag" />
+            app:layout_constraintTop_toBottomOf="@id/view_dividing_line">
+
+            <TextView
+                android:id="@+id/tv_addtag_my_tag"
+                style="@style/body_2_B"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:text="내 태그"
+                android:textColor="@color/gray_700"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                style="@style/body_1_M"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:text="모두 지우기"
+                android:textColor="@color/gray_300"
+                app:layout_constraintBottom_toBottomOf="@id/tv_addtag_my_tag"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_addtag_my_tag" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_addtag_my_tag"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="24dp"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                android:paddingHorizontal="20dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_addtag_my_tag"
+                tools:listitem="@layout/item_addtag_my_tag" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
