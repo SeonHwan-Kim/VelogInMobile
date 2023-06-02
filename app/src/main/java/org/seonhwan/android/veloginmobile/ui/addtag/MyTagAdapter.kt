@@ -13,8 +13,7 @@ class MyTagAdapter(
     class MyTagAdapterViewHolder(
         private val binding: ItemAddtagMyTagBinding,
         private val onClickDeleteTag: OnClickDeleteTag,
-    ) :
-        RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(tag: String) {
             binding.tvAddtagTagName.text = tag
             deleteTag(tag)
