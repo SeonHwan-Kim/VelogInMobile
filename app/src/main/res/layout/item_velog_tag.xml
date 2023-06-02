@@ -16,7 +16,7 @@
             android:id="@+id/tv_velog_tag_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/rectangle_velog_fill_round_17dp"
+            android:background="@drawable/rectangle_main_fill_round_16dp"
             android:paddingHorizontal="12dp"
             android:paddingVertical="3dp"
             android:textColor="@color/white"
