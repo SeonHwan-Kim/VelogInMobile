@@ -8,4 +8,6 @@ interface TagRepository {
     suspend fun GetTagPost(): Result<List<Post>>
 
     suspend fun PostAddTag(tag: String): Result<Unit>
+
+    suspend fun DeleteTag(tag: String): Result<Unit>
 }

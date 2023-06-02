@@ -24,4 +24,9 @@ class TagRepositoryImpl @Inject constructor(
         runCatching {
             tagSource.postAddTag(tag)
         }
+
+    override suspend fun DeleteTag(tag: String): Result<Unit> =
+        runCatching {
+            tagSource.deleteTag(tag)
+        }
 }
