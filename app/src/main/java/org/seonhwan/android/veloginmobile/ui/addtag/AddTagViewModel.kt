@@ -32,6 +32,10 @@ class AddTagViewModel @Inject constructor(
     val addTagState: LiveData<AddTagUiState>
         get() = _addTagState
 
+    private val _deleteTagState = MutableLiveData<UiState>()
+    val deleteTagState: LiveData<UiState>
+        get() = _deleteTagState
+
     init {
         getTag()
     }
@@ -58,9 +62,9 @@ class AddTagViewModel @Inject constructor(
                 }.onFailure { throwable ->
                     if (throwable is HttpException) {
                         when (throwable.code()) {
-                            CODE_ALREADY_ADD -> {
+                            CODE_400 -> {
                                 Timber.tag("addTag failure").e(throwable)
-                                _addTagState.value = AddTagUiState.Failure(CODE_ALREADY_ADD)
+                                _addTagState.value = AddTagUiState.Failure(CODE_400)
                             }
 
                             else -> {
@@ -71,12 +75,32 @@ class AddTagViewModel @Inject constructor(
                     }
                 }
             } else {
-                _addTagState.value = AddTagUiState.Empty
+                _addTagState.value = AddTagUiState.Failure(0)
+            }
+        }
+    }
+
+    fun deleteTag(tag: String) {
+        viewModelScope.launch {
+            tagRepository.DeleteTag(tag).onSuccess {
+                _deleteTagState.value = UiState.Success
+            }.onFailure { throwable ->
+                if (throwable is HttpException) {
+                    when (throwable.code()) {
+                        CODE_400 -> {
+                            _deleteTagState.value = UiState.Failure(CODE_400)
+                        }
+
+                        else -> {
+                            _deleteTagState.value = UiState.Error
+                        }
+                    }
+                }
             }
         }
     }
 
     companion object {
-        const val CODE_ALREADY_ADD = 400
+        const val CODE_400 = 400
     }
 }
