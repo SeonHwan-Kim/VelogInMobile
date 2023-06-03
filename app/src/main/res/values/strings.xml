@@ -2,4 +2,11 @@
     <string name="app_name">VelogInMobile</string>
 <!--    binding error message-->
     <string name="binding_error_msg">Binding not initialized to reference the view.</string>
+
+<!--    AddTag string-->
+    <string name="string_addtag_search_tag_hint">태그를 추가해보세요.</string>
+    <string name="string_addtag_mytag_title">내 태그</string>
+    <string name="string_addtag_delete_all_button">모두 지우기</string>
+    <string name="string_addtag_popular_tag_title">인기 태그</string>
+
 </resources>
