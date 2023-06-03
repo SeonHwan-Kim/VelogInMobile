@@ -42,7 +42,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/shape_gray_100_radius_8dp"
-                android:hint="태그를 추가해보세요."
+                android:hint="@string/string_addtag_search_tag_hint"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:paddingVertical="6dp"
@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="24dp"
-                android:text="내 태그"
+                android:text="@string/string_addtag_mytag_title"
                 android:textColor="@color/gray_700"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -105,7 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="24dp"
-                android:text="모두 지우기"
+                android:text="@string/string_addtag_delete_all_button"
                 android:textColor="@color/gray_300"
                 app:layout_constraintBottom_toBottomOf="@id/tv_addtag_my_tag"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -130,6 +130,30 @@
                 tools:listitem="@layout/item_addtag_my_tag" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_addtag_popular_tag_title"
+            style="@style/body_2_B"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="36dp"
+            android:text="@string/string_addtag_popular_tag_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_addtag_my_tag" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_addtag_popular_tag"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_addtag_popular_tag_title"
+            tools:listitem="@layout/item_addtag_popular_tag" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

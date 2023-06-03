@@ -17,6 +17,7 @@ import timber.log.Timber
 class AddTagActivity : BindingActivity<ActivityAddTagBinding>(R.layout.activity_add_tag) {
     private val viewModel by viewModels<AddTagViewModel>()
     private var myTagAdapter: MyTagAdapter? = null
+    private var popularTagAdapter: PopularTagAdapter? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -24,6 +25,7 @@ class AddTagActivity : BindingActivity<ActivityAddTagBinding>(R.layout.activity_
 
         initAdapter()
         getTagList()
+        initPopularTag()
         addTag()
         onClickBackButton()
     }
@@ -53,7 +55,10 @@ class AddTagActivity : BindingActivity<ActivityAddTagBinding>(R.layout.activity_
             }
         })
 
+        popularTagAdapter = PopularTagAdapter()
+
         binding.rvAddtagMyTag.adapter = myTagAdapter
+        binding.rvAddtagPopularTag.adapter = popularTagAdapter
     }
 
     private fun getTagList() {
@@ -93,6 +98,22 @@ class AddTagActivity : BindingActivity<ActivityAddTagBinding>(R.layout.activity_
                 is Error -> {
                     showToast("문제가 발생하였습니다")
                 }
+            }
+        }
+    }
+
+    private fun initPopularTag() {
+        viewModel.popularTagState.observe(this) { state ->
+            when (state) {
+                is Success -> {
+                    popularTagAdapter?.submitList(viewModel.popularTagList.value)
+                }
+
+                is Failure -> {
+                    showToast("인기 태그를 불러올 수 없습니다")
+                }
+
+                is Error -> {}
             }
         }
     }

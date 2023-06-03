@@ -39,13 +39,22 @@ class AddTagViewModel @Inject constructor(
     val deleteTagState: LiveData<UiState>
         get() = _deleteTagState
 
+    private val _popularTagList = MutableLiveData<List<String>>()
+    val popularTagList: LiveData<List<String>>
+        get() = _popularTagList
+
+    private val _popularTagState = MutableLiveData<UiState>()
+    val popularTagState: LiveData<UiState>
+        get() = _popularTagState
+
     init {
         getTag()
+        getPopularTag()
     }
 
     fun getTag() {
         viewModelScope.launch {
-            tagRepository.GetTag().onSuccess { response ->
+            tagRepository.getTag().onSuccess { response ->
                 _tagList.value = response
                 Timber.tag("getTage").d(response.toString())
                 _tagListState.value = Success
@@ -59,7 +68,7 @@ class AddTagViewModel @Inject constructor(
     fun addTag() {
         viewModelScope.launch {
             if (tagName != "") {
-                tagRepository.PostAddTag(tag = tagName).onSuccess { response ->
+                tagRepository.postAddTag(tag = tagName).onSuccess { response ->
                     Timber.tag("addTag Success").d(response.toString())
                     _addTagState.value = Success
                 }.onFailure { throwable ->
@@ -85,7 +94,7 @@ class AddTagViewModel @Inject constructor(
 
     fun deleteTag(tag: String) {
         viewModelScope.launch {
-            tagRepository.DeleteTag(tag).onSuccess {
+            tagRepository.deleteTag(tag).onSuccess {
                 _deleteTagState.value = UiState.Success
             }.onFailure { throwable ->
                 if (throwable is HttpException) {
@@ -100,6 +109,19 @@ class AddTagViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    private fun getPopularTag() {
+        viewModelScope.launch {
+            tagRepository.getPopularTag()
+                .onSuccess { response ->
+                    _popularTagList.value = response
+                    _popularTagState.value = Success
+                }
+                .onFailure { throwable ->
+                    _popularTagState.value = Failure(null)
+                }
         }
     }
 
