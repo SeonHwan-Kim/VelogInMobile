@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,8 +36,10 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             when (state) {
                 is UiState.Success -> {
                     with(binding) {
-                        for (i in tabHomeTabbar.tabCount - 2 until viewModel.tagList.value?.size!!) {
-                            addToolbarTag(viewModel.tagList.value!![i])
+                        addToolbarTag("", R.drawable.ic_plus, 0, false)
+                        addToolbarTag("트렌드", null, 1, true)
+                        viewModel.tagList.value?.mapIndexed { index, tag ->
+                            addToolbarTag(tag, null, index + 2, false)
                         }
                     }
                 }
@@ -52,11 +55,14 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         }
     }
 
-    private fun addToolbarTag(tag: String) {
+    private fun addToolbarTag(tag: String, icon: Int?, position: Int, setSelected: Boolean) {
         with(binding) {
             val newTab = tabHomeTabbar.newTab()
             newTab.text = tag
-            tabHomeTabbar.addTab(newTab)
+            if (icon != null) {
+                newTab.icon = ContextCompat.getDrawable(requireContext(), icon)
+            }
+            tabHomeTabbar.addTab(newTab, position, setSelected)
         }
     }
 
@@ -104,6 +110,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         ActivityResultContracts.StartActivityForResult(),
     ) { result: ActivityResult ->
         if (result.resultCode == RESULT_OK) {
+            binding.tabHomeTabbar.removeAllTabs()
             viewModel.getTag()
         }
     }
