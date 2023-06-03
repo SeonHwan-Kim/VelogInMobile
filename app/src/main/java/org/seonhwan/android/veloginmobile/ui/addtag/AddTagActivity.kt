@@ -6,7 +6,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.seonhwan.android.veloginmobile.R
 import org.seonhwan.android.veloginmobile.databinding.ActivityAddTagBinding
 import org.seonhwan.android.veloginmobile.ui.addtag.AddTagViewModel.Companion.CODE_400
-import org.seonhwan.android.veloginmobile.util.UiState
 import org.seonhwan.android.veloginmobile.util.UiState.Error
 import org.seonhwan.android.veloginmobile.util.UiState.Failure
 import org.seonhwan.android.veloginmobile.util.UiState.Success
@@ -60,15 +59,15 @@ class AddTagActivity : BindingActivity<ActivityAddTagBinding>(R.layout.activity_
     private fun getTagList() {
         viewModel.tagListState.observe(this) { state ->
             when (state) {
-                is UiState.Success -> {
+                is Success -> {
                     myTagAdapter?.submitList(viewModel.tagList.value)
                 }
 
-                is UiState.Failure -> {
+                is Failure -> {
                     Timber.tag("tagListState").e("Failure")
                 }
 
-                is UiState.Error -> {
+                is Error -> {
                     Timber.tag("tagListState").e("Error")
                 }
             }
@@ -78,21 +77,20 @@ class AddTagActivity : BindingActivity<ActivityAddTagBinding>(R.layout.activity_
     private fun addTag() {
         viewModel.addTagState.observe(this) { state ->
             when (state) {
-                is AddTagUiState.Success -> {
-                    setResult(RESULT_OK)
+                is Success -> {
                     viewModel.getTag()
+                    setResult(RESULT_OK)
                     showToast("태그를 추가하였습니다")
                 }
 
-                is AddTagUiState.Empty -> {
-                    showToast("태그를 입력해주세요")
+                is Failure -> {
+                    when (state.code) {
+                        CODE_400 -> showToast("이미 추가된 태그입니다")
+                        else -> showToast("추가할 태그를 입력해주세요")
+                    }
                 }
 
-                is AddTagUiState.Failure -> {
-                    showToast("이미 추가된 태그입니다")
-                }
-
-                is AddTagUiState.Error -> {
+                is Error -> {
                     showToast("문제가 발생하였습니다")
                 }
             }
