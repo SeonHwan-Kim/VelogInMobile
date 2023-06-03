@@ -16,6 +16,8 @@ data class ResponsePostDto(
     val like: Int,
     @SerialName("name")
     val name: String,
+    @SerialName("subscribed")
+    val subscribed: Boolean,
     @SerialName("summary")
     val summary: String,
     @SerialName("tag")
@@ -31,6 +33,7 @@ data class ResponsePostDto(
         img = img,
         like = like,
         name = name,
+        isSubscribed = subscribed,
         summary = summary,
         tag = tag,
         title = title,
