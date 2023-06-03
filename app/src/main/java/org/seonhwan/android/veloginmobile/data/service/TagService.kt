@@ -23,4 +23,7 @@ interface TagService {
     suspend fun deleteTag(
         @Query("tag") tag: String,
     ): Unit
+
+    @GET("tag/popularpost")
+    suspend fun getPopularPost(): List<String>
 }

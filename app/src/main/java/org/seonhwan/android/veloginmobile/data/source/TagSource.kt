@@ -19,4 +19,7 @@ class TagSource @Inject constructor(
 
     suspend fun deleteTag(tag: String): Unit =
         tagService.deleteTag(tag)
+
+    suspend fun getPopularTag(): List<String> =
+        tagService.getPopularPost()
 }
