@@ -44,7 +44,7 @@
                 android:background="@drawable/shape_gray_100_radius_8dp"
                 android:hint="태그를 추가해보세요."
                 android:imeOptions="actionDone"
-                android:maxLines="1"
+                android:inputType="text"
                 android:paddingVertical="6dp"
                 android:paddingStart="44dp"
                 android:paddingEnd="6dp"
