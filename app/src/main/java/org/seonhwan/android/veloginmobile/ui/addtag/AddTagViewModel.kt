@@ -8,6 +8,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.seonhwan.android.veloginmobile.domain.repository.TagRepository
 import org.seonhwan.android.veloginmobile.util.UiState
+import org.seonhwan.android.veloginmobile.util.UiState.Error
+import org.seonhwan.android.veloginmobile.util.UiState.Failure
+import org.seonhwan.android.veloginmobile.util.UiState.Success
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
@@ -28,8 +31,8 @@ class AddTagViewModel @Inject constructor(
     private val tagName: String
         get() = _tagName.value?.trim() ?: ""
 
-    private val _addTagState = MutableLiveData<AddTagUiState>()
-    val addTagState: LiveData<AddTagUiState>
+    private val _addTagState = MutableLiveData<UiState>()
+    val addTagState: LiveData<UiState>
         get() = _addTagState
 
     private val _deleteTagState = MutableLiveData<UiState>()
@@ -45,10 +48,10 @@ class AddTagViewModel @Inject constructor(
             tagRepository.GetTag().onSuccess { response ->
                 _tagList.value = response
                 Timber.tag("getTage").d(response.toString())
-                _tagListState.value = UiState.Success
+                _tagListState.value = Success
             }.onFailure { throwable ->
                 Timber.tag("onFailure").e(throwable.toString())
-                _tagListState.value = UiState.Failure(null)
+                _tagListState.value = Failure(null)
             }
         }
     }
@@ -58,24 +61,24 @@ class AddTagViewModel @Inject constructor(
             if (tagName != "") {
                 tagRepository.PostAddTag(tag = tagName).onSuccess { response ->
                     Timber.tag("addTag Success").d(response.toString())
-                    _addTagState.value = AddTagUiState.Success
+                    _addTagState.value = Success
                 }.onFailure { throwable ->
                     if (throwable is HttpException) {
                         when (throwable.code()) {
                             CODE_400 -> {
                                 Timber.tag("addTag failure").e(throwable)
-                                _addTagState.value = AddTagUiState.Failure(CODE_400)
+                                _addTagState.value = Failure(CODE_400)
                             }
 
                             else -> {
                                 Timber.tag("addTag failure").e(throwable)
-                                _addTagState.value = AddTagUiState.Error
+                                _addTagState.value = Error
                             }
                         }
                     }
                 }
             } else {
-                _addTagState.value = AddTagUiState.Failure(0)
+                _addTagState.value = Failure(0)
             }
         }
     }
@@ -88,11 +91,11 @@ class AddTagViewModel @Inject constructor(
                 if (throwable is HttpException) {
                     when (throwable.code()) {
                         CODE_400 -> {
-                            _deleteTagState.value = UiState.Failure(CODE_400)
+                            _deleteTagState.value = Failure(CODE_400)
                         }
 
                         else -> {
-                            _deleteTagState.value = UiState.Error
+                            _deleteTagState.value = Error
                         }
                     }
                 }
