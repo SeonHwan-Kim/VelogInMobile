@@ -33,7 +33,7 @@ class AddTagActivity : BindingActivity<ActivityAddTagBinding>(R.layout.activity_
     private fun initAdapter() {
         myTagAdapter = MyTagAdapter(object : OnClickDeleteTag {
             override fun deleteTag(tag: String) {
-                viewModel.deleteTag(tag)
+                showDeleteDialog(tag)
                 viewModel.deleteTagState.observe(this@AddTagActivity) { state ->
                     when (state) {
                         is Success -> {
@@ -59,6 +59,18 @@ class AddTagActivity : BindingActivity<ActivityAddTagBinding>(R.layout.activity_
 
         binding.rvAddtagMyTag.adapter = myTagAdapter
         binding.rvAddtagPopularTag.adapter = popularTagAdapter
+    }
+
+    private fun showDeleteDialog(tag: String) {
+        val dialog = DeleteDialog(
+            tag,
+            object : OnClickDeleteTag {
+                override fun deleteTag(tag: String) {
+                    viewModel.deleteTag(tag)
+                }
+            },
+        )
+        dialog.show(supportFragmentManager, "DeleteDialog")
     }
 
     private fun getTagList() {
