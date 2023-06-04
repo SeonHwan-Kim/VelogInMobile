@@ -8,4 +8,7 @@ class SubscribeSource @Inject constructor(
 ) {
     suspend fun addSubscriber(name: String) =
         subscribeService.addSubscriber(name)
+
+    suspend fun deleteSubscriber(name: String) =
+        subscribeService.deleteSubscriber(name)
 }

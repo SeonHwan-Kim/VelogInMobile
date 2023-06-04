@@ -21,6 +21,10 @@ class WebViewViewModel @Inject constructor(
     val addSubscriberState: LiveData<UiState>
         get() = _addSubscriberState
 
+    private val _deleteSubscriberState = MutableLiveData<UiState>()
+    val deleteSubscriberState: LiveData<UiState>
+        get() = _deleteSubscriberState
+
     fun addSubscriber(name: String) {
         viewModelScope.launch {
             subscribeRepository.addSubscriber(name)
@@ -35,6 +39,27 @@ class WebViewViewModel @Inject constructor(
                             }
                             else -> {
                                 Error
+                            }
+                        }
+                    }
+                }
+        }
+    }
+
+    fun deletSubscriber(name: String) {
+        viewModelScope.launch {
+            subscribeRepository.deleteSubscriber(name)
+                .onSuccess {
+                    _deleteSubscriberState.value = Success
+                }
+                .onFailure { throwable ->
+                    if (throwable is HttpException) {
+                        when (throwable.code()) {
+                            CODE_400 -> {
+                                _deleteSubscriberState.value = Failure(CODE_400)
+                            }
+                            else -> {
+                                _deleteSubscriberState.value = Error
                             }
                         }
                     }

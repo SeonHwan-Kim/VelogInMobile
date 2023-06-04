@@ -9,4 +9,9 @@ interface SubscribeService {
     suspend fun addSubscriber(
         @Query("name") name: String,
     ): Unit
+
+    @DELETE("subscribe/unsubscribe")
+    suspend fun deleteSubscriber(
+        @Query("targetName") name: String,
+    ): Unit
 }

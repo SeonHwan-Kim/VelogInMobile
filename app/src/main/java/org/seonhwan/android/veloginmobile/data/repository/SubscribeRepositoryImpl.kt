@@ -11,4 +11,9 @@ class SubscribeRepositoryImpl @Inject constructor(
         runCatching {
             subscribeSource.addSubscriber(name)
         }
+
+    override suspend fun deleteSubscriber(name: String): Result<Unit> =
+        runCatching {
+            subscribeSource.deleteSubscriber(name)
+        }
 }
