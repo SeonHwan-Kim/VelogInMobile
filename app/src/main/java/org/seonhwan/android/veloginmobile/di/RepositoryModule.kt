@@ -4,7 +4,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import org.seonhwan.android.veloginmobile.data.repository.SubscribeRepositoryImpl
 import org.seonhwan.android.veloginmobile.data.repository.TagRepositoryImpl
+import org.seonhwan.android.veloginmobile.domain.repository.SubscribeRepository
 import org.seonhwan.android.veloginmobile.domain.repository.TagRepository
 import javax.inject.Singleton
 
@@ -16,4 +18,10 @@ abstract class RepositoryModule {
     abstract fun tagRepository(
         tagRepositoryImpl: TagRepositoryImpl,
     ): TagRepository
+
+    @Binds
+    @Singleton
+    abstract fun subscribeRepository(
+        subscribeRepositoryImpl: SubscribeRepositoryImpl,
+    ): SubscribeRepository
 }
