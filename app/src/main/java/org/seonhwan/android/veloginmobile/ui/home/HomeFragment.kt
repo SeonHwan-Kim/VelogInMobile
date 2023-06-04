@@ -38,8 +38,9 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                     with(binding) {
                         addToolbarTag("", R.drawable.ic_plus, 0, false)
                         addToolbarTag("트렌드", null, 1, true)
+                        addToolbarTag("팔로우", null, 2, false)
                         viewModel.tagList.value?.mapIndexed { index, tag ->
-                            addToolbarTag(tag, null, index + 2, false)
+                            addToolbarTag(tag, null, index + 3, false)
                         }
                     }
                 }
@@ -77,6 +78,12 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                 when (tab?.text) {
                     "" -> {
                         moveToAddTag()
+                    }
+
+                    "트렌드" -> {
+                    }
+
+                    "팔로우" -> {
                     }
 
                     else -> {
