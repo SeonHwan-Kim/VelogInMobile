@@ -38,7 +38,7 @@ class HomeViewModel @Inject constructor(
 
     fun getTag() {
         viewModelScope.launch {
-            tagRepository.GetTag().onSuccess { response ->
+            tagRepository.getTag().onSuccess { response ->
                 _tagList.value = response
                 Timber.tag("getTage").d(response.toString())
                 _tagListState.value = UiState.Success
@@ -51,7 +51,7 @@ class HomeViewModel @Inject constructor(
 
     fun getTagPost() {
         viewModelScope.launch {
-            tagRepository.GetTagPost().onSuccess { response ->
+            tagRepository.getTagPost().onSuccess { response ->
                 _tagPostList.value = response
                 Timber.tag("success Tag Post List").d(response.toString())
                 _tagPostListState.value = UiState.Success

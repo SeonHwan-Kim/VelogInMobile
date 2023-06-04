@@ -10,6 +10,7 @@ data class Post(
     val img: String,
     val like: Int,
     val name: String,
+    val isSubscribed: Boolean,
     val summary: String,
     val tag: List<String>,
     val title: String,

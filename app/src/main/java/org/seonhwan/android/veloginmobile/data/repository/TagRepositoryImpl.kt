@@ -8,20 +8,30 @@ import javax.inject.Inject
 class TagRepositoryImpl @Inject constructor(
     private val tagSource: TagSource,
 ) : TagRepository {
-    override suspend fun GetTag(): Result<List<String>> =
+    override suspend fun getTag(): Result<List<String>> =
         runCatching {
             tagSource.getTagList()
         }
 
-    override suspend fun GetTagPost(): Result<List<Post>> =
+    override suspend fun getTagPost(): Result<List<Post>> =
         runCatching {
             tagSource.getTagPostList().tagPostDtoList.map { data ->
                 data.toPostEntity()
             }
         }
 
-    override suspend fun PostAddTag(tag: String): Result<Unit> =
+    override suspend fun postAddTag(tag: String): Result<Unit> =
         runCatching {
             tagSource.postAddTag(tag)
+        }
+
+    override suspend fun deleteTag(tag: String): Result<Unit> =
+        runCatching {
+            tagSource.deleteTag(tag)
+        }
+
+    override suspend fun getPopularTag(): Result<List<String>> =
+        runCatching {
+            tagSource.getPopularTag()
         }
 }
