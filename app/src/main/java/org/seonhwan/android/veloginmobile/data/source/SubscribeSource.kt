@@ -7,7 +7,7 @@ class SubscribeSource @Inject constructor(
     private val subscribeService: SubscribeService,
 ) {
     suspend fun addSubscriber(name: String) =
-        subscribeService.addSubscriber(name)
+        subscribeService.addSubscriber(name, "0")
 
     suspend fun deleteSubscriber(name: String) =
         subscribeService.deleteSubscriber(name)
