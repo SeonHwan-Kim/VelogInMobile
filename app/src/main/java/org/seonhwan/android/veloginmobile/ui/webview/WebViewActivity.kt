@@ -9,6 +9,7 @@ import org.seonhwan.android.veloginmobile.domain.entity.Post
 import org.seonhwan.android.veloginmobile.ui.home.VelogAdapter.Companion.VELOG
 import org.seonhwan.android.veloginmobile.util.binding.BindingActivity
 import org.seonhwan.android.veloginmobile.util.extension.getParcelable
+import org.seonhwan.android.veloginmobile.util.extension.showToast
 
 @AndroidEntryPoint
 class WebViewActivity : BindingActivity<ActivityWebViewBinding>(R.layout.activity_web_view) {
@@ -35,12 +36,15 @@ class WebViewActivity : BindingActivity<ActivityWebViewBinding>(R.layout.activit
         with(binding.ibWebviewSubscribe) {
             setOnClickListener {
                 val post = intent.getParcelable(VELOG, Post::class.java)
-                if (post?.isSubscribed!!) {
-                    viewModel.deleteSubscriber(post.name)
+                if (isSelected) {
+                    viewModel.deleteSubscriber(post?.name!!)
+                    showToast("${post.name}님의 구독을 취소하였습니다")
                 } else {
-                    viewModel.addSubscriber(post.name)
+                    viewModel.addSubscriber(post?.name!!)
+                    showToast("${post.name}님을 구독하였습니다")
                 }
                 isSelected = !isSelected
+                setResult(RESULT_OK)
             }
         }
     }
