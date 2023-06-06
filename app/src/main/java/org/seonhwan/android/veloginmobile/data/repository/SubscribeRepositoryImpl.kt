@@ -20,7 +20,7 @@ class SubscribeRepositoryImpl @Inject constructor(
 
     override suspend fun getSubscriberPost(): Result<List<Post>> =
         runCatching {
-            subscribeSource.getSubscriberPost().subscriberPostDtoList.map { data ->
+            subscribeSource.getSubscriberPost().subscribePostDtoList.map { data ->
                 data.toPostEntity()
             }
         }
