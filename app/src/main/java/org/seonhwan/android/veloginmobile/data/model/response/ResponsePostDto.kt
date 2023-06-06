@@ -28,10 +28,8 @@ data class ResponsePostDto(
     val url: String,
 ) {
     fun toPostEntity() = Post(
-        comment = comment,
         date = date,
         img = img,
-        like = like,
         name = name,
         isSubscribed = subscribed,
         summary = summary,
