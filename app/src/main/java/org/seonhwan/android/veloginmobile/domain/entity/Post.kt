@@ -5,10 +5,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Post(
-    val comment: Int,
     val date: String,
     val img: String,
-    val like: Int,
     val name: String,
     val isSubscribed: Boolean,
     val summary: String,
