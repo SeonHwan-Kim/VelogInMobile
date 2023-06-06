@@ -13,8 +13,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.seonhwan.android.veloginmobile.R
 import org.seonhwan.android.veloginmobile.databinding.FragmentHomeBinding
 import org.seonhwan.android.veloginmobile.ui.addtag.AddTagActivity
+import org.seonhwan.android.veloginmobile.ui.home.VelogAdapter.Companion.VELOG
+import org.seonhwan.android.veloginmobile.ui.webview.WebViewActivity
 import org.seonhwan.android.veloginmobile.util.UiState
 import org.seonhwan.android.veloginmobile.util.binding.BindingFragment
+import org.seonhwan.android.veloginmobile.util.extension.showToast
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -68,7 +71,11 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     private fun initAdapter() {
-        postAdapter = VelogAdapter()
+        postAdapter = VelogAdapter() { post ->
+            val intent = Intent(activity, WebViewActivity::class.java)
+            intent.putExtra(VELOG, post)
+            getResultSubscribe.launch(intent)
+        }
         binding.rvHomePost.adapter = postAdapter
     }
 
@@ -109,16 +116,24 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun moveToAddTag() {
         val intent = Intent(activity, AddTagActivity::class.java)
-        getResultSignUp.launch(intent)
+        getResultAddTag.launch(intent)
         startSecondTabItem()
     }
 
-    private val getResultSignUp = registerForActivityResult(
+    private val getResultAddTag = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult(),
     ) { result: ActivityResult ->
         if (result.resultCode == RESULT_OK) {
             binding.tabHomeTabbar.removeAllTabs()
             viewModel.getTag()
+        }
+    }
+
+    private val getResultSubscribe = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+    ) { result: ActivityResult ->
+        if (result.resultCode == RESULT_OK) {
+            viewModel.getTagPost()
         }
     }
 
