@@ -11,4 +11,7 @@ class SubscribeSource @Inject constructor(
 
     suspend fun deleteSubscriber(name: String) =
         subscribeService.deleteSubscriber(name)
+
+    suspend fun getSubscriberPost() =
+        subscribeService.getSubscriberPost()
 }
