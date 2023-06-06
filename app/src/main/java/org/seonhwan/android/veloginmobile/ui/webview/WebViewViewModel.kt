@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.seonhwan.android.veloginmobile.domain.repository.SubscribeRepository
 import org.seonhwan.android.veloginmobile.ui.addtag.AddTagViewModel.Companion.CODE_400
@@ -14,6 +15,7 @@ import org.seonhwan.android.veloginmobile.util.UiState.Success
 import retrofit2.HttpException
 import javax.inject.Inject
 
+@HiltViewModel
 class WebViewViewModel @Inject constructor(
     private val subscribeRepository: SubscribeRepository,
 ) : ViewModel() {
@@ -37,6 +39,7 @@ class WebViewViewModel @Inject constructor(
                             CODE_400 -> {
                                 Failure(CODE_400)
                             }
+
                             else -> {
                                 Error
                             }
@@ -46,7 +49,7 @@ class WebViewViewModel @Inject constructor(
         }
     }
 
-    fun deletSubscriber(name: String) {
+    fun deleteSubscriber(name: String) {
         viewModelScope.launch {
             subscribeRepository.deleteSubscriber(name)
                 .onSuccess {
@@ -58,6 +61,7 @@ class WebViewViewModel @Inject constructor(
                             CODE_400 -> {
                                 _deleteSubscriberState.value = Failure(CODE_400)
                             }
+
                             else -> {
                                 _deleteSubscriberState.value = Error
                             }
