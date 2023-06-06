@@ -7,14 +7,20 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.seonhwan.android.veloginmobile.domain.entity.Post
+import org.seonhwan.android.veloginmobile.domain.repository.SubscribeRepository
 import org.seonhwan.android.veloginmobile.domain.repository.TagRepository
 import org.seonhwan.android.veloginmobile.util.UiState
+import org.seonhwan.android.veloginmobile.util.UiState.Error
+import org.seonhwan.android.veloginmobile.util.UiState.Failure
+import org.seonhwan.android.veloginmobile.util.UiState.Success
+import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val tagRepository: TagRepository,
+    private val subscribeRepository: SubscribeRepository,
 ) : ViewModel() {
     private val _tagList = MutableLiveData<List<String>>()
     val tagList: LiveData<List<String>>
@@ -24,13 +30,13 @@ class HomeViewModel @Inject constructor(
     val tagListState: LiveData<UiState>
         get() = _tagListState
 
-    private val _tagPostList = MutableLiveData<List<Post>>()
-    val tagPostList: LiveData<List<Post>>
-        get() = _tagPostList
+    private val _postList = MutableLiveData<List<Post>>()
+    val postList: LiveData<List<Post>>
+        get() = _postList
 
-    private val _tagPostListState = MutableLiveData<UiState>()
-    val tagPostListState: LiveData<UiState>
-        get() = _tagPostListState
+    private val _postListState = MutableLiveData<UiState>()
+    val postListState: LiveData<UiState>
+        get() = _postListState
 
     init {
         getTag()
@@ -41,10 +47,10 @@ class HomeViewModel @Inject constructor(
             tagRepository.getTag().onSuccess { response ->
                 _tagList.value = response
                 Timber.tag("getTage").d(response.toString())
-                _tagListState.value = UiState.Success
+                _tagListState.value = Success
             }.onFailure { throwable ->
                 Timber.tag("onFailure").e(throwable.toString())
-                _tagListState.value = UiState.Failure(null)
+                _tagListState.value = Failure(null)
             }
         }
     }
@@ -52,13 +58,38 @@ class HomeViewModel @Inject constructor(
     fun getTagPost() {
         viewModelScope.launch {
             tagRepository.getTagPost().onSuccess { response ->
-                _tagPostList.value = response
-                Timber.tag("success Tag Post List").d(response.toString())
-                _tagPostListState.value = UiState.Success
+                _postList.value = response
+                _postListState.value = Success
             }.onFailure { throwable ->
-                Timber.tag("failure Tag Post List").e(throwable)
-                _tagPostListState.value = UiState.Failure(null)
+                _postListState.value = Failure(null)
             }
         }
+    }
+
+    fun getSubscriberPost() {
+        viewModelScope.launch {
+            subscribeRepository.getSubscriberPost()
+                .onSuccess { response ->
+                    _postList.value = response
+                    _postListState.value = Success
+                }
+                .onFailure { throwable ->
+                    if (throwable is HttpException) {
+                        when (throwable.code()) {
+                            CODE_202 -> {
+                                _postListState.value = Failure(CODE_202)
+                            }
+
+                            else -> {
+                                _postListState.value = Error
+                            }
+                        }
+                    }
+                }
+        }
+    }
+
+    companion object {
+        const val CODE_202 = 202
     }
 }

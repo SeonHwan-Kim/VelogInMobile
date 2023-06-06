@@ -13,9 +13,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.seonhwan.android.veloginmobile.R
 import org.seonhwan.android.veloginmobile.databinding.FragmentHomeBinding
 import org.seonhwan.android.veloginmobile.ui.addtag.AddTagActivity
+import org.seonhwan.android.veloginmobile.ui.home.HomeViewModel.Companion.CODE_202
 import org.seonhwan.android.veloginmobile.ui.home.VelogAdapter.Companion.VELOG
 import org.seonhwan.android.veloginmobile.ui.webview.WebViewActivity
-import org.seonhwan.android.veloginmobile.util.UiState
+import org.seonhwan.android.veloginmobile.util.UiState.Error
+import org.seonhwan.android.veloginmobile.util.UiState.Failure
+import org.seonhwan.android.veloginmobile.util.UiState.Success
 import org.seonhwan.android.veloginmobile.util.binding.BindingFragment
 import org.seonhwan.android.veloginmobile.util.extension.showToast
 import timber.log.Timber
@@ -30,6 +33,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
         initTabItem()
         initAdapter()
+        initPost()
         startSecondTabItem()
         onClickTabBar()
     }
@@ -37,7 +41,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private fun initTabItem() {
         viewModel.tagListState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is UiState.Success -> {
+                is Success -> {
                     with(binding) {
                         addToolbarTag("", R.drawable.ic_plus, 0, false)
                         addToolbarTag("트렌드", null, 1, true)
@@ -48,11 +52,11 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                     }
                 }
 
-                is UiState.Failure -> {
+                is Failure -> {
                     Timber.tag("tagListState").e("Failure")
                 }
 
-                is UiState.Error -> {
+                is Error -> {
                     Timber.tag("tagListState").e("Error")
                 }
             }
@@ -88,13 +92,18 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                     }
 
                     "트렌드" -> {
+                        viewModel.getTagPost()
+                        initAdapter()
                     }
 
                     "팔로우" -> {
+                        viewModel.getSubscriberPost()
+                        initAdapter()
                     }
 
                     else -> {
-                        initPost()
+                        viewModel.getTagPost()
+                        initAdapter()
                     }
                 }
             }
@@ -111,7 +120,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun startSecondTabItem() {
         binding.tabHomeTabbar.getTabAt(1)?.select()
-        initPost()
+        viewModel.getTagPost()
     }
 
     private fun moveToAddTag() {
@@ -138,19 +147,26 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     private fun initPost() {
-        viewModel.getTagPost()
-        viewModel.tagPostListState.observe(viewLifecycleOwner) { state ->
+        viewModel.postListState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is UiState.Success -> {
-                    postAdapter?.submitList(viewModel.tagPostList.value)
+                is Success -> {
+                    postAdapter?.submitList(viewModel.postList.value)
                 }
 
-                is UiState.Failure -> {
-                    Timber.tag("tagPostListState").e("Failure")
+                is Failure -> {
+                    when (state.code) {
+                        CODE_202 -> {
+                            requireActivity().showToast("구독한 사람이 없습니다")
+                        }
+
+                        else -> {
+                            requireActivity().showToast("Failure")
+                        }
+                    }
                 }
 
-                is UiState.Error -> {
-                    Timber.tag("tagPostListState").e("Error")
+                is Error -> {
+                    requireActivity().showToast("문제가 발생하였습니다")
                 }
             }
         }
