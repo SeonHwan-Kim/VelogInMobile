@@ -8,18 +8,18 @@ import javax.inject.Inject
 class TagSource @Inject constructor(
     private val tagService: TagService,
 ) {
-    suspend fun getTagList(): List<String> =
+    suspend fun getTagList() =
         tagService.getTag()
 
-    suspend fun getTagPostList(): ResponseTagPostDto<ResponsePostDto> =
+    suspend fun getTagPostList() =
         tagService.getTagPost()
 
-    suspend fun postAddTag(tag: String): Unit =
+    suspend fun postAddTag(tag: String) =
         tagService.postAddTag(tag)
 
-    suspend fun deleteTag(tag: String): Unit =
+    suspend fun deleteTag(tag: String) =
         tagService.deleteTag(tag)
 
-    suspend fun getPopularTag(): List<String> =
+    suspend fun getPopularTag() =
         tagService.getPopularPost()
 }
