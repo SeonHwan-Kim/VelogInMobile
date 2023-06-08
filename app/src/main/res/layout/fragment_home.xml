@@ -82,5 +82,15 @@
             app:layout_constraintTop_toBottomOf="@id/tab_home_tabbar"
             tools:listitem="@layout/item_velog" />
 
+        <ProgressBar
+            android:id="@+id/pb_home_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tab_home_tabbar" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
