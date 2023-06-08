@@ -1,7 +1,7 @@
 package org.seonhwan.android.veloginmobile.util
 
-sealed class UiState {
-    object Success : UiState()
-    data class Failure(val code: Int?) : UiState()
-    object Error : UiState()
+sealed class UiState<out T> {
+    object Loading : UiState<Nothing>()
+    data class Success<T>(val data: T) : UiState<T>()
+    data class Failure(val code: Int?) : UiState<Nothing>()
 }

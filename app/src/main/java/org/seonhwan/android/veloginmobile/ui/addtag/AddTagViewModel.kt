@@ -1,14 +1,16 @@
 package org.seonhwan.android.veloginmobile.ui.addtag
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.seonhwan.android.veloginmobile.domain.repository.TagRepository
 import org.seonhwan.android.veloginmobile.util.UiState
-import org.seonhwan.android.veloginmobile.util.UiState.Error
 import org.seonhwan.android.veloginmobile.util.UiState.Failure
 import org.seonhwan.android.veloginmobile.util.UiState.Success
 import retrofit2.HttpException
@@ -19,32 +21,24 @@ import javax.inject.Inject
 class AddTagViewModel @Inject constructor(
     private val tagRepository: TagRepository,
 ) : ViewModel() {
-    private val _tagList = MutableLiveData<List<String>>()
-    val tagList: LiveData<List<String>>
-        get() = _tagList
-
-    private val _tagListState = MutableLiveData<UiState>()
-    val tagListState: LiveData<UiState>
-        get() = _tagListState
+    private val _tagState = MutableSharedFlow<UiState<List<String>>>()
+    val tagState: SharedFlow<UiState<List<String>>>
+        get() = _tagState
 
     val _tagName = MutableLiveData("")
     private val tagName: String
         get() = _tagName.value?.trim() ?: ""
 
-    private val _addTagState = MutableLiveData<UiState>()
-    val addTagState: LiveData<UiState>
+    private val _addTagState = MutableSharedFlow<UiState<Unit>>()
+    val addTagState: SharedFlow<UiState<Unit>>
         get() = _addTagState
 
-    private val _deleteTagState = MutableLiveData<UiState>()
-    val deleteTagState: LiveData<UiState>
+    private val _deleteTagState = MutableSharedFlow<UiState<Unit>>()
+    val deleteTagState: SharedFlow<UiState<Unit>>
         get() = _deleteTagState
 
-    private val _popularTagList = MutableLiveData<List<String>>()
-    val popularTagList: LiveData<List<String>>
-        get() = _popularTagList
-
-    private val _popularTagState = MutableLiveData<UiState>()
-    val popularTagState: LiveData<UiState>
+    private val _popularTagState = MutableSharedFlow<UiState<List<String>>>()
+    val popularTagState: SharedFlow<UiState<List<String>>>
         get() = _popularTagState
 
     init {
@@ -54,13 +48,10 @@ class AddTagViewModel @Inject constructor(
 
     fun getTag() {
         viewModelScope.launch {
-            tagRepository.getTag().onSuccess { response ->
-                _tagList.value = response
-                Timber.tag("getTage").d(response.toString())
-                _tagListState.value = Success
-            }.onFailure { throwable ->
-                Timber.tag("onFailure").e(throwable.toString())
-                _tagListState.value = Failure(null)
+            tagRepository.getTag().catch { error ->
+                _tagState.emit(Failure(null))
+            }.collect { response ->
+                _tagState.emit(Success(response))
             }
         }
     }
@@ -68,59 +59,54 @@ class AddTagViewModel @Inject constructor(
     fun addTag() {
         viewModelScope.launch {
             if (tagName != "") {
-                tagRepository.postAddTag(tag = tagName).onSuccess { response ->
-                    Timber.tag("addTag Success").d(response.toString())
-                    _addTagState.value = Success
-                }.onFailure { throwable ->
-                    if (throwable is HttpException) {
-                        when (throwable.code()) {
+                tagRepository.postAddTag(tagName).catch { error ->
+                    if (error is HttpException) {
+                        when (error.code()) {
                             CODE_400 -> {
-                                Timber.tag("addTag failure").e(throwable)
-                                _addTagState.value = Failure(CODE_400)
+                                Timber.tag("addTag failure").e(error)
+                                _addTagState.emit(Failure(CODE_400))
                             }
 
                             else -> {
-                                Timber.tag("addTag failure").e(throwable)
-                                _addTagState.value = Error
+                                Timber.tag("addTag failure").e(error)
+                                _addTagState.emit(Failure(null))
                             }
                         }
                     }
+                }.collect { response ->
+                    _addTagState.emit(Success(response))
                 }
-            } else {
-                _addTagState.value = Failure(0)
             }
         }
     }
 
     fun deleteTag(tag: String) {
         viewModelScope.launch {
-            tagRepository.deleteTag(tag).onSuccess {
-                _deleteTagState.value = UiState.Success
-            }.onFailure { throwable ->
-                if (throwable is HttpException) {
-                    when (throwable.code()) {
+            tagRepository.deleteTag(tag).catch { error ->
+                if (error is HttpException) {
+                    when (error.code()) {
                         CODE_400 -> {
-                            _deleteTagState.value = Failure(CODE_400)
+                            _deleteTagState.emit(Failure(CODE_400))
                         }
 
                         else -> {
-                            _deleteTagState.value = Error
+                            _deleteTagState.emit(Failure(null))
                         }
                     }
                 }
+            }.collect { response ->
+                _deleteTagState.emit(Success(response))
             }
         }
     }
 
     private fun getPopularTag() {
         viewModelScope.launch {
-            tagRepository.getPopularTag()
-                .onSuccess { response ->
-                    _popularTagList.value = response
-                    _popularTagState.value = Success
-                }
-                .onFailure { throwable ->
-                    _popularTagState.value = Failure(null)
+            tagRepository.getPopularTag().catch { error ->
+                _popularTagState.emit(Failure(null))
+            }
+                .collect { response ->
+                    _popularTagState.emit(Success(response))
                 }
         }
     }

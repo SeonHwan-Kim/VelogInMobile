@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ResponseSubscriberPostDto<T>(
-    @SerialName("subscriberPostDtoList")
-    val subscriberPostDtoList: List<T>,
+    @SerialName("subscribePostDtoList")
+    val subscribePostDtoList: List<T>,
 )
