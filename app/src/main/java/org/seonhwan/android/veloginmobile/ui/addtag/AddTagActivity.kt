@@ -2,12 +2,16 @@ package org.seonhwan.android.veloginmobile.ui.addtag
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.seonhwan.android.veloginmobile.R
 import org.seonhwan.android.veloginmobile.databinding.ActivityAddTagBinding
 import org.seonhwan.android.veloginmobile.ui.addtag.AddTagViewModel.Companion.CODE_400
-import org.seonhwan.android.veloginmobile.util.UiState.Error
 import org.seonhwan.android.veloginmobile.util.UiState.Failure
+import org.seonhwan.android.veloginmobile.util.UiState.Loading
 import org.seonhwan.android.veloginmobile.util.UiState.Success
 import org.seonhwan.android.veloginmobile.util.binding.BindingActivity
 import org.seonhwan.android.veloginmobile.util.extension.showToast
@@ -34,8 +38,9 @@ class AddTagActivity : BindingActivity<ActivityAddTagBinding>(R.layout.activity_
         myTagAdapter = MyTagAdapter(object : OnClickDeleteTag {
             override fun deleteTag(tag: String) {
                 showDeleteDialog(tag)
-                viewModel.deleteTagState.observe(this@AddTagActivity) { state ->
-                    when (state) {
+                viewModel.deleteTagState.flowWithLifecycle(lifecycle).onEach { event ->
+                    when (event) {
+                        is Loading -> {}
                         is Success -> {
                             setResult(RESULT_OK)
                             viewModel.getTag()
@@ -43,15 +48,13 @@ class AddTagActivity : BindingActivity<ActivityAddTagBinding>(R.layout.activity_
                         }
 
                         is Failure -> {
-                            when (state.code) {
+                            when (event.code) {
                                 CODE_400 -> showToast("없는 태그입니다")
                                 else -> showToast("문제가 발생하였습니다")
                             }
                         }
-
-                        is Error -> {}
                     }
-                }
+                }.launchIn(lifecycleScope)
             }
         })
 
@@ -74,26 +77,19 @@ class AddTagActivity : BindingActivity<ActivityAddTagBinding>(R.layout.activity_
     }
 
     private fun getTagList() {
-        viewModel.tagListState.observe(this) { state ->
-            when (state) {
-                is Success -> {
-                    myTagAdapter?.submitList(viewModel.tagList.value)
-                }
-
-                is Failure -> {
-                    Timber.tag("tagListState").e("Failure")
-                }
-
-                is Error -> {
-                    Timber.tag("tagListState").e("Error")
-                }
+        viewModel.tagState.flowWithLifecycle(lifecycle).onEach { event ->
+            when (event) {
+                is Loading -> {}
+                is Success -> myTagAdapter?.submitList(event.data)
+                is Failure -> Timber.d("Failure")
             }
-        }
+        }.launchIn(lifecycleScope)
     }
 
     private fun addTag() {
-        viewModel.addTagState.observe(this) { state ->
-            when (state) {
+        viewModel.addTagState.flowWithLifecycle(lifecycle).onEach { event ->
+            when (event) {
+                is Loading -> {}
                 is Success -> {
                     viewModel.getTag()
                     setResult(RESULT_OK)
@@ -101,31 +97,21 @@ class AddTagActivity : BindingActivity<ActivityAddTagBinding>(R.layout.activity_
                 }
 
                 is Failure -> {
-                    when (state.code) {
+                    when (event.code) {
                         CODE_400 -> showToast("이미 추가된 태그입니다")
                         else -> showToast("추가할 태그를 입력해주세요")
                     }
                 }
-
-                is Error -> {
-                    showToast("문제가 발생하였습니다")
-                }
             }
-        }
+        }.launchIn(lifecycleScope)
     }
 
     private fun initPopularTag() {
-        viewModel.popularTagState.observe(this) { state ->
-            when (state) {
-                is Success -> {
-                    popularTagAdapter?.submitList(viewModel.popularTagList.value)
-                }
-
-                is Failure -> {
-                    showToast("인기 태그를 불러올 수 없습니다")
-                }
-
-                is Error -> {}
+        viewModel.popularTagState.flowWithLifecycle(lifecycle).onEach { event ->
+            when (event) {
+                is Loading -> {}
+                is Success -> popularTagAdapter?.submitList(event.data)
+                is Failure -> showToast("인기 태그를 불러올 수 없습니다")
             }
         }
     }
