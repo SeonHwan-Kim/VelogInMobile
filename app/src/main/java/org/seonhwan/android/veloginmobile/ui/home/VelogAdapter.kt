@@ -8,6 +8,7 @@ import coil.load
 import org.seonhwan.android.veloginmobile.databinding.ItemVelogBinding
 import org.seonhwan.android.veloginmobile.domain.entity.Post
 import org.seonhwan.android.veloginmobile.util.DiffCallback
+import org.seonhwan.android.veloginmobile.util.extension.BookmarkSnackbar
 
 class VelogAdapter(
     private val intentToWebView: (Post) -> Unit,
@@ -25,6 +26,10 @@ class VelogAdapter(
                     } else {
                         submitList(post.tag)
                     }
+                }
+                ibVelogBookmark.setOnClickListener {
+                    ibVelogBookmark.isSelected = !ibVelogBookmark.isSelected
+                    BookmarkSnackbar.make(binding.root, "스크랩 했습니다.").show()
                 }
             }
         }
