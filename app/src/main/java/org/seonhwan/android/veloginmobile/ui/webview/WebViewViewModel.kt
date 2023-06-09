@@ -6,9 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import org.seonhwan.android.veloginmobile.domain.repository.SubscribeRepository
+import org.seonhwan.android.veloginmobile.domain.repository.remote.SubscribeRepository
 import org.seonhwan.android.veloginmobile.ui.addtag.AddTagViewModel.Companion.CODE_400
 import org.seonhwan.android.veloginmobile.util.UiState
 import org.seonhwan.android.veloginmobile.util.UiState.Failure

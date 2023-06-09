@@ -6,8 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import org.seonhwan.android.veloginmobile.data.remote.repository.SubscribeRepositoryImpl
 import org.seonhwan.android.veloginmobile.data.remote.repository.TagRepositoryImpl
-import org.seonhwan.android.veloginmobile.domain.repository.SubscribeRepository
-import org.seonhwan.android.veloginmobile.domain.repository.TagRepository
+import org.seonhwan.android.veloginmobile.domain.repository.remote.SubscribeRepository
+import org.seonhwan.android.veloginmobile.domain.repository.remote.TagRepository
 import javax.inject.Singleton
 
 @Module

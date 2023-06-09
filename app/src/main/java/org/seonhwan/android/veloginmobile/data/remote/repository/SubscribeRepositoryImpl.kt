@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import org.seonhwan.android.veloginmobile.data.remote.source.SubscribeSource
 import org.seonhwan.android.veloginmobile.domain.entity.Post
-import org.seonhwan.android.veloginmobile.domain.repository.SubscribeRepository
+import org.seonhwan.android.veloginmobile.domain.repository.remote.SubscribeRepository
 import javax.inject.Inject
 
 class SubscribeRepositoryImpl @Inject constructor(

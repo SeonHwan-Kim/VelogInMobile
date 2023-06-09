@@ -6,12 +6,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import org.seonhwan.android.veloginmobile.domain.entity.Post
-import org.seonhwan.android.veloginmobile.domain.repository.SubscribeRepository
-import org.seonhwan.android.veloginmobile.domain.repository.TagRepository
+import org.seonhwan.android.veloginmobile.domain.repository.remote.SubscribeRepository
+import org.seonhwan.android.veloginmobile.domain.repository.remote.TagRepository
 import org.seonhwan.android.veloginmobile.util.UiState
 import org.seonhwan.android.veloginmobile.util.UiState.Failure
 import org.seonhwan.android.veloginmobile.util.UiState.Loading

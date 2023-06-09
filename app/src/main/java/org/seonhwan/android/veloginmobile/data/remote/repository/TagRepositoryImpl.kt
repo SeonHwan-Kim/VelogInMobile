@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import org.seonhwan.android.veloginmobile.data.remote.source.TagSource
 import org.seonhwan.android.veloginmobile.domain.entity.Post
-import org.seonhwan.android.veloginmobile.domain.repository.TagRepository
+import org.seonhwan.android.veloginmobile.domain.repository.remote.TagRepository
 import javax.inject.Inject
 
 class TagRepositoryImpl @Inject constructor(
