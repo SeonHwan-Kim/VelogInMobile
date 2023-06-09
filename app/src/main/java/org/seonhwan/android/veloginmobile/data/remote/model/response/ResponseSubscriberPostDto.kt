@@ -1,4 +1,4 @@
-package org.seonhwan.android.veloginmobile.data.model.response
+package org.seonhwan.android.veloginmobile.data.remote.model.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

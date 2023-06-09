@@ -4,8 +4,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import org.seonhwan.android.veloginmobile.data.service.SubscribeService
-import org.seonhwan.android.veloginmobile.data.service.TagService
+import org.seonhwan.android.veloginmobile.data.remote.service.SubscribeService
+import org.seonhwan.android.veloginmobile.data.remote.service.TagService
 import retrofit2.Retrofit
 import retrofit2.create
 import javax.inject.Singleton

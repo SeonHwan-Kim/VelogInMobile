@@ -1,11 +1,11 @@
-package com.sopt.instagram.di
+package org.seonhwan.android.veloginmobile.di
 
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import org.seonhwan.android.veloginmobile.data.repository.SubscribeRepositoryImpl
-import org.seonhwan.android.veloginmobile.data.repository.TagRepositoryImpl
+import org.seonhwan.android.veloginmobile.data.remote.repository.SubscribeRepositoryImpl
+import org.seonhwan.android.veloginmobile.data.remote.repository.TagRepositoryImpl
 import org.seonhwan.android.veloginmobile.domain.repository.SubscribeRepository
 import org.seonhwan.android.veloginmobile.domain.repository.TagRepository
 import javax.inject.Singleton

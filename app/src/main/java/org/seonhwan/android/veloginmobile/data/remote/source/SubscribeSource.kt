@@ -1,6 +1,6 @@
-package org.seonhwan.android.veloginmobile.data.source
+package org.seonhwan.android.veloginmobile.data.remote.source
 
-import org.seonhwan.android.veloginmobile.data.service.SubscribeService
+import org.seonhwan.android.veloginmobile.data.remote.service.SubscribeService
 import javax.inject.Inject
 
 class SubscribeSource @Inject constructor(
