@@ -42,7 +42,30 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_scrap_toolbar"/>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_scrap_post"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/gray_100"
+            android:clipToPadding="false"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="20dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_scrap_toolbar"
+            tools:listitem="@layout/item_velog" />
 
+        <ProgressBar
+            android:id="@+id/pb_scrap_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_scrap_toolbar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
