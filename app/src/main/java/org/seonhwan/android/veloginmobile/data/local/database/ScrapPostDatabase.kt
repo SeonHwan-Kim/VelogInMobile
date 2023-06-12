@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import org.seonhwan.android.veloginmobile.data.local.dao.ScrapPostDao
 import org.seonhwan.android.veloginmobile.data.local.model.ScrapPost
 
-@Database(entities = [ScrapPost::class], version = 3)
+@Database(entities = [ScrapPost::class], version = 4)
 @TypeConverters(ScrapPostConverter::class)
 abstract class ScrapPostDatabase : RoomDatabase() {
     abstract fun scrapPostDao(): ScrapPostDao
