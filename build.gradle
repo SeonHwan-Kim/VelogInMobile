@@ -14,10 +14,9 @@ plugins {
 }
 
 ext {
-    hiltVersion = '2.46'
+    hiltVersion = '2.44'
     coroutineVersion = '1.6.4'
     lifecycleVersion = '2.6.1'
-    roomVersion = "2.5.1"
 }
 
 task clean(type: Delete) {
