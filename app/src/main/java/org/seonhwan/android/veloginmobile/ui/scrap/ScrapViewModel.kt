@@ -1,5 +1,7 @@
 package org.seonhwan.android.veloginmobile.ui.scrap
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,9 +39,7 @@ class ScrapViewModel @Inject constructor(
             scrapPostRepository.getAllScrapPost()
                 .onStart { _getAllScrapPostState.emit(Loading) }
                 .catch { error ->
-                    if (error is HttpException) {
-                        _getAllScrapPostState.emit(Failure(error.code()))
-                    }
+                    _getAllScrapPostState.emit(Failure(null))
                 }
                 .collect { response ->
                     Timber.d(response.toString())
