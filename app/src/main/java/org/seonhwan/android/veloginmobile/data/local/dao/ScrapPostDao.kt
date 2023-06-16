@@ -1,7 +1,6 @@
 package org.seonhwan.android.veloginmobile.data.local.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -13,9 +12,9 @@ interface ScrapPostDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addScrapPost(post: ScrapPost)
 
-    @Query("SELECT * FROM scrap_post")
+    @Query("SELECT * FROM scrap_post ORDER BY record DESC")
     fun getAllScrapPost(): Flow<List<ScrapPost>>
 
-    @Delete
-    suspend fun deleteScrapPost(scrapPost: ScrapPost)
+    @Query("DELETE FROM scrap_post WHERE url = :url")
+    suspend fun deleteScrapPost(url: String)
 }
