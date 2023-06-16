@@ -1,7 +1,5 @@
 package org.seonhwan.android.veloginmobile.ui.scrap
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,8 +16,6 @@ import org.seonhwan.android.veloginmobile.util.UiState
 import org.seonhwan.android.veloginmobile.util.UiState.Failure
 import org.seonhwan.android.veloginmobile.util.UiState.Loading
 import org.seonhwan.android.veloginmobile.util.UiState.Success
-import retrofit2.HttpException
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,7 +38,6 @@ class ScrapViewModel @Inject constructor(
                     _getAllScrapPostState.emit(Failure(null))
                 }
                 .collect { response ->
-                    Timber.d(response.toString())
                     _getAllScrapPostState.emit(Success(response))
                 }
         }
