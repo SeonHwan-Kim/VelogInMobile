@@ -34,7 +34,6 @@ class ScrapFragment : BindingFragment<FragmentScrapBinding>(R.layout.fragment_sc
         super.onViewCreated(view, savedInstanceState)
 
         initScrapPost()
-        initAdapter()
     }
 
     private fun initAdapter() {
@@ -74,6 +73,7 @@ class ScrapFragment : BindingFragment<FragmentScrapBinding>(R.layout.fragment_sc
                         requireActivity().showToast("스크랩한 게시물이 없습니다")
                     }
                     scrapPostList = event.data.map { scrapPost -> scrapPost.toPost() }
+                    initAdapter()
                     postAdapter?.submitList(scrapPostList)
                 }
 
