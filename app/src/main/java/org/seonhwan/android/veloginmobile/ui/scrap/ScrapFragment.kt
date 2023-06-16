@@ -74,10 +74,13 @@ class ScrapFragment : BindingFragment<FragmentScrapBinding>(R.layout.fragment_sc
                         requireActivity().showToast("스크랩한 게시물이 없습니다")
                     }
                     scrapPostList = event.data.map { scrapPost -> scrapPost.toPost() }
-                    postAdapter?.submitList(event.data.map { scrapPost -> scrapPost.toPost() })
+                    postAdapter?.submitList(scrapPostList)
                 }
 
-                is Failure -> requireActivity().showToast("문제가 발생하였습니다")
+                is Failure -> {
+                    binding.pbScrapLoading.visibility = View.GONE
+                    requireActivity().showToast("문제가 발생하였습니다")
+                }
             }
         }.launchIn(lifecycleScope)
     }
