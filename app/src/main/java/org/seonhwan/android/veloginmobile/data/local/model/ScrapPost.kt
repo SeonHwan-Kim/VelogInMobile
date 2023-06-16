@@ -16,6 +16,7 @@ data class ScrapPost(
     val title: String,
     @PrimaryKey
     val url: String,
+    val record: Long
 )
 
 fun ScrapPost.toPost() = Post(
