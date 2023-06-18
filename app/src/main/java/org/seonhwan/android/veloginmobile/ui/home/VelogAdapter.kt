@@ -1,6 +1,6 @@
 package org.seonhwan.android.veloginmobile.ui.home
 
-import android.util.Log
+import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -17,7 +17,7 @@ class VelogAdapter(
     private val deleteScrapPost: (String) -> Unit,
     private val scrapPostList: List<Post>?,
 ) : ListAdapter<Post, VelogAdapter.VelogViewHolder>(diffUtil) {
-
+    private val scrapStatus = SparseBooleanArray()
     class VelogViewHolder(private val binding: ItemVelogBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBind(
@@ -25,14 +25,18 @@ class VelogAdapter(
             scrapPost: (Post) -> Unit,
             deleteScrapPost: (String) -> Unit,
             scrapPostList: List<Post>?,
+            scrapStatus: SparseBooleanArray,
         ) {
             with(binding) {
                 data = post
+                ibVelogBookmark.isSelected = scrapStatus[position]
                 ivVelogImg.load(post.img)
                 if (scrapPostList != null) {
-                    if (scrapPostList.contains(post)) ibVelogBookmark.isSelected = true
+                    if (scrapPostList.contains(post)) {
+                        ibVelogBookmark.isSelected = true
+                        scrapStatus.put(position, true)
+                    }
                 }
-                Log.d("velogViewHolder", scrapPostList.toString())
                 rvVelogTag.adapter = VelogTagAdapter().apply {
                     if (post.tag.size > 3) {
                         submitList(post.tag.slice(0..2))
@@ -40,7 +44,7 @@ class VelogAdapter(
                         submitList(post.tag)
                     }
                 }
-                onClickBookmark(post, scrapPost, deleteScrapPost)
+                onClickBookmark(post, scrapPost, deleteScrapPost, scrapStatus)
             }
         }
 
@@ -48,6 +52,7 @@ class VelogAdapter(
             post: Post,
             scrapPost: (Post) -> Unit,
             deleteScrapPost: (String) -> Unit,
+            scrapStatus: SparseBooleanArray,
         ) {
             with(binding) {
                 ibVelogBookmark.setOnClickListener {
@@ -60,6 +65,7 @@ class VelogAdapter(
                             BookmarkSnackbar.make(binding.root, "스크랩 했습니다.").show()
                         }
                         isSelected = !isSelected
+                        scrapStatus.put(position, isSelected)
                     }
                 }
             }
@@ -81,7 +87,7 @@ class VelogAdapter(
         holder.itemView.setOnClickListener {
             intentToWebView(post)
         }
-        holder.onBind(post, scrapPost, deleteScrapPost, scrapPostList)
+        holder.onBind(post, scrapPost, deleteScrapPost, scrapPostList, scrapStatus)
     }
 
     companion object {
