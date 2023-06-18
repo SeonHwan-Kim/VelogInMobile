@@ -6,12 +6,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import org.seonhwan.android.veloginmobile.data.local.model.ScrapPost
 import org.seonhwan.android.veloginmobile.domain.entity.Post
-import org.seonhwan.android.veloginmobile.domain.repository.SubscribeRepository
-import org.seonhwan.android.veloginmobile.domain.repository.TagRepository
+import org.seonhwan.android.veloginmobile.domain.entity.toScrapPost
+import org.seonhwan.android.veloginmobile.domain.repository.local.ScrapPostRepository
+import org.seonhwan.android.veloginmobile.domain.repository.remote.SubscribeRepository
+import org.seonhwan.android.veloginmobile.domain.repository.remote.TagRepository
 import org.seonhwan.android.veloginmobile.util.UiState
 import org.seonhwan.android.veloginmobile.util.UiState.Failure
 import org.seonhwan.android.veloginmobile.util.UiState.Loading
@@ -25,6 +27,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val tagRepository: TagRepository,
     private val subscribeRepository: SubscribeRepository,
+    private val scrapPostRepository: ScrapPostRepository,
 ) : ViewModel() {
     private val _tagList = MutableSharedFlow<UiState<List<String>>>()
     val tagList: SharedFlow<UiState<List<String>>>
@@ -34,51 +37,50 @@ class HomeViewModel @Inject constructor(
     val postList: SharedFlow<UiState<List<Post>>>
         get() = _postList
 
+    private val _getAllScrapPostState = MutableSharedFlow<UiState<List<ScrapPost>>>()
+    val getAllScrapPostState: SharedFlow<UiState<List<ScrapPost>>>
+        get() = _getAllScrapPostState
+
     init {
         getTag()
+        getAllScrapPost()
     }
 
     fun getTag() {
         viewModelScope.launch {
-            tagRepository.getTag()
-                .catch { error ->
-                    when (error) {
-                        is ConnectException -> {
-                            _tagList.emit(Failure(NETWORK_ERR))
-                        }
+            tagRepository.getTag().catch { error ->
+                when (error) {
+                    is ConnectException -> {
+                        _tagList.emit(Failure(NETWORK_ERR))
+                    }
 
-                        else -> {
-                            _tagList.emit(Failure(null))
-                        }
+                    else -> {
+                        _tagList.emit(Failure(null))
                     }
                 }
-                .collect { response ->
-                    _tagList.emit(Success(response))
-                }
+            }.collect { response ->
+                _tagList.emit(Success(response))
+            }
         }
     }
 
     fun getTagPost() {
         viewModelScope.launch {
-            tagRepository.getTagPost()
-                .onStart { _postList.emit(Loading) }
-                .catch { error ->
-                    when (error) {
-                        is ConnectException -> _postList.emit(Failure(NETWORK_ERR))
+            tagRepository.getTagPost().onStart { _postList.emit(Loading) }.catch { error ->
+                when (error) {
+                    is ConnectException -> _postList.emit(Failure(NETWORK_ERR))
 
-                        else -> _postList.emit(Failure(null))
-                    }
+                    else -> _postList.emit(Failure(null))
                 }
-                .collect { response ->
-                    _postList.emit(Success(response))
-                }
+            }.collect { response ->
+                _postList.emit(Success(response))
+            }
         }
     }
 
     fun getSubscriberPost() {
         viewModelScope.launch {
-            subscribeRepository.getSubscriberPost()
-                .onStart { _postList.emit(Loading) }
+            subscribeRepository.getSubscriberPost().onStart { _postList.emit(Loading) }
                 .catch { throwable ->
                     if (throwable is HttpException) {
                         _postList.emit(Failure(throwable.code()))
@@ -87,11 +89,36 @@ class HomeViewModel @Inject constructor(
                         _postList.emit(Failure(null))
                         Timber.d(throwable)
                     }
-                }
-                .collect { response ->
+                }.collect { response ->
                     _postList.emit(Success<List<Post>>(response))
                     Timber.d(response.toString())
                 }
+        }
+    }
+
+    private fun getAllScrapPost() {
+        viewModelScope.launch {
+            scrapPostRepository.getAllScrapPost().onStart { _getAllScrapPostState.emit(Loading) }
+                .catch { error ->
+                    if (error is HttpException) {
+                        _getAllScrapPostState.emit(Failure(error.code()))
+                    }
+                }.collect { response ->
+                    Timber.d(response.toString())
+                    _getAllScrapPostState.emit(Success(response))
+                }
+        }
+    }
+
+    fun scrapPost(post: Post, folder: String?) {
+        viewModelScope.launch {
+            scrapPostRepository.addScrapPost(post.toScrapPost(folder))
+        }
+    }
+
+    fun deleteScrapPost(url: String) {
+        viewModelScope.launch {
+            scrapPostRepository.deleteScrapPost(url)
         }
     }
 

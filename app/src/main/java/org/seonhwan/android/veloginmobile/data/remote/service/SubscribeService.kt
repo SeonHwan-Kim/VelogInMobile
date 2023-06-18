@@ -1,7 +1,7 @@
-package org.seonhwan.android.veloginmobile.data.service
+package org.seonhwan.android.veloginmobile.data.remote.service
 
-import org.seonhwan.android.veloginmobile.data.model.response.ResponsePostDto
-import org.seonhwan.android.veloginmobile.data.model.response.ResponseSubscriberPostDto
+import org.seonhwan.android.veloginmobile.data.remote.model.response.ResponsePostDto
+import org.seonhwan.android.veloginmobile.data.remote.model.response.ResponseSubscriberPostDto
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST

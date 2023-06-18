@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
 import org.seonhwan.android.veloginmobile.R
 import org.seonhwan.android.veloginmobile.databinding.ActivityMainBinding
-import org.seonhwan.android.veloginmobile.ui.Notification.NotificationFragment
+import org.seonhwan.android.veloginmobile.ui.scrap.ScrapFragment
 import org.seonhwan.android.veloginmobile.ui.Subscribe.SubscribeFragment
 import org.seonhwan.android.veloginmobile.ui.home.HomeFragment
 import org.seonhwan.android.veloginmobile.ui.mypage.MypageFragment
@@ -31,7 +31,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             when (item.itemId) {
                 R.id.menu_home -> this.changeFragment(HomeFragment())
                 R.id.menu_list -> this.changeFragment(SubscribeFragment())
-                R.id.menu_bookmark -> this.changeFragment(NotificationFragment())
+                R.id.menu_bookmark -> this.changeFragment(ScrapFragment())
                 else -> this.changeFragment(MypageFragment())
             }
             return@setOnItemSelectedListener true

@@ -1,11 +1,12 @@
-package org.seonhwan.android.veloginmobile.domain.entity
+package org.seonhwan.android.veloginmobile.data.local.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-import org.seonhwan.android.veloginmobile.data.local.model.ScrapPost
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import org.seonhwan.android.veloginmobile.domain.entity.Post
 
-@Parcelize
-data class Post(
+@Entity(tableName = "scrap_post")
+data class ScrapPost(
+    val folder: String?,
     val date: String,
     val img: String,
     val name: String,
@@ -13,11 +14,12 @@ data class Post(
     val summary: String,
     val tag: List<String>,
     val title: String,
+    @PrimaryKey
     val url: String,
-) : Parcelable
+    val record: Long
+)
 
-fun Post.toScrapPost(folder: String?) = ScrapPost(
-    folder = folder,
+fun ScrapPost.toPost() = Post(
     date = date,
     img = img,
     name = name,
@@ -26,5 +28,4 @@ fun Post.toScrapPost(folder: String?) = ScrapPost(
     tag = tag,
     title = title,
     url = url,
-    record = System.currentTimeMillis()
 )

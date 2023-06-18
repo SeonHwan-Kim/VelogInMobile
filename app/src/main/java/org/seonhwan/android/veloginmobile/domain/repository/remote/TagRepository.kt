@@ -1,4 +1,4 @@
-package org.seonhwan.android.veloginmobile.domain.repository
+package org.seonhwan.android.veloginmobile.domain.repository.remote
 
 import kotlinx.coroutines.flow.Flow
 import org.seonhwan.android.veloginmobile.domain.entity.Post

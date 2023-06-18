@@ -16,7 +16,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.seonhwan.android.veloginmobile.R
+import org.seonhwan.android.veloginmobile.data.local.model.toPost
 import org.seonhwan.android.veloginmobile.databinding.FragmentHomeBinding
+import org.seonhwan.android.veloginmobile.domain.entity.Post
 import org.seonhwan.android.veloginmobile.ui.addtag.AddTagActivity
 import org.seonhwan.android.veloginmobile.ui.home.HomeViewModel.Companion.CODE_202
 import org.seonhwan.android.veloginmobile.ui.home.HomeViewModel.Companion.NETWORK_ERR
@@ -33,6 +35,7 @@ import timber.log.Timber
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private val viewModel by viewModels<HomeViewModel>()
     private var postAdapter: VelogAdapter? = null
+    private var scrapPostList: List<Post>? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,34 +45,33 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         initPost()
         startSecondTabItem()
         onClickTabBar()
+        getAllScrapPost()
     }
 
     private fun initTabItem() {
-        viewModel.tagList
-            .flowWithLifecycle(lifecycle)
-            .onEach { event ->
-                when (event) {
-                    is Loading -> {}
-                    is Success -> {
-                        with(binding) {
-                            addToolbarTag("", R.drawable.ic_plus, 0, false)
-                            addToolbarTag("트렌드", null, 1, true)
-                            addToolbarTag("팔로우", null, 2, false)
-                            event.data.mapIndexed { index, tag ->
-                                addToolbarTag(tag, null, index + 3, false)
-                            }
+        viewModel.tagList.flowWithLifecycle(lifecycle).onEach { event ->
+            when (event) {
+                is Loading -> {}
+                is Success -> {
+                    with(binding) {
+                        addToolbarTag("", R.drawable.ic_plus, 0, false)
+                        addToolbarTag("트렌드", null, 1, true)
+                        addToolbarTag("팔로우", null, 2, false)
+                        event.data.mapIndexed { index, tag ->
+                            addToolbarTag(tag, null, index + 3, false)
                         }
-                    }
-
-                    is Failure -> {
-                        when (event.code) {
-                            NETWORK_ERR -> requireActivity().showToast("네트워크 상태를 확인해주세요")
-                            else -> requireActivity().showToast("문제가 발생하였습니다")
-                        }
-                        Timber.tag("tagListState").e("Failure")
                     }
                 }
-            }.launchIn(lifecycleScope)
+
+                is Failure -> {
+                    when (event.code) {
+                        NETWORK_ERR -> requireActivity().showToast("네트워크 상태를 확인해주세요")
+                        else -> requireActivity().showToast("문제가 발생하였습니다")
+                    }
+                    Timber.tag("tagListState").e("Failure")
+                }
+            }
+        }.launchIn(lifecycleScope)
     }
 
     private fun addToolbarTag(tag: String, icon: Int?, position: Int, setSelected: Boolean) {
@@ -84,11 +86,20 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     private fun initAdapter() {
-        postAdapter = VelogAdapter() { post ->
-            val intent = Intent(activity, WebViewActivity::class.java)
-            intent.putExtra(VELOG, post)
-            getResultSubscribe.launch(intent)
-        }
+        postAdapter = VelogAdapter(
+            { post ->
+                val intent = Intent(activity, WebViewActivity::class.java)
+                intent.putExtra(VELOG, post)
+                getResultSubscribe.launch(intent)
+            },
+            { post ->
+                viewModel.scrapPost(post, null)
+            },
+            { url ->
+                viewModel.deleteScrapPost(url)
+            },
+            scrapPostList,
+        )
         binding.rvHomePost.adapter = postAdapter
     }
 
@@ -160,37 +171,49 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     private fun initPost() {
-        viewModel.postList
-            .flowWithLifecycle(lifecycle)
-            .onEach { event ->
-                when (event) {
-                    is Loading -> binding.pbHomeLoading.visibility = View.VISIBLE
+        viewModel.postList.flowWithLifecycle(lifecycle).onEach { event ->
+            when (event) {
+                is Loading -> binding.pbHomeLoading.visibility = View.VISIBLE
 
-                    is Success -> {
-                        binding.pbHomeLoading.visibility = View.GONE
-                        postAdapter?.submitList(event.data)
-                    }
+                is Success -> {
+                    binding.pbHomeLoading.visibility = View.GONE
+                    postAdapter?.submitList(event.data)
+                }
 
-                    is Failure -> {
-                        binding.pbHomeLoading.visibility = View.VISIBLE
-                        when (event.code) {
-                            CODE_202 -> {
-                                binding.pbHomeLoading.visibility = View.GONE
-                                requireActivity().showToast("구독자가 없습니다")
-                            }
+                is Failure -> {
+                    binding.pbHomeLoading.visibility = View.VISIBLE
+                    when (event.code) {
+                        CODE_202 -> {
+                            binding.pbHomeLoading.visibility = View.GONE
+                            requireActivity().showToast("구독자가 없습니다")
+                        }
 
-                            else -> {
-                                binding.pbHomeLoading.visibility = View.GONE
-                                requireActivity().showToast("문제가 발생하였습니다")
-                            }
+                        else -> {
+                            binding.pbHomeLoading.visibility = View.GONE
+                            requireActivity().showToast("문제가 발생하였습니다")
                         }
                     }
                 }
-            }.launchIn(lifecycleScope)
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun getAllScrapPost() {
+        viewModel.getAllScrapPostState.flowWithLifecycle(lifecycle).onEach { event ->
+            when (event) {
+                is Loading -> {}
+                is Success -> {
+                    scrapPostList = event.data.map { scrapPost -> scrapPost.toPost() }
+                }
+
+                is Failure -> {}
+            }
+        }.launchIn(lifecycleScope)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         postAdapter = null
+        scrapPostList = null
     }
 }

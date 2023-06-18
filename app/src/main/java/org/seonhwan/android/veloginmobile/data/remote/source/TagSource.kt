@@ -1,8 +1,6 @@
-package org.seonhwan.android.veloginmobile.data.source
+package org.seonhwan.android.veloginmobile.data.remote.source
 
-import org.seonhwan.android.veloginmobile.data.model.response.ResponsePostDto
-import org.seonhwan.android.veloginmobile.data.model.response.ResponseTagPostDto
-import org.seonhwan.android.veloginmobile.data.service.TagService
+import org.seonhwan.android.veloginmobile.data.remote.service.TagService
 import javax.inject.Inject
 
 class TagSource @Inject constructor(
