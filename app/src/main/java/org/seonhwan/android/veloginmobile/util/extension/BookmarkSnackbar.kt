@@ -1,5 +1,7 @@
 package org.seonhwan.android.veloginmobile.util.extension
 
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -8,10 +10,12 @@ import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import org.seonhwan.android.veloginmobile.R
 import org.seonhwan.android.veloginmobile.databinding.SnackbarBookmarkBinding
+import org.seonhwan.android.veloginmobile.domain.entity.Post
 import org.seonhwan.android.veloginmobile.ui.scrap.ScrapBottomSheetFragment
 import org.seonhwan.android.veloginmobile.ui.scrap.ScrapFragment
 
 class BookmarkSnackbar(
+    private val post: Post,
     private val activity: AppCompatActivity,
     view: View,
     private val message: String,
@@ -42,6 +46,10 @@ class BookmarkSnackbar(
         binding.tvSnackbar.text = message
         binding.ivSnackbarPutFolder.setOnClickListener {
             val bottomSheetFragment = ScrapBottomSheetFragment()
+            Log.d("initData", post.toString())
+            bottomSheetFragment.arguments = Bundle().apply {
+                putParcelable("post", post)
+            }
             bottomSheetFragment.show(
                 activity.supportFragmentManager,
                 bottomSheetFragment.tag,
@@ -62,7 +70,7 @@ class BookmarkSnackbar(
     }
 
     companion object {
-        fun make(activity: AppCompatActivity, view: View, message: String) =
-            BookmarkSnackbar(activity as AppCompatActivity, view, message)
+        fun make(post: Post, activity: AppCompatActivity, view: View, message: String) =
+            BookmarkSnackbar(post, activity as AppCompatActivity, view, message)
     }
 }

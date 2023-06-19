@@ -67,10 +67,10 @@ class VelogAdapter(
                     with(ibVelogBookmark) {
                         if (isSelected) {
                             deleteScrapPost(post.url)
-                            BookmarkSnackbar.make(activity, binding.root, "스크랩을 취소하였습니다.").show()
+                            BookmarkSnackbar.make(post, activity, binding.root, "스크랩을 취소하였습니다.").show()
                         } else {
                             scrapPost(post)
-                            BookmarkSnackbar.make(activity, binding.root, "스크랩 했습니다.").show()
+                            BookmarkSnackbar.make(post, activity, binding.root, "스크랩 했습니다.").show()
                         }
                         isSelected = !isSelected
                         scrapStatus.put(position, isSelected)
