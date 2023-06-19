@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -38,6 +39,7 @@ class ScrapFragment : BindingFragment<FragmentScrapBinding>(R.layout.fragment_sc
 
     private fun initAdapter() {
         postAdapter = VelogAdapter(
+            requireActivity() as AppCompatActivity,
             { post ->
                 val intent = Intent(activity, WebViewActivity::class.java)
                 intent.putExtra(VelogAdapter.VELOG, post)

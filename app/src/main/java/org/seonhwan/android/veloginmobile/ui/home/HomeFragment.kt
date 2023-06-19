@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -87,6 +88,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun initAdapter() {
         postAdapter = VelogAdapter(
+            requireActivity() as AppCompatActivity,
             { post ->
                 val intent = Intent(activity, WebViewActivity::class.java)
                 intent.putExtra(VELOG, post)
