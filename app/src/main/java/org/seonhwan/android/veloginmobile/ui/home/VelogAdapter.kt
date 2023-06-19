@@ -3,6 +3,7 @@ package org.seonhwan.android.veloginmobile.ui.home
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -12,15 +13,18 @@ import org.seonhwan.android.veloginmobile.util.DiffCallback
 import org.seonhwan.android.veloginmobile.util.extension.BookmarkSnackbar
 
 class VelogAdapter(
+    private val activity: AppCompatActivity,
     private val intentToWebView: (Post) -> Unit,
     private val scrapPost: (Post) -> Unit,
     private val deleteScrapPost: (String) -> Unit,
     private val scrapPostList: List<Post>?,
 ) : ListAdapter<Post, VelogAdapter.VelogViewHolder>(diffUtil) {
     private val scrapStatus = SparseBooleanArray()
+
     class VelogViewHolder(private val binding: ItemVelogBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBind(
+            activity: AppCompatActivity,
             post: Post,
             scrapPost: (Post) -> Unit,
             deleteScrapPost: (String) -> Unit,
@@ -32,11 +36,14 @@ class VelogAdapter(
                 ibVelogBookmark.isSelected = scrapStatus[position]
                 ivVelogImg.load(post.img)
                 if (scrapPostList != null) {
-                    if (scrapPostList.contains(post)) {
-                        ibVelogBookmark.isSelected = true
-                        scrapStatus.put(position, true)
+                    scrapPostList.map { scrapPost ->
+                        if (scrapPost.url == post.url) {
+                            ibVelogBookmark.isSelected = true
+                            scrapStatus.put(position, true)
+                        }
                     }
                 }
+
                 rvVelogTag.adapter = VelogTagAdapter().apply {
                     if (post.tag.size > 3) {
                         submitList(post.tag.slice(0..2))
@@ -44,11 +51,12 @@ class VelogAdapter(
                         submitList(post.tag)
                     }
                 }
-                onClickBookmark(post, scrapPost, deleteScrapPost, scrapStatus)
+                onClickBookmark(activity, post, scrapPost, deleteScrapPost, scrapStatus)
             }
         }
 
         private fun onClickBookmark(
+            activity: AppCompatActivity,
             post: Post,
             scrapPost: (Post) -> Unit,
             deleteScrapPost: (String) -> Unit,
@@ -59,10 +67,10 @@ class VelogAdapter(
                     with(ibVelogBookmark) {
                         if (isSelected) {
                             deleteScrapPost(post.url)
-                            BookmarkSnackbar.make(binding.root, "스크랩을 취소하였습니다.").show()
+                            BookmarkSnackbar.make(activity, binding.root, "스크랩을 취소하였습니다.").show()
                         } else {
                             scrapPost(post)
-                            BookmarkSnackbar.make(binding.root, "스크랩 했습니다.").show()
+                            BookmarkSnackbar.make(activity, binding.root, "스크랩 했습니다.").show()
                         }
                         isSelected = !isSelected
                         scrapStatus.put(position, isSelected)
@@ -87,7 +95,7 @@ class VelogAdapter(
         holder.itemView.setOnClickListener {
             intentToWebView(post)
         }
-        holder.onBind(post, scrapPost, deleteScrapPost, scrapPostList, scrapStatus)
+        holder.onBind(activity, post, scrapPost, deleteScrapPost, scrapPostList, scrapStatus)
     }
 
     companion object {
