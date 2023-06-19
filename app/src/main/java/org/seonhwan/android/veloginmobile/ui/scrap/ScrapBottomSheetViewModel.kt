@@ -9,7 +9,9 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import org.seonhwan.android.veloginmobile.data.local.model.Folder
+import org.seonhwan.android.veloginmobile.data.local.model.ScrapPost
 import org.seonhwan.android.veloginmobile.domain.repository.local.FolderRepository
+import org.seonhwan.android.veloginmobile.domain.repository.local.ScrapPostRepository
 import org.seonhwan.android.veloginmobile.util.UiState
 import org.seonhwan.android.veloginmobile.util.UiState.Failure
 import org.seonhwan.android.veloginmobile.util.UiState.Success
@@ -17,6 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ScrapBottomSheetViewModel @Inject constructor(
+    private val scrapPostRepository: ScrapPostRepository,
     private val folderRepository: FolderRepository,
 ) : ViewModel() {
     val folderName = MutableLiveData("")
@@ -42,6 +45,18 @@ class ScrapBottomSheetViewModel @Inject constructor(
     fun addFolder() {
         viewModelScope.launch {
             folderRepository.addFolder(Folder(folderName.value.toString(), 0))
+        }
+    }
+
+    fun addFolder(folder: Folder) {
+        viewModelScope.launch {
+            folderRepository.addFolder(folder)
+        }
+    }
+
+    fun addScrapPost(post: ScrapPost) {
+        viewModelScope.launch {
+            scrapPostRepository.addScrapPost(post)
         }
     }
 }
