@@ -2,13 +2,20 @@ package org.seonhwan.android.veloginmobile.util.extension
 
 import android.view.LayoutInflater
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import org.seonhwan.android.veloginmobile.R
 import org.seonhwan.android.veloginmobile.databinding.SnackbarBookmarkBinding
+import org.seonhwan.android.veloginmobile.ui.scrap.ScrapBottomSheetFragment
+import org.seonhwan.android.veloginmobile.ui.scrap.ScrapFragment
 
-class BookmarkSnackbar(view: View, private val message: String) {
+class BookmarkSnackbar(
+    private val activity: AppCompatActivity,
+    view: View,
+    private val message: String,
+) {
 
     private val context = view.context
     private val snackbar = Snackbar.make(view, "", BaseTransientBottomBar.LENGTH_SHORT)
@@ -34,10 +41,19 @@ class BookmarkSnackbar(view: View, private val message: String) {
     private fun initData() {
         binding.tvSnackbar.text = message
         binding.ivSnackbarPutFolder.setOnClickListener {
-            // ~~
+            val bottomSheetFragment = ScrapBottomSheetFragment()
+            bottomSheetFragment.show(
+                activity.supportFragmentManager,
+                bottomSheetFragment.tag,
+            )
+            snackbar.dismiss()
         }
         binding.ivSnackbarGoFolder.setOnClickListener {
-            // ~~
+            activity.supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fcv_main, ScrapFragment())
+                .commit()
+            snackbar.dismiss()
         }
     }
 
@@ -46,6 +62,7 @@ class BookmarkSnackbar(view: View, private val message: String) {
     }
 
     companion object {
-        fun make(view: View, message: String) = BookmarkSnackbar(view, message)
+        fun make(activity: AppCompatActivity, view: View, message: String) =
+            BookmarkSnackbar(activity as AppCompatActivity, view, message)
     }
 }
