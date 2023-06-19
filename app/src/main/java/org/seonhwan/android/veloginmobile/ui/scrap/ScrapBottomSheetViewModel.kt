@@ -1,6 +1,5 @@
 package org.seonhwan.android.veloginmobile.ui.scrap
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
