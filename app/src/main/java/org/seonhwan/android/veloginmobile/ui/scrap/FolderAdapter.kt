@@ -4,11 +4,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.seonhwan.android.veloginmobile.data.local.model.Folder
 import org.seonhwan.android.veloginmobile.databinding.ItemBottomSheetFolderBinding
 import org.seonhwan.android.veloginmobile.util.DiffCallback
 
-class FolderAdapter : ListAdapter<Folder, FolderAdapter.FolderViewHolder>(diffUtil) {
+class FolderAdapter(
+    private val bottomSheet: BottomSheetDialogFragment,
+    private val addScrapPostFolder: (String) -> Unit,
+    private val addFolder: (Folder) -> Unit,
+) : ListAdapter<Folder, FolderAdapter.FolderViewHolder>(diffUtil) {
     class FolderViewHolder(private val binding: ItemBottomSheetFolderBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBind(folder: Folder) {
@@ -27,7 +32,14 @@ class FolderAdapter : ListAdapter<Folder, FolderAdapter.FolderViewHolder>(diffUt
     }
 
     override fun onBindViewHolder(holder: FolderViewHolder, position: Int) {
-        holder.onBind(getItem(position))
+        val folder = getItem(position)
+        holder.onBind(folder)
+        holder.itemView.setOnClickListener {
+            val increaseFolderSize = folder.copy(size = folder.size + 1)
+            addScrapPostFolder(folder.name)
+            addFolder(increaseFolderSize)
+            bottomSheet.dismiss()
+        }
     }
 
     companion object {
