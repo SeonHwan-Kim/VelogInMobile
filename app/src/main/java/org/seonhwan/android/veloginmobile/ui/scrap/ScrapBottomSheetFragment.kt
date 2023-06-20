@@ -18,6 +18,7 @@ import org.seonhwan.android.veloginmobile.util.UiState.Failure
 import org.seonhwan.android.veloginmobile.util.UiState.Loading
 import org.seonhwan.android.veloginmobile.util.UiState.Success
 import org.seonhwan.android.veloginmobile.util.binding.BindingBottomSheet
+import org.seonhwan.android.veloginmobile.util.extension.BookmarkSnackbar.Companion.POST_KEY
 import org.seonhwan.android.veloginmobile.util.extension.showToast
 import timber.log.Timber
 
@@ -31,7 +32,7 @@ class ScrapBottomSheetFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.vm = viewModel
-        post = arguments?.getParcelable("post")
+        post = arguments?.getParcelable(POST_KEY)
 
         initAdapter()
         getAllFolderList()
@@ -70,7 +71,6 @@ class ScrapBottomSheetFragment :
 
                 is Success -> {
                     folderAdapter?.submitList(event.data)
-                    Log.d("getAllFolderList", event.data.toString())
                 }
 
                 is Failure -> {

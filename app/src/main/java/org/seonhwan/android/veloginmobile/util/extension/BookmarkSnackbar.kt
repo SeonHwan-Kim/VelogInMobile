@@ -46,9 +46,8 @@ class BookmarkSnackbar(
         binding.tvSnackbar.text = message
         binding.ivSnackbarPutFolder.setOnClickListener {
             val bottomSheetFragment = ScrapBottomSheetFragment()
-            Log.d("initData", post.toString())
             bottomSheetFragment.arguments = Bundle().apply {
-                putParcelable("post", post)
+                putParcelable(POST_KEY, post)
             }
             bottomSheetFragment.show(
                 activity.supportFragmentManager,
@@ -72,5 +71,6 @@ class BookmarkSnackbar(
     companion object {
         fun make(post: Post, activity: AppCompatActivity, view: View, message: String) =
             BookmarkSnackbar(post, activity as AppCompatActivity, view, message)
+        const val POST_KEY = "post"
     }
 }
