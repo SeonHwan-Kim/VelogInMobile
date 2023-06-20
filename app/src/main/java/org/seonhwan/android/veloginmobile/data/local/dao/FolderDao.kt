@@ -17,7 +17,7 @@ interface FolderDao {
     @Delete
     suspend fun deleteFolder(folder: Folder)
 
-    @Query("SELECT * FROM folder")
+    @Query("SELECT * FROM folder ORDER BY name ASC")
     fun getAllFolder(): Flow<List<Folder>>
 
     @Query("SELECT * FROM folder WHERE name = :name")
