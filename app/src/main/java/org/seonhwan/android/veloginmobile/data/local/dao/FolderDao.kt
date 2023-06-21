@@ -22,7 +22,4 @@ interface FolderDao {
 
     @Query("SELECT * FROM folder WHERE name = :name")
     fun getFolder(name: String): Flow<Folder>
-
-    @Update
-    fun setFolderNumber(folder: Folder)
 }

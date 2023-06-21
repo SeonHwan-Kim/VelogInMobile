@@ -11,6 +11,4 @@ interface FolderRepository {
     fun getAllFolder(): Flow<List<Folder>>
 
     fun getFolder(name: String): Flow<Folder>
-
-    fun setFolderNumber(folder: Folder)
 }

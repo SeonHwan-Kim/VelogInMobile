@@ -20,7 +20,4 @@ class FolderRepositoryImpl @Inject constructor() : FolderRepository {
 
     override fun getFolder(name: String): Flow<Folder> =
         folderDao.getFolder(name)
-
-    override fun setFolderNumber(folder: Folder) =
-        folderDao.setFolderNumber(folder)
 }
