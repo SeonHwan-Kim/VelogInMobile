@@ -11,4 +11,6 @@ interface FolderRepository {
     fun getAllFolder(): Flow<List<Folder>>
 
     fun getFolder(name: String): Flow<Folder>
+
+    suspend fun updateFolder(folder: Folder)
 }

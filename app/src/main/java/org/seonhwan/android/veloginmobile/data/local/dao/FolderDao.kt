@@ -11,7 +11,7 @@ import org.seonhwan.android.veloginmobile.data.local.model.Folder
 
 @Dao
 interface FolderDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addFolder(folder: Folder)
 
     @Delete
@@ -22,4 +22,7 @@ interface FolderDao {
 
     @Query("SELECT * FROM folder WHERE name = :name")
     fun getFolder(name: String): Flow<Folder>
+
+    @Update
+    suspend fun updateFolder(folder: Folder)
 }
