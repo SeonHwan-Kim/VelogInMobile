@@ -18,7 +18,7 @@
     </style>
 
     <style name="subhead" parent="TextAppearance.Velog">
-        <item name="fontFamily">@font/font_pretendard_medium</item>
+        <item name="fontFamily">@font/font_pretendard_bold</item>
         <item name="android:textSize">18sp</item>
     </style>
 
