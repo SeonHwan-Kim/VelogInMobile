@@ -1,7 +1,6 @@
 package org.seonhwan.android.veloginmobile.ui.scrap
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -38,6 +37,7 @@ class ScrapBottomSheetFragment :
         getAllFolderList()
         onClickAddFolder()
         onClickCloseButton()
+        onClickAddFolderButton()
     }
 
     private fun initAdapter() {
@@ -47,7 +47,7 @@ class ScrapBottomSheetFragment :
                 addScrapPostFolder(folderName)
             },
             { folder ->
-                addFolder(folder)
+                updateFolder(folder)
             },
         )
 
@@ -58,8 +58,8 @@ class ScrapBottomSheetFragment :
         post?.toScrapPost(folderName)?.let { viewModel.addScrapPost(it) }
     }
 
-    private fun addFolder(folder: Folder) {
-        viewModel.addFolder(folder)
+    private fun updateFolder(folder: Folder) {
+        viewModel.updateFolder(folder)
     }
 
     private fun getAllFolderList() {
@@ -92,6 +92,17 @@ class ScrapBottomSheetFragment :
     private fun onClickCloseButton() {
         binding.ibBottomSheetClose.setOnClickListener {
             dismiss()
+        }
+    }
+
+    private fun onClickAddFolderButton() {
+        viewModel.isValidAddFolder.observe(this) { isValid ->
+            binding.tvBottomSheetAdd.isSelected = isValid
+            if (isValid) {
+                binding.tvBottomSheetAdd.setOnClickListener {
+                    viewModel.addFolder()
+                }
+            }
         }
     }
 
