@@ -2,6 +2,7 @@ package org.seonhwan.android.veloginmobile.ui.scrap
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -99,9 +100,12 @@ class ScrapBottomSheetFragment :
         viewModel.isValidAddFolder.observe(this) { isValid ->
             binding.tvBottomSheetAdd.isSelected = isValid
             if (isValid) {
+                binding.tvBottomSheetAdd.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                 binding.tvBottomSheetAdd.setOnClickListener {
                     viewModel.addFolder()
                 }
+            } else {
+                binding.tvBottomSheetAdd.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_300))
             }
         }
     }
