@@ -1,16 +1,21 @@
 package org.seonhwan.android.veloginmobile.ui.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
+import org.seonhwan.android.veloginmobile.data.local.model.Folder
 import org.seonhwan.android.veloginmobile.data.local.model.ScrapPost
 import org.seonhwan.android.veloginmobile.domain.entity.Post
 import org.seonhwan.android.veloginmobile.domain.entity.toScrapPost
+import org.seonhwan.android.veloginmobile.domain.repository.local.FolderRepository
 import org.seonhwan.android.veloginmobile.domain.repository.local.ScrapPostRepository
 import org.seonhwan.android.veloginmobile.domain.repository.remote.SubscribeRepository
 import org.seonhwan.android.veloginmobile.domain.repository.remote.TagRepository
@@ -28,6 +33,7 @@ class HomeViewModel @Inject constructor(
     private val tagRepository: TagRepository,
     private val subscribeRepository: SubscribeRepository,
     private val scrapPostRepository: ScrapPostRepository,
+    private val folderRepository: FolderRepository,
 ) : ViewModel() {
     private val _tagList = MutableSharedFlow<UiState<List<String>>>()
     val tagList: SharedFlow<UiState<List<String>>>
@@ -40,6 +46,8 @@ class HomeViewModel @Inject constructor(
     private val _getAllScrapPostState = MutableSharedFlow<UiState<List<ScrapPost>>>()
     val getAllScrapPostState: SharedFlow<UiState<List<ScrapPost>>>
         get() = _getAllScrapPostState
+
+    private var getFolder: Folder? = null
 
     init {
         getTag()
@@ -116,9 +124,26 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun deleteScrapPost(url: String) {
+    fun deleteScrapPost(post: Post, folderName: String?) {
         viewModelScope.launch {
-            scrapPostRepository.deleteScrapPost(url)
+            scrapPostRepository.deleteScrapPost(post.url)
+            Log.d("deleteScrapPostFolderName", folderName.toString())
+            if (folderName != null) {
+                folderRepository.getFolder(folderName).take(1).collect { folder ->
+                    getFolder = folder
+                    decreaseFolderNumber()
+                    Timber.d(folder.toString())
+                }
+            }
+        }
+    }
+
+    private fun decreaseFolderNumber() {
+        viewModelScope.launch {
+            getFolder?.let {
+                val newFolder = it.copy(it.name, it.size - 1)
+                folderRepository.addFolder(newFolder)
+            }
         }
     }
 

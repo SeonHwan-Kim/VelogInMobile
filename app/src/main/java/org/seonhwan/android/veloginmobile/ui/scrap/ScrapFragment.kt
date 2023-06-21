@@ -48,8 +48,8 @@ class ScrapFragment : BindingFragment<FragmentScrapBinding>(R.layout.fragment_sc
             { post ->
                 viewModel.scrapPost(post, null)
             },
-            { url ->
-                viewModel.deleteScrapPost(url)
+            { post ->
+                viewModel.deleteScrapPost(post.url)
             },
             scrapPostList,
         )

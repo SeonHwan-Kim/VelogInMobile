@@ -32,7 +32,7 @@ class ScrapBottomSheetViewModel @Inject constructor(
         getAllFolderList()
     }
 
-    fun getAllFolderList() {
+    private fun getAllFolderList() {
         viewModelScope.launch {
             folderRepository.getAllFolder().catch {
                 _getAllFolderListState.emit(Failure(null))

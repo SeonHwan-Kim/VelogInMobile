@@ -16,7 +16,7 @@ class VelogAdapter(
     private val activity: AppCompatActivity,
     private val intentToWebView: (Post) -> Unit,
     private val scrapPost: (Post) -> Unit,
-    private val deleteScrapPost: (String) -> Unit,
+    private val deleteScrapPost: (Post) -> Unit,
     private val scrapPostList: List<Post>?,
 ) : ListAdapter<Post, VelogAdapter.VelogViewHolder>(diffUtil) {
     private val scrapStatus = SparseBooleanArray()
@@ -27,7 +27,7 @@ class VelogAdapter(
             activity: AppCompatActivity,
             post: Post,
             scrapPost: (Post) -> Unit,
-            deleteScrapPost: (String) -> Unit,
+            deleteScrapPost: (Post) -> Unit,
             scrapPostList: List<Post>?,
             scrapStatus: SparseBooleanArray,
         ) {
@@ -59,15 +59,14 @@ class VelogAdapter(
             activity: AppCompatActivity,
             post: Post,
             scrapPost: (Post) -> Unit,
-            deleteScrapPost: (String) -> Unit,
+            deleteScrapPost: (Post) -> Unit,
             scrapStatus: SparseBooleanArray,
         ) {
             with(binding) {
                 ibVelogBookmark.setOnClickListener {
                     with(ibVelogBookmark) {
                         if (isSelected) {
-                            deleteScrapPost(post.url)
-                            BookmarkSnackbar.make(post, activity, binding.root, "스크랩을 취소하였습니다.").show()
+                            deleteScrapPost(post)
                         } else {
                             scrapPost(post)
                             BookmarkSnackbar.make(post, activity, binding.root, "스크랩 했습니다.").show()

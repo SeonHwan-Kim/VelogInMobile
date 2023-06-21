@@ -17,9 +17,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.seonhwan.android.veloginmobile.R
+import org.seonhwan.android.veloginmobile.data.local.model.ScrapPost
 import org.seonhwan.android.veloginmobile.data.local.model.toPost
 import org.seonhwan.android.veloginmobile.databinding.FragmentHomeBinding
-import org.seonhwan.android.veloginmobile.domain.entity.Post
 import org.seonhwan.android.veloginmobile.ui.addtag.AddTagActivity
 import org.seonhwan.android.veloginmobile.ui.home.HomeViewModel.Companion.CODE_202
 import org.seonhwan.android.veloginmobile.ui.home.HomeViewModel.Companion.NETWORK_ERR
@@ -36,7 +36,7 @@ import timber.log.Timber
 class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private val viewModel by viewModels<HomeViewModel>()
     private var postAdapter: VelogAdapter? = null
-    private var scrapPostList: List<Post>? = null
+    private var scrapPostList: List<ScrapPost>? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -97,10 +97,10 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             { post ->
                 viewModel.scrapPost(post, null)
             },
-            { url ->
-                viewModel.deleteScrapPost(url)
+            { post ->
+                viewModel.deleteScrapPost(post, getScrapPostFolder(post.url))
             },
-            scrapPostList,
+            scrapPostList?.map { scrapPost -> scrapPost.toPost() },
         )
         binding.rvHomePost.adapter = postAdapter
     }
@@ -205,12 +205,22 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             when (event) {
                 is Loading -> {}
                 is Success -> {
-                    scrapPostList = event.data.map { scrapPost -> scrapPost.toPost() }
+                    scrapPostList = event.data
                 }
 
                 is Failure -> {}
             }
         }.launchIn(lifecycleScope)
+    }
+
+    private fun getScrapPostFolder(postUrl: String): String? {
+        scrapPostList?.map { scrapPost ->
+            if (scrapPost.url == postUrl) {
+                return scrapPost.folder
+            } else {
+            }
+        }
+        return null
     }
 
     override fun onDestroyView() {
