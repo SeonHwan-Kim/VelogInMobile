@@ -127,7 +127,6 @@ class HomeViewModel @Inject constructor(
     fun deleteScrapPost(post: Post, folderName: String?) {
         viewModelScope.launch {
             scrapPostRepository.deleteScrapPost(post.url)
-            Log.d("deleteScrapPostFolderName", folderName.toString())
             if (folderName != null) {
                 folderRepository.getFolder(folderName).take(1).collect { folder ->
                     getFolder = folder
@@ -142,7 +141,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             getFolder?.let {
                 val newFolder = it.copy(it.name, it.size - 1)
-                folderRepository.addFolder(newFolder)
+                folderRepository.updateFolder(newFolder)
             }
         }
     }

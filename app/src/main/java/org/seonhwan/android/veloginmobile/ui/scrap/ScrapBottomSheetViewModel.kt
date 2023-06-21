@@ -1,7 +1,9 @@
 package org.seonhwan.android.veloginmobile.ui.scrap
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -23,6 +25,9 @@ class ScrapBottomSheetViewModel @Inject constructor(
     private val folderRepository: FolderRepository,
 ) : ViewModel() {
     val folderName = MutableLiveData("")
+
+    val isValidAddFolder: LiveData<Boolean> =
+        folderName.map { folderName -> folderName.isNotEmpty() }
 
     private val _getAllFolderListState = MutableSharedFlow<UiState<List<Folder>>>()
     val getAllFolderList: SharedFlow<UiState<List<Folder>>>
@@ -48,9 +53,9 @@ class ScrapBottomSheetViewModel @Inject constructor(
         }
     }
 
-    fun addFolder(folder: Folder) {
+    fun updateFolder(folder: Folder) {
         viewModelScope.launch {
-            folderRepository.addFolder(folder)
+            folderRepository.updateFolder(folder)
         }
     }
 

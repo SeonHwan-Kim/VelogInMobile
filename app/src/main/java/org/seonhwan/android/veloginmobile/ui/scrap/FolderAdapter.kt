@@ -12,7 +12,7 @@ import org.seonhwan.android.veloginmobile.util.DiffCallback
 class FolderAdapter(
     private val bottomSheet: BottomSheetDialogFragment,
     private val addScrapPostFolder: (String) -> Unit,
-    private val addFolder: (Folder) -> Unit,
+    private val updateFolder: (Folder) -> Unit,
 ) : ListAdapter<Folder, FolderAdapter.FolderViewHolder>(diffUtil) {
     class FolderViewHolder(private val binding: ItemBottomSheetFolderBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -37,7 +37,7 @@ class FolderAdapter(
         holder.itemView.setOnClickListener {
             val increaseFolderSize = folder.copy(size = folder.size + 1)
             addScrapPostFolder(folder.name)
-            addFolder(increaseFolderSize)
+            updateFolder(increaseFolderSize)
             bottomSheet.dismiss()
         }
     }
