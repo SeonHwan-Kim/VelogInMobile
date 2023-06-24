@@ -1,6 +1,5 @@
 package org.seonhwan.android.veloginmobile.ui.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -98,7 +97,7 @@ class HomeViewModel @Inject constructor(
                         Timber.d(throwable)
                     }
                 }.collect { response ->
-                    _postList.emit(Success<List<Post>>(response))
+                    _postList.emit(Success(response))
                     Timber.d(response.toString())
                 }
         }
