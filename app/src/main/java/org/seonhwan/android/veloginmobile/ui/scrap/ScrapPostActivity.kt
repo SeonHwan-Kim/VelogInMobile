@@ -37,6 +37,7 @@ class ScrapPostActivity : BindingActivity<ActivityScrapPostBinding>(R.layout.act
         getTitleName()
         initScrapPost()
         getScrapPost()
+        onClickBackButton()
     }
 
     private fun getTitleName() {
@@ -105,10 +106,15 @@ class ScrapPostActivity : BindingActivity<ActivityScrapPostBinding>(R.layout.act
         scrapPostList?.map { scrapPost ->
             if (scrapPost.url == postUrl) {
                 return scrapPost.folder
-            } else {
             }
         }
         return null
+    }
+
+    private fun onClickBackButton() {
+        binding.ivScrapPostBackButton.setOnClickListener {
+            if (!isFinishing) finish()
+        }
     }
 
     override fun onDestroy() {
