@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -17,9 +17,9 @@
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 style="@style/display"
@@ -38,24 +38,22 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:background="@color/gray_200"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_scrap_toolbar"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_scrap_toolbar" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_scrap_post"
+            android:id="@+id/rv_scrap_folder_list"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/gray_100"
-            android:clipToPadding="false"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="20dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingHorizontal="12dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_scrap_toolbar"
-            tools:listitem="@layout/item_velog" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:spanCount="2"
+            tools:listitem="@layout/item_scrap_folder" />
 
         <ProgressBar
             android:id="@+id/pb_scrap_loading"
