@@ -6,6 +6,8 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -21,6 +23,7 @@ import org.seonhwan.android.veloginmobile.util.extension.showToast
 @AndroidEntryPoint
 class ScrapFragment : BindingFragment<FragmentScrapBinding>(R.layout.fragment_scrap) {
     private val viewModel by viewModels<ScrapViewModel>()
+    private var scrapHeaderAdapter: ScrapHeaderAdapter? = null
     private var scrapFolderAdapter: ScrapFolderAdapter? = null
     private var folderList = mutableListOf<Folder>()
 
@@ -38,11 +41,23 @@ class ScrapFragment : BindingFragment<FragmentScrapBinding>(R.layout.fragment_sc
     }
 
     private fun initAdapter() {
+        scrapHeaderAdapter = ScrapHeaderAdapter()
+
         scrapFolderAdapter = ScrapFolderAdapter { folderName ->
             intentToScrapFolderPost(folderName)
         }
 
-        binding.rvScrapFolderList.adapter = scrapFolderAdapter
+        val gridLayoutManager = GridLayoutManager(context, 2)
+
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return if (position == 0) 2 else 1
+            }
+        }
+
+        binding.rvScrapFolderList.layoutManager = gridLayoutManager
+
+        binding.rvScrapFolderList.adapter = ConcatAdapter(scrapHeaderAdapter, scrapFolderAdapter)
     }
 
     private fun initFolder() {
@@ -84,6 +99,7 @@ class ScrapFragment : BindingFragment<FragmentScrapBinding>(R.layout.fragment_sc
 
     override fun onDestroyView() {
         super.onDestroyView()
+        scrapHeaderAdapter = null
         scrapFolderAdapter = null
     }
 
