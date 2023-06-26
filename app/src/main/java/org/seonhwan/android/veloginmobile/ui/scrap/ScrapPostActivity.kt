@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ConcatAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -29,6 +30,7 @@ class ScrapPostActivity : BindingActivity<ActivityScrapPostBinding>(R.layout.act
     private val viewModel by viewModels<ScrapViewModel>()
     private var folderName: String? = null
     private var scrapFolderPostAdapter: VelogAdapter? = null
+    private var scrapFolderHeaderAdapter: ScrapFolderHeaderAdapter? = null
     private var scrapPostList: List<ScrapPost>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +57,8 @@ class ScrapPostActivity : BindingActivity<ActivityScrapPostBinding>(R.layout.act
     }
 
     private fun initAdapter() {
+        scrapFolderHeaderAdapter = ScrapFolderHeaderAdapter()
+
         scrapFolderPostAdapter = VelogAdapter(
             this,
             { post ->
@@ -71,7 +75,7 @@ class ScrapPostActivity : BindingActivity<ActivityScrapPostBinding>(R.layout.act
             scrapPostList?.map { scrapPost -> scrapPost.toPost() },
         )
 
-        binding.rvHomePost.adapter = scrapFolderPostAdapter
+        binding.rvHomePost.adapter = ConcatAdapter(scrapFolderHeaderAdapter, scrapFolderPostAdapter)
     }
 
     private val getResultSubscribe = registerForActivityResult(
@@ -119,6 +123,7 @@ class ScrapPostActivity : BindingActivity<ActivityScrapPostBinding>(R.layout.act
 
     override fun onDestroy() {
         super.onDestroy()
+        scrapFolderHeaderAdapter = null
         scrapFolderPostAdapter = null
         scrapPostList = null
     }
