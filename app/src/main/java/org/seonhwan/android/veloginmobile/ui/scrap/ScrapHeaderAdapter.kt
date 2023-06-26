@@ -5,13 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import org.seonhwan.android.veloginmobile.databinding.ItemScrapHeaderBinding
-import timber.log.Timber
 
-class ScrapHeaderAdapter: Adapter<ScrapHeaderAdapter.ScrapHeaderViewHolder>() {
-    class ScrapHeaderViewHolder(private val binding: ItemScrapHeaderBinding): ViewHolder(binding.root) {
-        fun onBind(){
+class ScrapHeaderAdapter(
+    private val onClickAddFolder: () -> Unit,
+) : Adapter<ScrapHeaderAdapter.ScrapHeaderViewHolder>() {
+    class ScrapHeaderViewHolder(private val binding: ItemScrapHeaderBinding) :
+        ViewHolder(binding.root) {
+        fun onBind(
+            onClickAddFolder: () -> Unit,
+        ) {
             binding.tvScrapHeader.setOnClickListener {
-                Timber.d("ScrapHeader")
+                onClickAddFolder()
             }
         }
     }
@@ -21,14 +25,14 @@ class ScrapHeaderAdapter: Adapter<ScrapHeaderAdapter.ScrapHeaderViewHolder>() {
             ItemScrapHeaderBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
-                false
-            )
+                false,
+            ),
         )
     }
 
     override fun getItemCount(): Int = 1
 
     override fun onBindViewHolder(holder: ScrapHeaderViewHolder, position: Int) {
-        holder.onBind()
+        holder.onBind(onClickAddFolder)
     }
 }

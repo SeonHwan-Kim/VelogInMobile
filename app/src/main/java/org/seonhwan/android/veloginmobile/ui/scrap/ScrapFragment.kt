@@ -41,7 +41,7 @@ class ScrapFragment : BindingFragment<FragmentScrapBinding>(R.layout.fragment_sc
     }
 
     private fun initAdapter() {
-        scrapHeaderAdapter = ScrapHeaderAdapter()
+        scrapHeaderAdapter = ScrapHeaderAdapter { onClickAddFolder() }
 
         scrapFolderAdapter = ScrapFolderAdapter { folderName ->
             intentToScrapFolderPost(folderName)
@@ -95,6 +95,12 @@ class ScrapFragment : BindingFragment<FragmentScrapBinding>(R.layout.fragment_sc
         val intent = Intent(activity, ScrapPostActivity::class.java)
         intent.putExtra(FOLDER_NAME, folderName)
         startActivity(intent)
+    }
+
+    private fun onClickAddFolder() {
+        val dialog = AddFolderDialog { folderName -> viewModel.addFolder(folderName) }
+
+        dialog.show(requireFragmentManager(), "AddFolder")
     }
 
     override fun onDestroyView() {

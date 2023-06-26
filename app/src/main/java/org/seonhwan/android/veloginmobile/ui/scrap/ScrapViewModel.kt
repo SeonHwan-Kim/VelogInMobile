@@ -101,4 +101,10 @@ class ScrapViewModel @Inject constructor(
             }
         }
     }
+
+    fun addFolder(folderName: String) {
+        viewModelScope.launch {
+            folderRepository.addFolder(Folder(folderName, 0))
+        }
+    }
 }
