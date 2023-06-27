@@ -31,8 +31,8 @@ class ScrapFragment : BindingFragment<FragmentScrapBinding>(R.layout.fragment_sc
         super.onViewCreated(view, savedInstanceState)
 
         init()
+        initAllScrapPost()
         initFolder()
-        initScrapPost()
     }
 
     private fun init() {
@@ -60,7 +60,7 @@ class ScrapFragment : BindingFragment<FragmentScrapBinding>(R.layout.fragment_sc
         binding.rvScrapFolderList.adapter = ConcatAdapter(scrapHeaderAdapter, scrapFolderAdapter)
     }
 
-    private fun initFolder() {
+    private fun initAllScrapPost() {
         viewModel.getAllScrapPostState.flowWithLifecycle(lifecycle).onEach { event ->
             when (event) {
                 is Loading -> {}
@@ -70,7 +70,7 @@ class ScrapFragment : BindingFragment<FragmentScrapBinding>(R.layout.fragment_sc
         }.launchIn(lifecycleScope)
     }
 
-    private fun initScrapPost() {
+    private fun initFolder() {
         viewModel.getFolderState.flowWithLifecycle(lifecycle).onEach { event ->
             when (event) {
                 is Loading -> binding.pbScrapLoading.visibility = View.VISIBLE
