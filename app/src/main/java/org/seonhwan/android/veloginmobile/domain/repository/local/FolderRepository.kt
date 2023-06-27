@@ -6,7 +6,7 @@ import org.seonhwan.android.veloginmobile.data.local.model.Folder
 interface FolderRepository {
     suspend fun addFolder(folder: Folder)
 
-    suspend fun deleteFolder(folder: Folder)
+    suspend fun deleteFolder(folderName: String)
 
     fun getAllFolder(): Flow<List<Folder>>
 

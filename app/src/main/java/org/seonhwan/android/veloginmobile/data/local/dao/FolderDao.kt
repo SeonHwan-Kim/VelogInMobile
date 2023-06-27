@@ -1,7 +1,6 @@
 package org.seonhwan.android.veloginmobile.data.local.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -14,8 +13,8 @@ interface FolderDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addFolder(folder: Folder)
 
-    @Delete
-    suspend fun deleteFolder(folder: Folder)
+    @Query("DELETE FROM folder WHERE name = :folderName")
+    suspend fun deleteFolder(folderName: String)
 
     @Query("SELECT * FROM folder ORDER BY name ASC")
     fun getAllFolder(): Flow<List<Folder>>

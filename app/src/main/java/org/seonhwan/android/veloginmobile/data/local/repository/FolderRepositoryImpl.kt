@@ -12,8 +12,8 @@ class FolderRepositoryImpl @Inject constructor() : FolderRepository {
     override suspend fun addFolder(folder: Folder) =
         folderDao.addFolder(folder)
 
-    override suspend fun deleteFolder(folder: Folder) =
-        folderDao.deleteFolder(folder)
+    override suspend fun deleteFolder(folderName: String) =
+        folderDao.deleteFolder(folderName)
 
     override fun getAllFolder(): Flow<List<Folder>> =
         folderDao.getAllFolder()
