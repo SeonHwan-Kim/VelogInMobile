@@ -31,6 +31,7 @@ class ScrapPostActivity : BindingActivity<ActivityScrapPostBinding>(R.layout.act
     private var folderName: String? = null
     private var scrapFolderPostAdapter: VelogAdapter? = null
     private var scrapFolderHeaderAdapter: ScrapFolderHeaderAdapter? = null
+    private var scrapDeleteFolderBottomSheet: ScrapDeleteFolderBottomSheetFragment? = null
     private var scrapPostList: List<ScrapPost>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +58,10 @@ class ScrapPostActivity : BindingActivity<ActivityScrapPostBinding>(R.layout.act
     }
 
     private fun initAdapter() {
-        scrapFolderHeaderAdapter = ScrapFolderHeaderAdapter()
+        scrapFolderHeaderAdapter = ScrapFolderHeaderAdapter(
+            { onClickDeleteFolder() },
+            { onClickChangeFolderName() },
+        )
 
         scrapFolderPostAdapter = VelogAdapter(
             this,
@@ -75,7 +79,12 @@ class ScrapPostActivity : BindingActivity<ActivityScrapPostBinding>(R.layout.act
             scrapPostList?.map { scrapPost -> scrapPost.toPost() },
         )
 
-        binding.rvHomePost.adapter = ConcatAdapter(scrapFolderHeaderAdapter, scrapFolderPostAdapter)
+        if (folderName == "모든 스크랩") {
+            binding.rvHomePost.adapter = scrapFolderPostAdapter
+        } else {
+            binding.rvHomePost.adapter =
+                ConcatAdapter(scrapFolderHeaderAdapter, scrapFolderPostAdapter)
+        }
     }
 
     private val getResultSubscribe = registerForActivityResult(
@@ -121,10 +130,26 @@ class ScrapPostActivity : BindingActivity<ActivityScrapPostBinding>(R.layout.act
         }
     }
 
+    private fun onClickChangeFolderName() {
+    }
+
+    private fun onClickDeleteFolder() {
+        scrapDeleteFolderBottomSheet = ScrapDeleteFolderBottomSheetFragment(
+            folderName!!,
+        ) { closeScrapPostActivity() }
+
+        scrapDeleteFolderBottomSheet?.show(supportFragmentManager, "deleteFolder")
+    }
+
+    private fun closeScrapPostActivity() {
+        if (!isFinishing) finish()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         scrapFolderHeaderAdapter = null
         scrapFolderPostAdapter = null
         scrapPostList = null
+        scrapDeleteFolderBottomSheet = null
     }
 }
