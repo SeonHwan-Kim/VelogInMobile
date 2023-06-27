@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_bottom_sheet_top_radius_12dp"
+        android:paddingBottom="50dp"
+        app:behavior_hideable="true"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
+        <TextView
+            android:id="@+id/tv_delete_folder_bottom_sheet_title"
+            style="@style/body_2_M"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="폴더 선택"
+            android:textColor="@color/gray_700"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_delete_folder_bottom_sheet_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="12dp"
+            android:src="@drawable/ic_bottom_sheet_close"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_delete_folder_bottom_sheet_body"
+            style="@style/body_1_M"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="선택하신 폴더를 정말 삭제하시겠습니까?\n스크랩한 콘텐츠가 모두 삭제됩니다."
+            android:textAlignment="center"
+            android:textColor="@color/gray_300"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_delete_folder_bottom_sheet_title" />
+
+        <TextView
+            android:id="@+id/tv_delete_folder_bottom_sheet_cancel_button"
+            style="@style/body_2_M"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="7dp"
+            android:background="@drawable/rectangle_delete_dialog_gray_100_radius_4dp"
+            android:paddingVertical="10dp"
+            android:text="@string/string_delete_dialog_cancel"
+            android:textAlignment="center"
+            android:textColor="@color/gray_300"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_delete_folder_bottom_sheet_delete_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_delete_folder_bottom_sheet_body" />
+
+        <TextView
+            android:id="@+id/tv_delete_folder_bottom_sheet_delete_button"
+            style="@style/body_2_M"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/rectangle_delete_dialog_main_radius_4dp"
+            android:paddingVertical="10dp"
+            android:text="삭제"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_delete_folder_bottom_sheet_cancel_button"
+            app:layout_constraintTop_toBottomOf="@id/tv_delete_folder_bottom_sheet_body" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
