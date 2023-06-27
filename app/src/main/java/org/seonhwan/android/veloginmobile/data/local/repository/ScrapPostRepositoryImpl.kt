@@ -19,4 +19,7 @@ class ScrapPostRepositoryImpl @Inject constructor() : ScrapPostRepository {
 
     override suspend fun getFolderScrapPost(folderName: String) =
         scrapPostDao.getFolderScrapPost(folderName)
+
+    override suspend fun updateScrapPostFolder(scrapPost: ScrapPost) =
+        scrapPostDao.updateScrapPostFolder(scrapPost)
 }

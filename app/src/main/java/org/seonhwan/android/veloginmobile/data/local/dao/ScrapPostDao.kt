@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import org.seonhwan.android.veloginmobile.data.local.model.ScrapPost
 
@@ -20,4 +21,7 @@ interface ScrapPostDao {
 
     @Query("DELETE FROM scrap_post WHERE url = :url")
     suspend fun deleteScrapPost(url: String)
+
+    @Update
+    suspend fun updateScrapPostFolder(scrapPost: ScrapPost)
 }

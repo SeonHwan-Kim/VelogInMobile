@@ -11,4 +11,6 @@ interface ScrapPostRepository {
     suspend fun deleteScrapPost(url: String)
 
     suspend fun getFolderScrapPost(folderName: String): Flow<List<ScrapPost>>
+
+    suspend fun updateScrapPostFolder(scrapPost: ScrapPost)
 }
