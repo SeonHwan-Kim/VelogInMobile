@@ -1,8 +1,11 @@
 package org.seonhwan.android.veloginmobile.ui.scrap
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -43,8 +46,8 @@ class ScrapFragment : BindingFragment<FragmentScrapBinding>(R.layout.fragment_sc
     private fun initAdapter() {
         scrapHeaderAdapter = ScrapHeaderAdapter { onClickAddFolder() }
 
-        scrapFolderAdapter = ScrapFolderAdapter { folderName ->
-            intentToScrapFolderPost(folderName)
+        scrapFolderAdapter = ScrapFolderAdapter { folder ->
+            intentToScrapFolderPost(folder)
         }
 
         val gridLayoutManager = GridLayoutManager(context, 2)
@@ -64,7 +67,11 @@ class ScrapFragment : BindingFragment<FragmentScrapBinding>(R.layout.fragment_sc
         viewModel.getAllScrapPostState.flowWithLifecycle(lifecycle).onEach { event ->
             when (event) {
                 is Loading -> {}
-                is Success -> folderList.add(Folder("모든 스크랩", event.data.size))
+                is Success -> {
+                    folderList.clear()
+                    folderList.add(Folder("모든 스크랩", event.data.size))
+                }
+
                 is Failure -> requireActivity().showToast("문제가 발생하였습니다")
             }
         }.launchIn(lifecycleScope)
@@ -91,10 +98,18 @@ class ScrapFragment : BindingFragment<FragmentScrapBinding>(R.layout.fragment_sc
         }.launchIn(lifecycleScope)
     }
 
-    private fun intentToScrapFolderPost(folderName: String) {
+    private fun intentToScrapFolderPost(folder: Folder) {
         val intent = Intent(activity, ScrapPostActivity::class.java)
-        intent.putExtra(FOLDER_NAME, folderName)
-        startActivity(intent)
+        intent.putExtra(FOLDER_NAME, folder.name)
+        getResultAddTag.launch(intent)
+    }
+
+    private val getResultAddTag = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+    ) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            init()
+        }
     }
 
     private fun onClickAddFolder() {
