@@ -38,9 +38,7 @@ class ScrapDeleteFolderBottomSheetFragment(
         binding.tvDeleteFolderBottomSheetDeleteButton.setOnClickListener {
             viewModel.deleteScrapFolder(folderName)
             viewModel.deleteFolder(folderName)
-            if (requireActivity().isFinishing) requireActivity().finish()
             closeScrapPostActivity()
-            dismiss()
         }
     }
 }
