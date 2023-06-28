@@ -58,10 +58,7 @@ class ScrapPostActivity : BindingActivity<ActivityScrapPostBinding>(R.layout.act
     }
 
     private fun initAdapter() {
-        scrapFolderHeaderAdapter = ScrapFolderHeaderAdapter(
-            { onClickDeleteFolder() },
-            { onClickChangeFolderName() },
-        )
+        scrapFolderHeaderAdapter = ScrapFolderHeaderAdapter { onClickDeleteFolder() }
 
         scrapFolderPostAdapter = VelogAdapter(
             this,
@@ -130,9 +127,6 @@ class ScrapPostActivity : BindingActivity<ActivityScrapPostBinding>(R.layout.act
         }
     }
 
-    private fun onClickChangeFolderName() {
-    }
-
     private fun onClickDeleteFolder() {
         scrapDeleteFolderBottomSheet = ScrapDeleteFolderBottomSheetFragment(
             folderName!!,
@@ -142,13 +136,19 @@ class ScrapPostActivity : BindingActivity<ActivityScrapPostBinding>(R.layout.act
     }
 
     private fun closeScrapPostActivity() {
+        setResultOk()
         if (!isFinishing) finish()
+    }
+
+    private fun setResultOk() {
+        setResult(RESULT_OK)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         scrapFolderHeaderAdapter = null
         scrapFolderPostAdapter = null
+        folderName = null
         scrapPostList = null
         scrapDeleteFolderBottomSheet = null
     }
