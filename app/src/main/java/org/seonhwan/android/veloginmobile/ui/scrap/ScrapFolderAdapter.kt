@@ -29,11 +29,15 @@ class ScrapFolderAdapter(
     }
 
     override fun onBindViewHolder(holder: ScrapFolderViewHolder, position: Int) {
-        val folder = getItem(position)
-        holder.itemView.setOnClickListener {
-            intentToFolderScrapPost(folder.name)
+        if (position in 0 until itemCount) {
+            val folder = getItem(position)
+            if (folder != null) {
+                holder.itemView.setOnClickListener {
+                    intentToFolderScrapPost(folder.name)
+                }
+            }
+            holder.onBind(folder)
         }
-        holder.onBind(folder)
     }
 
     companion object {
