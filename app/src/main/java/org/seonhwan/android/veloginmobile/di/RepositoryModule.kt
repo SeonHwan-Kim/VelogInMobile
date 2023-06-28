@@ -4,9 +4,11 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import org.seonhwan.android.veloginmobile.data.local.repository.FolderRepositoryImpl
 import org.seonhwan.android.veloginmobile.data.local.repository.ScrapPostRepositoryImpl
 import org.seonhwan.android.veloginmobile.data.remote.repository.SubscribeRepositoryImpl
 import org.seonhwan.android.veloginmobile.data.remote.repository.TagRepositoryImpl
+import org.seonhwan.android.veloginmobile.domain.repository.local.FolderRepository
 import org.seonhwan.android.veloginmobile.domain.repository.local.ScrapPostRepository
 import org.seonhwan.android.veloginmobile.domain.repository.remote.SubscribeRepository
 import org.seonhwan.android.veloginmobile.domain.repository.remote.TagRepository
@@ -32,4 +34,10 @@ abstract class RepositoryModule {
     abstract fun scrapPostRepository(
         scrapPostRepositoryImpl: ScrapPostRepositoryImpl,
     ): ScrapPostRepository
+
+    @Binds
+    @Singleton
+    abstract fun folderRepository(
+        folderRepositoryImpl: FolderRepositoryImpl,
+    ): FolderRepository
 }

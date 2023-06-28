@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -10,34 +9,41 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/rectangle_delete_dialog_white_radius_12dp"
-        tools:context=".ui.addtag.DeleteDialog">
+        android:background="@drawable/rectangle_delete_dialog_white_radius_12dp">
 
-        <ImageView
-            android:id="@+id/iv_delete_dialog_warning"
+        <TextView
+            android:id="@+id/tv_add_folder_dialog_header"
+            style="@style/subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/ic_delete_dialog_warning"
+            android:layout_marginHorizontal="116dp"
+            android:layout_marginTop="24dp"
+            android:text="폴더추가"
+            android:textColor="@color/gray_700"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_delete_dialog_warning_message"
-            style="@style/body_2_M"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/et_add_folder_dialog"
+            style="@style/body_1_M"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="37dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/string_delete_dialog_warning_message"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/rectangle_add_folder_dialog_border_1dp_radius_4dp"
+            android:hint="이름"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="10dp"
             android:textColor="@color/gray_700"
+            android:textColorHint="@color/gray_200"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_delete_dialog_warning" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_add_folder_dialog_header" />
+
 
         <TextView
-            android:id="@+id/tv_delete_dialog_cancel_button"
+            android:id="@+id/tv_add_folder_dialog_cancel_button"
             style="@style/body_2_M"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -51,12 +57,12 @@
             android:text="@string/string_delete_dialog_cancel"
             android:textColor="@color/gray_300"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tv_delete_dialog_delete_button"
+            app:layout_constraintEnd_toStartOf="@id/tv_add_folder_dialog_add_button"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_delete_dialog_warning_message" />
+            app:layout_constraintTop_toBottomOf="@id/et_add_folder_dialog" />
 
         <TextView
-            android:id="@+id/tv_delete_dialog_delete_button"
+            android:id="@+id/tv_add_folder_dialog_add_button"
             style="@style/body_2_M"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -67,11 +73,11 @@
             android:background="@drawable/rectangle_delete_dialog_main_radius_4dp"
             android:paddingHorizontal="48dp"
             android:paddingVertical="6dp"
-            android:text="@string/string_delete_dialog_delete"
+            android:text="확인"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_delete_dialog_warning_message" />
+            app:layout_constraintTop_toBottomOf="@id/et_add_folder_dialog" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

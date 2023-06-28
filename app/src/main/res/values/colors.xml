@@ -8,4 +8,5 @@
     <color name="gray_300">#868E96</color>
     <color name="gray_500">#495057</color>
     <color name="gray_700">#212529</color>
+    <color name="error">#FF4D4D</color>
 </resources>

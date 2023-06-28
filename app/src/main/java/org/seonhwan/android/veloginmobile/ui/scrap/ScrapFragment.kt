@@ -9,15 +9,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.seonhwan.android.veloginmobile.R
-import org.seonhwan.android.veloginmobile.data.local.model.toPost
+import org.seonhwan.android.veloginmobile.data.local.model.Folder
 import org.seonhwan.android.veloginmobile.databinding.FragmentScrapBinding
-import org.seonhwan.android.veloginmobile.domain.entity.Post
-import org.seonhwan.android.veloginmobile.ui.home.VelogAdapter
-import org.seonhwan.android.veloginmobile.ui.webview.WebViewActivity
 import org.seonhwan.android.veloginmobile.util.UiState.Failure
 import org.seonhwan.android.veloginmobile.util.UiState.Loading
 import org.seonhwan.android.veloginmobile.util.UiState.Success
@@ -27,54 +26,68 @@ import org.seonhwan.android.veloginmobile.util.extension.showToast
 @AndroidEntryPoint
 class ScrapFragment : BindingFragment<FragmentScrapBinding>(R.layout.fragment_scrap) {
     private val viewModel by viewModels<ScrapViewModel>()
-    private var postAdapter: VelogAdapter? = null
-    private var scrapPostList: List<Post>? = null
+    private var scrapHeaderAdapter: ScrapHeaderAdapter? = null
+    private var scrapFolderAdapter: ScrapFolderAdapter? = null
+    private var folderList = mutableListOf<Folder>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initScrapPost()
+        init()
+        initAllScrapPost()
+        initFolder()
+    }
+
+    private fun init() {
+        viewModel.getAllScrapPost()
+        viewModel.getFolder()
     }
 
     private fun initAdapter() {
-        postAdapter = VelogAdapter(
-            { post ->
-                val intent = Intent(activity, WebViewActivity::class.java)
-                intent.putExtra(VelogAdapter.VELOG, post)
-                getResultSubscribe.launch(intent)
-            },
-            { post ->
-                viewModel.scrapPost(post, null)
-            },
-            { url ->
-                viewModel.deleteScrapPost(url)
-            },
-            scrapPostList,
-        )
+        scrapHeaderAdapter = ScrapHeaderAdapter { onClickAddFolder() }
 
-        binding.rvScrapPost.adapter = postAdapter
-    }
-
-    private val getResultSubscribe = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult(),
-    ) { result: ActivityResult ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            viewModel.getAllScrapPost()
+        scrapFolderAdapter = ScrapFolderAdapter { folderName ->
+            intentToScrapFolderPost(folderName)
         }
+
+        val gridLayoutManager = GridLayoutManager(context, 2)
+
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return if (position == 0) 2 else 1
+            }
+        }
+
+        binding.rvScrapFolderList.layoutManager = gridLayoutManager
+
+        binding.rvScrapFolderList.adapter = ConcatAdapter(scrapHeaderAdapter, scrapFolderAdapter)
     }
 
-    private fun initScrapPost() {
+    private fun initAllScrapPost() {
         viewModel.getAllScrapPostState.flowWithLifecycle(lifecycle).onEach { event ->
+            when (event) {
+                is Loading -> {}
+                is Success -> {
+                    folderList.clear()
+                    folderList.add(Folder("모든 스크랩", event.data.size))
+                }
+
+                is Failure -> requireActivity().showToast("문제가 발생하였습니다")
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun initFolder() {
+        viewModel.getFolderState.flowWithLifecycle(lifecycle).onEach { event ->
             when (event) {
                 is Loading -> binding.pbScrapLoading.visibility = View.VISIBLE
                 is Success -> {
                     binding.pbScrapLoading.visibility = View.GONE
-                    if (event.data.isEmpty()) {
-                        requireActivity().showToast("스크랩한 게시물이 없습니다")
+                    event.data.map { folder ->
+                        folderList.add(folder)
                     }
-                    scrapPostList = event.data.map { scrapPost -> scrapPost.toPost() }
                     initAdapter()
-                    postAdapter?.submitList(scrapPostList)
+                    scrapFolderAdapter?.submitList(folderList)
                 }
 
                 is Failure -> {
@@ -85,9 +98,33 @@ class ScrapFragment : BindingFragment<FragmentScrapBinding>(R.layout.fragment_sc
         }.launchIn(lifecycleScope)
     }
 
+    private fun intentToScrapFolderPost(folderName: String) {
+        val intent = Intent(activity, ScrapPostActivity::class.java)
+        intent.putExtra(FOLDER_NAME, folderName)
+        getResultAddTag.launch(intent)
+    }
+
+    private val getResultAddTag = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+    ) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            init()
+        }
+    }
+
+    private fun onClickAddFolder() {
+        val dialog = AddFolderDialog { folderName -> viewModel.addFolder(folderName) }
+
+        dialog.show(requireFragmentManager(), "AddFolder")
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
-        postAdapter = null
-        scrapPostList = null
+        scrapHeaderAdapter = null
+        scrapFolderAdapter = null
+    }
+
+    companion object {
+        const val FOLDER_NAME = "folderName"
     }
 }

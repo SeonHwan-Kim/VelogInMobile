@@ -6,7 +6,7 @@ import org.seonhwan.android.veloginmobile.domain.entity.Post
 
 @Entity(tableName = "scrap_post")
 data class ScrapPost(
-    val folder: String?,
+    var folder: String?,
     val date: String,
     val img: String,
     val name: String,

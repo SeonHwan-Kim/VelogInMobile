@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/rectangle_bottom_sheet_gray_100_radius_6dp"
+        android:state_selected="false" />
+    <item android:drawable="@drawable/rectangle_bottom_sheet_main_radius_6dp"
+        android:state_selected="true"/>
+</selector>

@@ -62,7 +62,7 @@
 
             <TextView
                 android:id="@+id/tv_velog_title"
-                style="@style/headline"
+                style="@style/subhead"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
