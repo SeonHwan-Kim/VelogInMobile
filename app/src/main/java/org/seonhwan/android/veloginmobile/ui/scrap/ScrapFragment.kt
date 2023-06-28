@@ -46,8 +46,8 @@ class ScrapFragment : BindingFragment<FragmentScrapBinding>(R.layout.fragment_sc
     private fun initAdapter() {
         scrapHeaderAdapter = ScrapHeaderAdapter { onClickAddFolder() }
 
-        scrapFolderAdapter = ScrapFolderAdapter { folder ->
-            intentToScrapFolderPost(folder)
+        scrapFolderAdapter = ScrapFolderAdapter { folderName ->
+            intentToScrapFolderPost(folderName)
         }
 
         val gridLayoutManager = GridLayoutManager(context, 2)
@@ -98,9 +98,9 @@ class ScrapFragment : BindingFragment<FragmentScrapBinding>(R.layout.fragment_sc
         }.launchIn(lifecycleScope)
     }
 
-    private fun intentToScrapFolderPost(folder: Folder) {
+    private fun intentToScrapFolderPost(folderName: String) {
         val intent = Intent(activity, ScrapPostActivity::class.java)
-        intent.putExtra(FOLDER_NAME, folder.name)
+        intent.putExtra(FOLDER_NAME, folderName)
         getResultAddTag.launch(intent)
     }
 
