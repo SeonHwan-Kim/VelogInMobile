@@ -36,10 +36,6 @@ class ScrapViewModel @Inject constructor(
     val getFolderState: SharedFlow<UiState<List<Folder>>>
         get() = _getFolderState
 
-    private val _getFolderScrapPostState = MutableSharedFlow<UiState<List<ScrapPost>>>()
-    val getFolderScrapPostState: SharedFlow<UiState<List<ScrapPost>>>
-        get() = _getFolderScrapPostState
-
     private var getFolder: Folder? = null
 
     fun getFolder() {
