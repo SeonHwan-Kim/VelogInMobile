@@ -1,6 +1,8 @@
 package org.seonhwan.android.veloginmobile.data.remote.service
 
 import org.seonhwan.android.veloginmobile.data.remote.model.response.ResponsePostDto
+import org.seonhwan.android.veloginmobile.data.remote.model.response.ResponseSearchSubscriberDto
+import org.seonhwan.android.veloginmobile.data.remote.model.response.ResponseSubscriberDto
 import org.seonhwan.android.veloginmobile.data.remote.model.response.ResponseSubscriberPostDto
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -22,4 +24,12 @@ interface SubscribeService {
 
     @GET("subscribe/subscriberpost")
     suspend fun getSubscriberPost(): ResponseSubscriberPostDto<ResponsePostDto>
+
+    @GET("subscribe/getsubscriber")
+    suspend fun getSubscriber(): List<ResponseSubscriberDto>
+
+    @GET("subscribe/inputname/{name}")
+    suspend fun searchSubscriber(
+        @Path("name") name: String,
+    ): ResponseSearchSubscriberDto
 }
