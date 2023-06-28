@@ -24,25 +24,5 @@
             android:paddingStart="16dp"
             android:text="삭제" />
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="16dp"
-            android:background="@color/gray_200"
-            app:layout_constraintEnd_toStartOf="@id/tv_scrap_post_delete_folder"
-            app:layout_constraintTop_toTopOf="@id/tv_scrap_post_delete_folder" />
-
-        <TextView
-            android:id="@+id/tv_scrap_post_change_folder_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/body_1_B"
-            android:textColor="@color/gray_300"
-            app:layout_constraintEnd_toStartOf="@id/tv_scrap_post_delete_folder"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:paddingBottom="12dp"
-            android:paddingHorizontal="16dp"
-            android:text="이름 변경" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
