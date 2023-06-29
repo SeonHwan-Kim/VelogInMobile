@@ -13,11 +13,13 @@ import kotlinx.coroutines.launch
 import org.seonhwan.android.veloginmobile.domain.entity.SearchSubscriber
 import org.seonhwan.android.veloginmobile.domain.entity.Subscriber
 import org.seonhwan.android.veloginmobile.domain.repository.remote.SubscribeRepository
+import org.seonhwan.android.veloginmobile.ui.addtag.AddTagViewModel.Companion.CODE_400
 import org.seonhwan.android.veloginmobile.util.UiState
 import org.seonhwan.android.veloginmobile.util.UiState.Failure
 import org.seonhwan.android.veloginmobile.util.UiState.Loading
 import org.seonhwan.android.veloginmobile.util.UiState.Success
 import retrofit2.HttpException
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,6 +39,10 @@ class SubscribeViewModel @Inject constructor(
     private val _addSubscriber = MutableSharedFlow<UiState<Unit>>()
     val addSubscriber: SharedFlow<UiState<Unit>>
         get() = _addSubscriber
+
+    private val _deleteSubscriberState = MutableSharedFlow<UiState<Unit>>()
+    val deleteSubscriberState: SharedFlow<UiState<Unit>>
+        get() = _deleteSubscriberState
 
     init {
         getSubscriber()
@@ -93,6 +99,27 @@ class SubscribeViewModel @Inject constructor(
                 }
             }.collect { response ->
                 _addSubscriber.emit(Success(response))
+            }
+        }
+    }
+
+    fun unSubscribe(subscriberName: String) {
+        viewModelScope.launch {
+            Timber.d(subscriberName)
+            subscribeRepository.deleteSubscriber(subscriberName).catch { error ->
+                if (error is HttpException) {
+                    when (error.code()) {
+                        CODE_400 -> {
+                            _deleteSubscriberState.emit(Failure(CODE_400))
+                        }
+
+                        else -> {
+                            _deleteSubscriberState.emit(Failure(null))
+                        }
+                    }
+                }
+            }.collect { response ->
+                _deleteSubscriberState.emit(Success(response))
             }
         }
     }
