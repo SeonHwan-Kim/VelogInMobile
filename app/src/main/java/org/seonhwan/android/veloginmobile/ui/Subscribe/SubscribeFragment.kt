@@ -45,8 +45,10 @@ class SubscribeFragment : BindingFragment<FragmentSubscribeBinding>(R.layout.fra
                     binding.pbSubscribeLoading.visibility = View.GONE
                     if (event.data.isEmpty()) {
                         binding.ivSubscribeNoSubscriber.visibility = View.VISIBLE
+                        binding.rvSubscribe.visibility = View.GONE
                     } else {
                         binding.ivSubscribeNoSubscriber.visibility = View.GONE
+                        binding.rvSubscribe.visibility = View.VISIBLE
                         subscriberAdapter?.submitList(event.data)
                     }
                 }
