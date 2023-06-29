@@ -94,5 +94,15 @@
             app:layout_constraintTop_toBottomOf="@id/tab_scrap_tabbar"
             tools:listitem="@layout/item_subscribe" />
 
+        <ProgressBar
+            android:id="@+id/pb_subscribe_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tab_scrap_tabbar" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
