@@ -8,12 +8,16 @@ import org.seonhwan.android.veloginmobile.databinding.ItemSubscribeBinding
 import org.seonhwan.android.veloginmobile.domain.entity.Subscriber
 import org.seonhwan.android.veloginmobile.util.DiffCallback
 
-class SubscriberAdapter :
-    ListAdapter<Subscriber, SubscriberAdapter.SubscriberViewHolder>(diffUtil) {
+class SubscriberAdapter(
+    private val onClickUnSubscribeButton: (String) -> Unit,
+) : ListAdapter<Subscriber, SubscriberAdapter.SubscriberViewHolder>(diffUtil) {
     class SubscriberViewHolder(private val binding: ItemSubscribeBinding) :
         ViewHolder(binding.root) {
-        fun onBind(subscriber: Subscriber) {
+        fun onBind(subscriber: Subscriber, onClickUnSubscribeButton: (String) -> Unit) {
             binding.data = subscriber
+            binding.ivItemSubscribeCancelSubscribe.setOnClickListener {
+                onClickUnSubscribeButton(subscriber.name)
+            }
         }
     }
 
@@ -28,7 +32,8 @@ class SubscriberAdapter :
     }
 
     override fun onBindViewHolder(holder: SubscriberViewHolder, position: Int) {
-        holder.onBind(getItem(position))
+        val subscriber = getItem(position)
+        holder.onBind(subscriber) { subscriberName -> onClickUnSubscribeButton(subscriberName) }
     }
 
     companion object {

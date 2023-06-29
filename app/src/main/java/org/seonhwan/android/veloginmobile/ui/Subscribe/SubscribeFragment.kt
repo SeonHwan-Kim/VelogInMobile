@@ -20,6 +20,7 @@ import org.seonhwan.android.veloginmobile.util.extension.showToast
 class SubscribeFragment : BindingFragment<FragmentSubscribeBinding>(R.layout.fragment_subscribe) {
     private val viewModel by viewModels<SubscribeViewModel>()
     private var subscriberAdapter: SubscriberAdapter? = null
+    private var unSubscribeDialog: UnSubscribeDialog? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -29,7 +30,8 @@ class SubscribeFragment : BindingFragment<FragmentSubscribeBinding>(R.layout.fra
     }
 
     private fun initAdapter() {
-        subscriberAdapter = SubscriberAdapter()
+        subscriberAdapter =
+            SubscriberAdapter { subscriberName -> onClickUnSubscribeButton(subscriberName) }
 
         binding.rvSubscribe.adapter = subscriberAdapter
     }
@@ -39,18 +41,32 @@ class SubscribeFragment : BindingFragment<FragmentSubscribeBinding>(R.layout.fra
             when (event) {
                 is Loading -> {}
                 is Success -> {
-                    subscriberAdapter?.submitList(event.data)
+                    binding.pbSubscribeLoading.visibility = View.GONE
+                    if (event.data.isEmpty()) {
+                        binding.ivSubscribeNoSubscriber.visibility = View.VISIBLE
+                    } else {
+                        binding.ivSubscribeNoSubscriber.visibility = View.GONE
+                        subscriberAdapter?.submitList(event.data)
+                    }
                 }
 
                 is Failure -> {
+                    binding.pbSubscribeLoading.visibility = View.GONE
                     requireActivity().showToast("문제가 발생하였습니다")
                 }
             }
         }.launchIn(lifecycleScope)
     }
 
+    private fun onClickUnSubscribeButton(subscriberName: String) {
+        unSubscribeDialog = UnSubscribeDialog { viewModel.unSubscribe(subscriberName) }
+
+        unSubscribeDialog?.show(requireActivity().supportFragmentManager, "unSubscribe")
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         subscriberAdapter = null
+        unSubscribeDialog = null
     }
 }
