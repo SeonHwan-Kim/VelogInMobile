@@ -48,7 +48,7 @@ class SubscribeViewModel @Inject constructor(
         getSubscriber()
     }
 
-    private fun getSubscriber() {
+    fun getSubscriber() {
         viewModelScope.launch {
             subscribeRepository.getSubscriber().onStart { _subscriberList.emit(Loading) }
                 .catch { error ->

@@ -27,6 +27,7 @@ class SubscribeFragment : BindingFragment<FragmentSubscribeBinding>(R.layout.fra
 
         initAdapter()
         initSubscriber()
+        refreshUnsubscribe()
     }
 
     private fun initAdapter() {
@@ -62,6 +63,18 @@ class SubscribeFragment : BindingFragment<FragmentSubscribeBinding>(R.layout.fra
         unSubscribeDialog = UnSubscribeDialog { viewModel.unSubscribe(subscriberName) }
 
         unSubscribeDialog?.show(requireActivity().supportFragmentManager, "unSubscribe")
+    }
+
+    private fun refreshUnsubscribe() {
+        viewModel.deleteSubscriberState.flowWithLifecycle(lifecycle).onEach { event ->
+            when(event) {
+                is Loading -> {}
+                is Success -> {
+                    viewModel.getSubscriber()
+                }
+                is Failure -> {}
+            }
+        }.launchIn(lifecycleScope)
     }
 
     override fun onDestroyView() {
