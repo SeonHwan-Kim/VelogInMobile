@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_search_subscriber_title"
+            style="@style/body_2_M"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="팔로우 추가"
+            android:textColor="@color/gray_700"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_bottom_sheet_close"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/et_search_subscriber_searchbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/rectangle_search_name_gray_100_radius_4dp"
+            android:paddingVertical="6dp"
+            android:paddingStart="44dp"
+            app:layout_constraintEnd_toStartOf="@id/tv_search_subscriber_search_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_search_subscriber_title" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:src="@drawable/ic_addtag_plus"
+            app:layout_constraintBottom_toBottomOf="@id/et_search_subscriber_searchbar"
+            app:layout_constraintStart_toStartOf="@id/et_search_subscriber_searchbar"
+            app:layout_constraintTop_toTopOf="@id/et_search_subscriber_searchbar" />
+
+        <TextView
+            android:id="@+id/tv_search_subscriber_search_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/selector_bottom_sheet_add_button"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:text="검색"
+            app:layout_constraintBottom_toBottomOf="@id/et_search_subscriber_searchbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/et_search_subscriber_searchbar" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_search_name_user_information"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            android:paddingHorizontal="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_search_subscriber_searchbar">
+
+            <ImageView
+                android:id="@+id/iv_search_name_user_profile"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:src="@drawable/ic_subscriber_profile"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                style="@style/body_2_M"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/gray_700"
+                app:layout_constraintBottom_toBottomOf="@id/iv_search_name_user_profile"
+                app:layout_constraintStart_toEndOf="@id/iv_search_name_user_profile"
+                app:layout_constraintTop_toTopOf="@id/iv_search_name_user_profile"
+                tools:text="daniel4647" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
