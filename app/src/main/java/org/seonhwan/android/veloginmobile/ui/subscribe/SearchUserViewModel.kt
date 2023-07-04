@@ -36,32 +36,22 @@ class SearchUserViewModel @Inject constructor(
 
     fun searchUser() {
         viewModelScope.launch {
-            subscribeRepository.searchSubscriber(userName.value.toString())
-                .onStart {
-                    _searchUserState.emit(Loading)
-                }
-                .catch { error ->
-                    when (error) {
-                        is HttpException -> {
-                            _searchUserState.emit(Failure(error.code()))
-                        }
+            subscribeRepository.searchSubscriber(userName.value.toString()).onStart {
+                _searchUserState.emit(Loading)
+            }.catch { error ->
+                when (error) {
+                    is HttpException -> {
+                        _searchUserState.emit(Failure(error.code()))
+                    }
 
-                        else -> {
-                            _searchUserState.emit(Failure(null))
-                        }
+                    else -> {
+                        _searchUserState.emit(Failure(null))
                     }
                 }
-                .collect { response ->
-                    isUserValid.value = response.validate
-                    _searchUserState.emit(Success(response))
-                }
-        }
-    }
-
-    fun addSubscriber(userName: String) {
-        viewModelScope.launch {
-            subscribeRepository.addSubscriber(userName)
-                .collect()
+            }.collect { response ->
+                isUserValid.value = response.validate
+                _searchUserState.emit(Success(response))
+            }
         }
     }
 }
