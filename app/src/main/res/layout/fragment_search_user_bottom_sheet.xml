@@ -5,14 +5,21 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="org.seonhwan.android.veloginmobile.ui.subscribe.SearchUserViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_bottom_sheet_top_radius_12dp"
+        android:paddingBottom="42dp">
 
         <TextView
-            android:id="@+id/tv_search_subscriber_title"
+            android:id="@+id/tv_search_user_title"
             style="@style/body_2_M"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,7 +40,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/et_search_subscriber_searchbar"
+            android:id="@+id/et_search_user_searchbar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -42,44 +49,60 @@
             android:background="@drawable/rectangle_search_name_gray_100_radius_4dp"
             android:paddingVertical="6dp"
             android:paddingStart="44dp"
-            app:layout_constraintEnd_toStartOf="@id/tv_search_subscriber_search_button"
+            android:text="@={vm.userName}"
+            app:layout_constraintEnd_toStartOf="@id/tv_search_user_search_button"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_search_subscriber_title" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_search_user_title" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:src="@drawable/ic_addtag_plus"
-            app:layout_constraintBottom_toBottomOf="@id/et_search_subscriber_searchbar"
-            app:layout_constraintStart_toStartOf="@id/et_search_subscriber_searchbar"
-            app:layout_constraintTop_toTopOf="@id/et_search_subscriber_searchbar" />
+            app:layout_constraintBottom_toBottomOf="@id/et_search_user_searchbar"
+            app:layout_constraintStart_toStartOf="@id/et_search_user_searchbar"
+            app:layout_constraintTop_toTopOf="@id/et_search_user_searchbar" />
 
         <TextView
-            android:id="@+id/tv_search_subscriber_search_button"
+            android:id="@+id/tv_search_user_search_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:background="@drawable/selector_bottom_sheet_add_button"
+            android:enabled="@{vm.isUserNameNotEmpty()}"
             android:paddingHorizontal="12dp"
             android:paddingVertical="6dp"
             android:text="검색"
-            app:layout_constraintBottom_toBottomOf="@id/et_search_subscriber_searchbar"
+            app:layout_constraintBottom_toBottomOf="@id/et_search_user_searchbar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/et_search_subscriber_searchbar" />
+            app:layout_constraintTop_toTopOf="@id/et_search_user_searchbar" />
+
+        <TextView
+            android:id="@+id/tv_search_user_no_user"
+            style="@style/caption_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="없는 유저입니다. 다시 검색해주세요."
+            android:textColor="@color/error"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@id/et_search_user_searchbar"
+            app:layout_constraintStart_toStartOf="@id/et_search_user_searchbar"
+            app:layout_constraintTop_toBottomOf="@id/et_search_user_searchbar" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_search_name_user_information"
+            android:id="@+id/layout_search_user_user_information"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="26dp"
             android:paddingHorizontal="16dp"
+            android:visibility="@{vm.isUserValid ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_search_subscriber_searchbar">
+            app:layout_constraintTop_toBottomOf="@id/et_search_user_searchbar">
 
             <ImageView
-                android:id="@+id/iv_search_name_user_profile"
+                android:id="@+id/iv_search_user_user_profile"
                 android:layout_width="44dp"
                 android:layout_height="44dp"
                 android:src="@drawable/ic_subscriber_profile"
@@ -88,14 +111,15 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/tv_search_user_name"
                 style="@style/body_2_M"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:textColor="@color/gray_700"
-                app:layout_constraintBottom_toBottomOf="@id/iv_search_name_user_profile"
-                app:layout_constraintStart_toEndOf="@id/iv_search_name_user_profile"
-                app:layout_constraintTop_toTopOf="@id/iv_search_name_user_profile"
+                app:layout_constraintBottom_toBottomOf="@id/iv_search_user_user_profile"
+                app:layout_constraintStart_toEndOf="@id/iv_search_user_user_profile"
+                app:layout_constraintTop_toTopOf="@id/iv_search_user_user_profile"
                 tools:text="daniel4647" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
