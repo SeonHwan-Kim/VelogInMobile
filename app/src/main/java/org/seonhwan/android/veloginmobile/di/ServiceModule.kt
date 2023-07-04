@@ -1,4 +1,4 @@
-package com.sopt.instagram.di
+package org.seonhwan.android.veloginmobile.di
 
 import dagger.Module
 import dagger.Provides
