@@ -71,9 +71,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getTagPost() {
+    fun getTagPost(tag: String) {
         viewModelScope.launch {
-            tagRepository.getTagPost().onStart { _postList.emit(Loading) }.catch { error ->
+            tagRepository.getTagPost(tag).onStart { _postList.emit(Loading) }.catch { error ->
                 when (error) {
                     is ConnectException -> _postList.emit(Failure(NETWORK_ERR))
 

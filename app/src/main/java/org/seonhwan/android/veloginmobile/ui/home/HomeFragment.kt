@@ -135,7 +135,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                         }
 
                         else -> {
-                            viewModel.getTagPost()
+                            viewModel.getTagPost(tab?.text.toString())
                             initAdapter()
                         }
                     }
@@ -154,7 +154,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun startSecondTabItem() {
         binding.tabHomeTabbar.getTabAt(1)?.select()
-        viewModel.getTagPost()
     }
 
     private fun moveToAddTag() {
@@ -176,10 +175,12 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         ActivityResultContracts.StartActivityForResult(),
     ) { result: ActivityResult ->
         if (result.resultCode == RESULT_OK) {
+            val selectedTab = binding.tabHomeTabbar.getTabAt(binding.tabHomeTabbar.selectedTabPosition)
+            val selectedTabName = selectedTab?.text?.toString()
             when (binding.tabHomeTabbar.selectedTabPosition) {
-                1 -> viewModel.getTagPost()
+                1 -> viewModel.getTrendPost()
                 2 -> viewModel.getSubscriberPost()
-                else -> viewModel.getTagPost()
+                else -> viewModel.getTagPost(selectedTabName!!)
             }
         }
     }
