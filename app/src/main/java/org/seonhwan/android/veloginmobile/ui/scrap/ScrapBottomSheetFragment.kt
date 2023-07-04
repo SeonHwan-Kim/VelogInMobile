@@ -98,7 +98,6 @@ class ScrapBottomSheetFragment :
 
     private fun onClickAddFolderButton() {
         viewModel.isValidAddFolder.observe(this) { isValid ->
-            binding.tvBottomSheetAdd.isSelected = isValid
             if (isValid) {
                 binding.tvBottomSheetAdd.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                 binding.tvBottomSheetAdd.setOnClickListener {

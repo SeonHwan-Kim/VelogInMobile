@@ -13,6 +13,10 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -37,6 +41,8 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private val viewModel by viewModels<HomeViewModel>()
     private var postAdapter: VelogAdapter? = null
     private var scrapPostList: List<ScrapPost>? = null
+
+    private var tabClickJob: Job? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -108,24 +114,30 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private fun onClickTabBar() {
         binding.tabHomeTabbar.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                when (tab?.text) {
-                    "" -> {
-                        moveToAddTag()
-                    }
+                tabClickJob?.cancel()
 
-                    "트렌드" -> {
-                        viewModel.getTagPost()
-                        initAdapter()
-                    }
+                tabClickJob = CoroutineScope(Dispatchers.Main).launch {
+                    delay(500)
 
-                    "팔로우" -> {
-                        viewModel.getSubscriberPost()
-                        initAdapter()
-                    }
+                    when (tab?.text) {
+                        "" -> {
+                            moveToAddTag()
+                        }
 
-                    else -> {
-                        viewModel.getTagPost()
-                        initAdapter()
+                        "트렌드" -> {
+                            viewModel.getTagPost()
+                            initAdapter()
+                        }
+
+                        "팔로우" -> {
+                            viewModel.getSubscriberPost()
+                            initAdapter()
+                        }
+
+                        else -> {
+                            viewModel.getTagPost()
+                            initAdapter()
+                        }
                     }
                 }
             }
@@ -175,19 +187,22 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
     private fun initPost() {
         viewModel.postList.flowWithLifecycle(lifecycle).onEach { event ->
             when (event) {
-                is Loading -> binding.pbHomeLoading.visibility = View.VISIBLE
+                is Loading -> {
+                    binding.ivHomeNoSubscriber.visibility = View.GONE
+                    binding.pbHomeLoading.visibility = View.VISIBLE
+                }
 
                 is Success -> {
                     binding.pbHomeLoading.visibility = View.GONE
+                    binding.ivHomeNoSubscriber.visibility = View.GONE
                     postAdapter?.submitList(event.data)
                 }
 
                 is Failure -> {
-                    binding.pbHomeLoading.visibility = View.VISIBLE
+                    binding.ivHomeNoSubscriber.visibility = View.VISIBLE
                     when (event.code) {
                         CODE_202 -> {
                             binding.pbHomeLoading.visibility = View.GONE
-                            requireActivity().showToast("구독자가 없습니다")
                         }
 
                         else -> {
@@ -227,5 +242,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         super.onDestroyView()
         postAdapter = null
         scrapPostList = null
+        tabClickJob = null
     }
 }

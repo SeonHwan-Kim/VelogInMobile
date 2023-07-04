@@ -67,7 +67,7 @@ class WebViewActivity : BindingActivity<ActivityWebViewBinding>(R.layout.activit
 
     private fun startWebView() {
         val post = intent.getParcelable(VELOG, Post::class.java)
-        binding.wvWebview.loadUrl("https://velog.io${post?.url}")
+        binding.wvWebview.loadUrl("${post?.url}")
     }
 
     private fun initSubscribeButton() {

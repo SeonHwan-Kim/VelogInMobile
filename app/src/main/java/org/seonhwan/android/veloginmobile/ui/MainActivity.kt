@@ -5,10 +5,10 @@ import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
 import org.seonhwan.android.veloginmobile.R
 import org.seonhwan.android.veloginmobile.databinding.ActivityMainBinding
-import org.seonhwan.android.veloginmobile.ui.scrap.ScrapFragment
-import org.seonhwan.android.veloginmobile.ui.Subscribe.SubscribeFragment
 import org.seonhwan.android.veloginmobile.ui.home.HomeFragment
 import org.seonhwan.android.veloginmobile.ui.mypage.MypageFragment
+import org.seonhwan.android.veloginmobile.ui.scrap.ScrapFragment
+import org.seonhwan.android.veloginmobile.ui.subscribe.SubscribeFragment
 import org.seonhwan.android.veloginmobile.util.binding.BindingActivity
 
 @AndroidEntryPoint

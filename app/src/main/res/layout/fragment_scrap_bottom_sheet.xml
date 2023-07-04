@@ -111,6 +111,7 @@
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="6dp"
                 android:background="@drawable/selector_bottom_sheet_add_button"
+                android:enabled="@{vm.isValidAddFolder()}"
                 android:text="완료"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
