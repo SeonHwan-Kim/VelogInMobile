@@ -4,6 +4,7 @@ import org.seonhwan.android.veloginmobile.data.remote.model.response.ResponsePos
 import org.seonhwan.android.veloginmobile.data.remote.model.response.ResponseSearchSubscriberDto
 import org.seonhwan.android.veloginmobile.data.remote.model.response.ResponseSubscriberDto
 import org.seonhwan.android.veloginmobile.data.remote.model.response.ResponseSubscriberPostDto
+import org.seonhwan.android.veloginmobile.data.remote.model.response.ResponseTrendPostDto
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -32,4 +33,7 @@ interface SubscribeService {
     suspend fun searchSubscriber(
         @Path("name") name: String,
     ): ResponseSearchSubscriberDto
+
+    @GET("subscribe/trendposts")
+    suspend fun getTrendPost(): ResponseTrendPostDto<ResponsePostDto>
 }
