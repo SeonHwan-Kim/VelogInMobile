@@ -28,7 +28,7 @@ class SubscribeFragment : BindingFragment<FragmentSubscribeBinding>(R.layout.fra
 
         initAdapter()
         initSubscriber()
-        refreshUnsubscribe()
+        refreshSubscriberList()
         onClickSearchUserButton()
     }
 
@@ -69,8 +69,19 @@ class SubscribeFragment : BindingFragment<FragmentSubscribeBinding>(R.layout.fra
         unSubscribeDialog?.show(requireActivity().supportFragmentManager, "unSubscribe")
     }
 
-    private fun refreshUnsubscribe() {
+    private fun refreshSubscriberList() {
         viewModel.deleteSubscriberState.flowWithLifecycle(lifecycle).onEach { event ->
+            when (event) {
+                is Loading -> {}
+                is Success -> {
+                    viewModel.getSubscriber()
+                }
+
+                is Failure -> {}
+            }
+        }.launchIn(lifecycleScope)
+
+        viewModel.addSubscriberState.flowWithLifecycle(lifecycle).onEach { event ->
             when (event) {
                 is Loading -> {}
                 is Success -> {
@@ -84,7 +95,8 @@ class SubscribeFragment : BindingFragment<FragmentSubscribeBinding>(R.layout.fra
 
     private fun onClickSearchUserButton() {
         binding.ibSubscribeToolbarSearch.setOnClickListener {
-            searchUserBottomSheet = SearchUserBottomSheet()
+            searchUserBottomSheet =
+                SearchUserBottomSheet { userName -> viewModel.addSubscriber(userName) }
 
             searchUserBottomSheet?.show(
                 requireActivity().supportFragmentManager,

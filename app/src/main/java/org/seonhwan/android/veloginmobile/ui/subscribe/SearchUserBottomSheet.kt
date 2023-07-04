@@ -20,19 +20,20 @@ import org.seonhwan.android.veloginmobile.util.binding.BindingBottomSheet
 import timber.log.Timber
 
 @AndroidEntryPoint
-class SearchUserBottomSheet :
-    BindingBottomSheet<FragmentSearchUserBottomSheetBinding>(R.layout.fragment_search_user_bottom_sheet) {
+class SearchUserBottomSheet(
+    private val addSubscriberState: (String) -> Unit,
+) : BindingBottomSheet<FragmentSearchUserBottomSheetBinding>(R.layout.fragment_search_user_bottom_sheet) {
     private val viewModel by viewModels<SearchUserViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
-        onClickAddFolderButton()
+        initSearchButton()
         searchResponse()
     }
 
-    private fun onClickAddFolderButton() {
+    private fun initSearchButton() {
         viewModel.isUserNameNotEmpty.observe(this) { isValid ->
             if (isValid) {
                 binding.tvSearchUserSearchButton.setTextColor(
@@ -89,7 +90,7 @@ class SearchUserBottomSheet :
 
     private fun addSubscriber(userName: String) {
         binding.layoutSearchUserUserInformation.setOnClickListener {
-            viewModel.addSubscriber(userName)
+            addSubscriberState(userName)
             dismiss()
         }
     }
