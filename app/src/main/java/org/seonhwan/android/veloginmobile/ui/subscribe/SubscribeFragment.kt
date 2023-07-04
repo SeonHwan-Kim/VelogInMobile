@@ -1,4 +1,4 @@
-package org.seonhwan.android.veloginmobile.ui.Subscribe
+package org.seonhwan.android.veloginmobile.ui.subscribe
 
 import android.os.Bundle
 import android.view.View
@@ -21,6 +21,7 @@ class SubscribeFragment : BindingFragment<FragmentSubscribeBinding>(R.layout.fra
     private val viewModel by viewModels<SubscribeViewModel>()
     private var subscriberAdapter: SubscriberAdapter? = null
     private var unSubscribeDialog: UnSubscribeDialog? = null
+    private var searchUserBottomSheet: SearchUserBottomSheet? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,6 +29,7 @@ class SubscribeFragment : BindingFragment<FragmentSubscribeBinding>(R.layout.fra
         initAdapter()
         initSubscriber()
         refreshUnsubscribe()
+        onClickSearchUserButton()
     }
 
     private fun initAdapter() {
@@ -69,19 +71,32 @@ class SubscribeFragment : BindingFragment<FragmentSubscribeBinding>(R.layout.fra
 
     private fun refreshUnsubscribe() {
         viewModel.deleteSubscriberState.flowWithLifecycle(lifecycle).onEach { event ->
-            when(event) {
+            when (event) {
                 is Loading -> {}
                 is Success -> {
                     viewModel.getSubscriber()
                 }
+
                 is Failure -> {}
             }
         }.launchIn(lifecycleScope)
+    }
+
+    private fun onClickSearchUserButton() {
+        binding.ibSubscribeToolbarSearch.setOnClickListener {
+            searchUserBottomSheet = SearchUserBottomSheet()
+
+            searchUserBottomSheet?.show(
+                requireActivity().supportFragmentManager,
+                "searchUserBottomSheet",
+            )
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         subscriberAdapter = null
         unSubscribeDialog = null
+        searchUserBottomSheet = null
     }
 }
