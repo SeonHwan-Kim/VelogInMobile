@@ -145,6 +145,20 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun getTrendPost() {
+        viewModelScope.launch {
+            subscribeRepository.getTrendPost().onStart { _postList.emit(Loading) }.catch { error ->
+                when (error) {
+                    is ConnectException -> _postList.emit(Failure(NETWORK_ERR))
+
+                    else -> _postList.emit(Failure(null))
+                }
+            }.collect { response ->
+                _postList.emit(Success(response))
+            }
+        }
+    }
+
     companion object {
         const val CODE_202 = 202
         const val NETWORK_ERR = 0

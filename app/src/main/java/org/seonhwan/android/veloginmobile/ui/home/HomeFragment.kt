@@ -125,7 +125,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                         }
 
                         "트렌드" -> {
-                            viewModel.getTagPost()
+                            viewModel.getTrendPost()
                             initAdapter()
                         }
 
