@@ -1,4 +1,4 @@
-package org.seonhwan.android.veloginmobile.ui.Subscribe
+package org.seonhwan.android.veloginmobile.ui.subscribe
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,7 +7,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import org.seonhwan.android.veloginmobile.domain.entity.SearchSubscriber

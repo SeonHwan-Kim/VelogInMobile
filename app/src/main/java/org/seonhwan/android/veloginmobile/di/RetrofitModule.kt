@@ -1,4 +1,4 @@
-package com.sopt.instagram.di
+package org.seonhwan.android.veloginmobile.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module

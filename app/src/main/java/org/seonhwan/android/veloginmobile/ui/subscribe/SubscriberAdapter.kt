@@ -1,4 +1,4 @@
-package org.seonhwan.android.veloginmobile.ui.Subscribe
+package org.seonhwan.android.veloginmobile.ui.subscribe
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

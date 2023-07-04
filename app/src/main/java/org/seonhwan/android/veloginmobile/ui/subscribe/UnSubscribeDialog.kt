@@ -1,4 +1,4 @@
-package org.seonhwan.android.veloginmobile.ui.Subscribe
+package org.seonhwan.android.veloginmobile.ui.subscribe
 
 import android.os.Bundle
 import android.view.View
