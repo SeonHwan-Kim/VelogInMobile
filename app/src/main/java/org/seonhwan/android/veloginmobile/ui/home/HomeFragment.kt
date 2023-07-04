@@ -239,6 +239,10 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         return null
     }
 
+    fun scrollToTop() {
+        binding.rvHomePost.smoothScrollToPosition(0)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         postAdapter = null
