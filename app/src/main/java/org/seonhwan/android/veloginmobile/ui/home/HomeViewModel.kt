@@ -93,7 +93,7 @@ class HomeViewModel @Inject constructor(
                         _postList.emit(Failure(throwable.code()))
                         Timber.d(throwable.message())
                     } else {
-                        _postList.emit(Failure(null))
+                        _postList.emit(Failure(CODE_202))
                         Timber.d(throwable)
                     }
                 }.collect { response ->
