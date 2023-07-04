@@ -10,10 +10,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.Subscribe.SubscribeFragment">
+        tools:context=".ui.subscribe.SubscribeFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_scrap_toolbar"
+            android:id="@+id/layout_subscribe_toolbar"
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:background="@color/white"
@@ -33,7 +33,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/ib_scrap_toolbar_search"
+                android:id="@+id/ib_subscribe_toolbar_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
@@ -46,13 +46,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_scrap_tabbar"
+            android:id="@+id/tab_subscribe_tabbar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_scrap_toolbar"
+            app:layout_constraintTop_toBottomOf="@id/layout_subscribe_toolbar"
             app:tabBackground="@color/white"
             app:tabGravity="start"
             app:tabIndicatorColor="@color/main"
@@ -78,7 +78,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tab_scrap_tabbar" />
+            app:layout_constraintTop_toBottomOf="@id/tab_subscribe_tabbar" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_subscribe"
@@ -91,7 +91,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tab_scrap_tabbar"
+            app:layout_constraintTop_toBottomOf="@id/tab_subscribe_tabbar"
             tools:listitem="@layout/item_subscribe" />
 
         <ProgressBar
@@ -102,7 +102,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tab_scrap_tabbar" />
+            app:layout_constraintTop_toBottomOf="@id/tab_subscribe_tabbar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
