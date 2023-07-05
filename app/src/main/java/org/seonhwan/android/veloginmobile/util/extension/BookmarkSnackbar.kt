@@ -55,13 +55,6 @@ class BookmarkSnackbar(
             )
             snackbar.dismiss()
         }
-        binding.ivSnackbarGoFolder.setOnClickListener {
-            activity.supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fcv_main, ScrapFragment())
-                .commit()
-            snackbar.dismiss()
-        }
     }
 
     fun show() {
