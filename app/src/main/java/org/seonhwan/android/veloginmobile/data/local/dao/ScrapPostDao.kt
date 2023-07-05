@@ -24,4 +24,7 @@ interface ScrapPostDao {
 
     @Update
     suspend fun updateScrapPostFolder(scrapPost: ScrapPost)
+
+    @Query("SELECT * FROM scrap_post WHERE url = :url")
+    fun isScrapPost(url: String): Flow<ScrapPost>
 }
