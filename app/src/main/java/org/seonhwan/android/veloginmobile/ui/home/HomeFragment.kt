@@ -28,6 +28,7 @@ import org.seonhwan.android.veloginmobile.ui.addtag.AddTagActivity
 import org.seonhwan.android.veloginmobile.ui.home.HomeViewModel.Companion.CODE_202
 import org.seonhwan.android.veloginmobile.ui.home.HomeViewModel.Companion.NETWORK_ERR
 import org.seonhwan.android.veloginmobile.ui.home.VelogAdapter.Companion.VELOG
+import org.seonhwan.android.veloginmobile.ui.scrap.ScrapFragment.Companion.FOLDER_NAME
 import org.seonhwan.android.veloginmobile.ui.webview.WebViewActivity
 import org.seonhwan.android.veloginmobile.util.UiState.Failure
 import org.seonhwan.android.veloginmobile.util.UiState.Loading
@@ -98,6 +99,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             { post ->
                 val intent = Intent(activity, WebViewActivity::class.java)
                 intent.putExtra(VELOG, post)
+                intent.putExtra(FOLDER_NAME, getScrapPostFolder(post.url))
                 getResultSubscribe.launch(intent)
             },
             { post ->
@@ -175,7 +177,8 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         ActivityResultContracts.StartActivityForResult(),
     ) { result: ActivityResult ->
         if (result.resultCode == RESULT_OK) {
-            val selectedTab = binding.tabHomeTabbar.getTabAt(binding.tabHomeTabbar.selectedTabPosition)
+            val selectedTab =
+                binding.tabHomeTabbar.getTabAt(binding.tabHomeTabbar.selectedTabPosition)
             val selectedTabName = selectedTab?.text?.toString()
             when (binding.tabHomeTabbar.selectedTabPosition) {
                 1 -> viewModel.getTrendPost()
@@ -233,7 +236,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         scrapPostList?.map { scrapPost ->
             if (scrapPost.url == postUrl) {
                 return scrapPost.folder
-            } else {
             }
         }
         return null
