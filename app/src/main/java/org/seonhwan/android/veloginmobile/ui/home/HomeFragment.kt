@@ -24,6 +24,7 @@ import org.seonhwan.android.veloginmobile.R
 import org.seonhwan.android.veloginmobile.data.local.model.ScrapPost
 import org.seonhwan.android.veloginmobile.data.local.model.toPost
 import org.seonhwan.android.veloginmobile.databinding.FragmentHomeBinding
+import org.seonhwan.android.veloginmobile.domain.entity.Post
 import org.seonhwan.android.veloginmobile.ui.addtag.AddTagActivity
 import org.seonhwan.android.veloginmobile.ui.home.HomeViewModel.Companion.CODE_202
 import org.seonhwan.android.veloginmobile.ui.home.HomeViewModel.Companion.NETWORK_ERR
@@ -97,10 +98,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         postAdapter = VelogAdapter(
             requireActivity() as AppCompatActivity,
             { post ->
-                val intent = Intent(activity, WebViewActivity::class.java)
-                intent.putExtra(VELOG, post)
-                intent.putExtra(FOLDER_NAME, getScrapPostFolder(post.url))
-                getResultSubscribe.launch(intent)
+                intentToWebView(post)
             },
             { post ->
                 viewModel.scrapPost(post, null)
@@ -111,6 +109,13 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             scrapPostList?.map { scrapPost -> scrapPost.toPost() },
         )
         binding.rvHomePost.adapter = postAdapter
+    }
+
+    private fun intentToWebView(post: Post) {
+        val intent = Intent(activity, WebViewActivity::class.java)
+        intent.putExtra(VELOG, post)
+        intent.putExtra(FOLDER_NAME, getScrapPostFolder(post.url))
+        getResultSubscribe.launch(intent)
     }
 
     private fun onClickTabBar() {

@@ -73,10 +73,10 @@ class WebViewActivity : BindingActivity<ActivityWebViewBinding>(R.layout.activit
         with(binding.ibWebviewBookmark) {
             setOnClickListener {
                 if (isSelected) {
-                    scrapViewModel.deleteScrapPost(post!!, folderName)
+                    scrapViewModel.deleteScrapPost(post, folderName)
                 } else {
-                    scrapViewModel.scrapPost(post!!, null)
-                    org.seonhwan.android.veloginmobile.util.extension.BookmarkSnackbar.make(
+                    scrapViewModel.scrapPost(post, null)
+                    BookmarkSnackbar.make(
                         post,
                         this@WebViewActivity,
                         binding.root,
