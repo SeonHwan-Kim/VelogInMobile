@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import coil.load
+import coil.transform.CircleCropTransformation
 import org.seonhwan.android.veloginmobile.databinding.ItemSubscribeBinding
 import org.seonhwan.android.veloginmobile.domain.entity.Subscriber
 import org.seonhwan.android.veloginmobile.util.DiffCallback
@@ -15,6 +17,11 @@ class SubscriberAdapter(
         ViewHolder(binding.root) {
         fun onBind(subscriber: Subscriber, onClickUnSubscribeButton: (String) -> Unit) {
             binding.data = subscriber
+            if (subscriber.img != "") {
+                binding.ivItemSubscribeImage.load(subscriber.img) {
+                    transformations(CircleCropTransformation())
+                }
+            }
             binding.ivItemSubscribeCancelSubscribe.setOnClickListener {
                 onClickUnSubscribeButton(subscriber.name)
             }
