@@ -31,4 +31,8 @@ class SubscribeRepositoryImpl @Inject constructor(
     override suspend fun searchSubscriber(name: String): Flow<SearchSubscriber> = flow {
         emit(subscribeSource.searchSubscriber(name).toSearchSubscriberEntity())
     }
+
+    override suspend fun getTrendPost(): Flow<List<Post>> = flow {
+        emit(subscribeSource.getTrendPost().trendPostDto.map { data -> data.toPostEntity() })
+    }
 }

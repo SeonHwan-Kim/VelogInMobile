@@ -36,6 +36,20 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             }
             return@setOnItemSelectedListener true
         }
+
+        binding.bnvMain.setOnItemReselectedListener { item ->
+            val currentFragment = supportFragmentManager.findFragmentById(R.id.fcv_main)
+            when (item.itemId) {
+                R.id.menu_home -> {
+                    if (currentFragment is HomeFragment) {
+                        currentFragment.scrollToTop()
+                    }
+                }
+                R.id.menu_list -> {}
+                R.id.menu_bookmark -> {}
+                else -> {}
+            }
+        }
     }
 
     private fun changeFragment(fragment: Fragment) {

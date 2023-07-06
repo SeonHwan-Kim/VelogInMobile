@@ -9,8 +9,8 @@ class TagSource @Inject constructor(
     suspend fun getTagList() =
         tagService.getTag()
 
-    suspend fun getTagPostList() =
-        tagService.getTagPost()
+    suspend fun getTagPostList(tag: String) =
+        tagService.getTagPost(tag)
 
     suspend fun postAddTag(tag: String) =
         tagService.postAddTag(tag)

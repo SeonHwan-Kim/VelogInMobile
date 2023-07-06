@@ -71,9 +71,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getTagPost() {
+    fun getTagPost(tag: String) {
         viewModelScope.launch {
-            tagRepository.getTagPost().onStart { _postList.emit(Loading) }.catch { error ->
+            tagRepository.getTagPost(tag).onStart { _postList.emit(Loading) }.catch { error ->
                 when (error) {
                     is ConnectException -> _postList.emit(Failure(NETWORK_ERR))
 
@@ -141,6 +141,20 @@ class HomeViewModel @Inject constructor(
             getFolder?.let {
                 val newFolder = it.copy(it.name, it.size - 1)
                 folderRepository.updateFolder(newFolder)
+            }
+        }
+    }
+
+    fun getTrendPost() {
+        viewModelScope.launch {
+            subscribeRepository.getTrendPost().onStart { _postList.emit(Loading) }.catch { error ->
+                when (error) {
+                    is ConnectException -> _postList.emit(Failure(NETWORK_ERR))
+
+                    else -> _postList.emit(Failure(null))
+                }
+            }.collect { response ->
+                _postList.emit(Success(response))
             }
         }
     }

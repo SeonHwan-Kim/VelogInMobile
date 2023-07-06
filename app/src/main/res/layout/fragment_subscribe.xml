@@ -71,8 +71,8 @@
 
         <ImageView
             android:id="@+id/iv_subscribe_no_subscriber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="174dp"
+            android:layout_height="156dp"
             android:src="@drawable/ic_no_subscriber"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"

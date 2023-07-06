@@ -14,8 +14,8 @@ class TagRepositoryImpl @Inject constructor(
         emit(tagSource.getTagList())
     }
 
-    override suspend fun getTagPost(): Flow<List<Post>> = flow {
-        emit(tagSource.getTagPostList().tagPostDtoList.map { data -> data.toPostEntity() })
+    override suspend fun getTagPost(tag: String): Flow<List<Post>> = flow {
+        emit(tagSource.getTagPostList(tag).map { data -> data.toPostEntity() })
     }
 
     override suspend fun postAddTag(tag: String): Flow<Unit> = flow {

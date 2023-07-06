@@ -6,7 +6,7 @@ import org.seonhwan.android.veloginmobile.domain.entity.Post
 interface TagRepository {
     suspend fun getTag(): Flow<List<String>>
 
-    suspend fun getTagPost(): Flow<List<Post>>
+    suspend fun getTagPost(tag: String): Flow<List<Post>>
 
     suspend fun postAddTag(tag: String): Flow<Unit>
 

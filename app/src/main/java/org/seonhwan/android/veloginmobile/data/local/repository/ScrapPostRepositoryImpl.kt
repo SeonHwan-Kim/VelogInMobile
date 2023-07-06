@@ -22,4 +22,7 @@ class ScrapPostRepositoryImpl @Inject constructor() : ScrapPostRepository {
 
     override suspend fun updateScrapPostFolder(scrapPost: ScrapPost) =
         scrapPostDao.updateScrapPostFolder(scrapPost)
+
+    override suspend fun isScrapPost(url: String) =
+        scrapPostDao.isScrapPost(url)
 }

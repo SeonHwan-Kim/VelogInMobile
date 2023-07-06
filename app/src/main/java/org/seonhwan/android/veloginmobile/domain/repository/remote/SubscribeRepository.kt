@@ -15,4 +15,6 @@ interface SubscribeRepository {
     suspend fun getSubscriber(): Flow<List<Subscriber>>
 
     suspend fun searchSubscriber(name: String): Flow<SearchSubscriber>
+
+    suspend fun getTrendPost(): Flow<List<Post>>
 }

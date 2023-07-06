@@ -15,4 +15,6 @@ class SubscribeSource @Inject constructor(
     suspend fun getSubscriber() = subscribeService.getSubscriber()
 
     suspend fun searchSubscriber(name: String) = subscribeService.searchSubscriber(name)
+
+    suspend fun getTrendPost() = subscribeService.getTrendPost()
 }

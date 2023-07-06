@@ -24,10 +24,12 @@ import org.seonhwan.android.veloginmobile.R
 import org.seonhwan.android.veloginmobile.data.local.model.ScrapPost
 import org.seonhwan.android.veloginmobile.data.local.model.toPost
 import org.seonhwan.android.veloginmobile.databinding.FragmentHomeBinding
+import org.seonhwan.android.veloginmobile.domain.entity.Post
 import org.seonhwan.android.veloginmobile.ui.addtag.AddTagActivity
 import org.seonhwan.android.veloginmobile.ui.home.HomeViewModel.Companion.CODE_202
 import org.seonhwan.android.veloginmobile.ui.home.HomeViewModel.Companion.NETWORK_ERR
 import org.seonhwan.android.veloginmobile.ui.home.VelogAdapter.Companion.VELOG
+import org.seonhwan.android.veloginmobile.ui.scrap.ScrapFragment.Companion.FOLDER_NAME
 import org.seonhwan.android.veloginmobile.ui.webview.WebViewActivity
 import org.seonhwan.android.veloginmobile.util.UiState.Failure
 import org.seonhwan.android.veloginmobile.util.UiState.Loading
@@ -96,9 +98,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         postAdapter = VelogAdapter(
             requireActivity() as AppCompatActivity,
             { post ->
-                val intent = Intent(activity, WebViewActivity::class.java)
-                intent.putExtra(VELOG, post)
-                getResultSubscribe.launch(intent)
+                intentToWebView(post)
             },
             { post ->
                 viewModel.scrapPost(post, null)
@@ -109,6 +109,13 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
             scrapPostList?.map { scrapPost -> scrapPost.toPost() },
         )
         binding.rvHomePost.adapter = postAdapter
+    }
+
+    private fun intentToWebView(post: Post) {
+        val intent = Intent(activity, WebViewActivity::class.java)
+        intent.putExtra(VELOG, post)
+        intent.putExtra(FOLDER_NAME, getScrapPostFolder(post.url))
+        getResultSubscribe.launch(intent)
     }
 
     private fun onClickTabBar() {
@@ -125,7 +132,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                         }
 
                         "트렌드" -> {
-                            viewModel.getTagPost()
+                            viewModel.getTrendPost()
                             initAdapter()
                         }
 
@@ -135,7 +142,7 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
                         }
 
                         else -> {
-                            viewModel.getTagPost()
+                            viewModel.getTagPost(tab?.text.toString())
                             initAdapter()
                         }
                     }
@@ -154,7 +161,6 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun startSecondTabItem() {
         binding.tabHomeTabbar.getTabAt(1)?.select()
-        viewModel.getTagPost()
     }
 
     private fun moveToAddTag() {
@@ -176,10 +182,13 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         ActivityResultContracts.StartActivityForResult(),
     ) { result: ActivityResult ->
         if (result.resultCode == RESULT_OK) {
+            val selectedTab =
+                binding.tabHomeTabbar.getTabAt(binding.tabHomeTabbar.selectedTabPosition)
+            val selectedTabName = selectedTab?.text?.toString()
             when (binding.tabHomeTabbar.selectedTabPosition) {
-                1 -> viewModel.getTagPost()
+                1 -> viewModel.getTrendPost()
                 2 -> viewModel.getSubscriberPost()
-                else -> viewModel.getTagPost()
+                else -> viewModel.getTagPost(selectedTabName!!)
             }
         }
     }
@@ -232,10 +241,13 @@ class HomeFragment : BindingFragment<FragmentHomeBinding>(R.layout.fragment_home
         scrapPostList?.map { scrapPost ->
             if (scrapPost.url == postUrl) {
                 return scrapPost.folder
-            } else {
             }
         }
         return null
+    }
+
+    fun scrollToTop() {
+        binding.rvHomePost.smoothScrollToPosition(0)
     }
 
     override fun onDestroyView() {
