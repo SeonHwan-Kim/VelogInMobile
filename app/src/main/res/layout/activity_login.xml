@@ -10,85 +10,63 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="38dp"
+        android:background="@color/main"
+        android:paddingHorizontal="20dp"
         tools:context=".ui.login.LoginActivity">
 
-        <TextView
-            android:id="@+id/tv_login_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="43dp"
-            android:text="Login"
-            android:textColor="@color/black"
-            android:textSize="30sp"
-            android:textStyle="bold"
+        <ImageView
+            android:layout_width="182dp"
+            android:layout_height="204dp"
+            android:src="@drawable/ic_login_logo"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_login_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="108dp"
+            android:background="@drawable/rectangle_login_white_8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintStart_toStartOf="parent">
 
-            <EditText
-                android:id="@+id/et_login_id"
-                android:layout_width="0dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_gray_fill_edit_text"
-                android:hint="아이디"
-                android:paddingHorizontal="20dp"
-                android:textColor="@color/black"
-                android:textSize="19sp"
-                app:layout_constraintBottom_toTopOf="@id/et_login_password"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/et_login_password"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="13dp"
-                android:background="@drawable/shape_gray_fill_edit_text"
-                android:hint="비밀번호"
-                android:inputType="textPassword"
-                android:paddingHorizontal="20dp"
-                android:textColor="@color/black"
-                android:textSize="19sp"
-                app:layout_constraintBottom_toTopOf="@id/bt_login_login"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_login_id" />
-
-            <ImageButton
-                android:id="@+id/iv_login_password_visible"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginEnd="10dp"
-                android:background="@android:color/transparent"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_password_visible"
-                app:layout_constraintBottom_toBottomOf="@id/et_login_password"
-                app:layout_constraintEnd_toEndOf="@id/et_login_password"
-                app:layout_constraintTop_toTopOf="@id/et_login_password" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/bt_login_login"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="26dp"
-                android:background="@drawable/shape_main_fill_button"
-                android:text="로그인"
-                android:textColor="@color/white"
-                android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_login_password" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_google_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="13dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_google_logo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tv_login_google_text"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_login_google_text"
+                    style="@style/subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sign in with Google"
+                    android:textColor="@color/gray_700"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_google_logo"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
