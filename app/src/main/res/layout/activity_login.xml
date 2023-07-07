@@ -18,7 +18,7 @@
             android:layout_width="182dp"
             android:layout_height="204dp"
             android:src="@drawable/ic_login_logo"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/layout_login_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
