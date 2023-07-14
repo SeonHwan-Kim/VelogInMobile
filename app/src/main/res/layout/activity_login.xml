@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="108dp"
             android:background="@drawable/rectangle_login_white_8dp"
+            android:launchMode="singleTop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -69,6 +70,14 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+<!--        <com.google.android.gms.common.SignInButton-->
+<!--            android:id="@+id/sib_login"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            android:layout_marginBottom="108dp"/>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

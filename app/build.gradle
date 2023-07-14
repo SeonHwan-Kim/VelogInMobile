@@ -26,6 +26,7 @@ android {
 
         buildConfigField "String", "VELOG_BASE_URL", properties['velog.base.url']
         buildConfigField "String", "VELOG_AUTH_TOKEN", properties['velog.auth.token']
+        buildConfigField "String", "VELOG_GOOGLE_CLIENT_ID", properties['velog.auth.google.client.id']
     }
 
     buildTypes {
